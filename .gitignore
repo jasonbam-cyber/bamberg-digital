@@ -33,6 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# business docs (private)
+OUTREACH_EMAILS.md
+PROSPECT_DATABASE.md
+
 # vercel
 .vercel
 
