@@ -1,18 +1,23 @@
-import Stripe from "stripe";
+import { SquareClient, SquareEnvironment } from "square";
 
-function getStripe() {
-  if (!process.env.STRIPE_SECRET_KEY) {
-    throw new Error("STRIPE_SECRET_KEY is not set");
+function getClient() {
+  if (!process.env.SQUARE_ACCESS_TOKEN) {
+    throw new Error("SQUARE_ACCESS_TOKEN is not set");
   }
-  return new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2026-02-25.clover",
+  return new SquareClient({
+    token: process.env.SQUARE_ACCESS_TOKEN,
+    environment:
+      process.env.SQUARE_ENVIRONMENT === "production"
+        ? SquareEnvironment.Production
+        : SquareEnvironment.Sandbox,
   });
 }
 
-// Lazy init — only created when actually called at runtime, not build time
-export const stripe = new Proxy({} as Stripe, {
+// Lazy init via proxy — avoids build-time errors
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const square = new Proxy({} as any, {
   get(_, prop) {
-    const client = getStripe();
+    const client = getClient();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value = (client as any)[prop];
     if (typeof value === "function") {
@@ -22,11 +27,11 @@ export const stripe = new Proxy({} as Stripe, {
   },
 });
 
-// Bamberg Digital pricing plans (matches homepage)
+// Bamberg Digital pricing plans
 export const PLANS = {
   starter: {
     name: "Starter",
-    price: 497_00, // cents
+    priceCents: 497_00,
     description: "Professional 5-page website + basic SEO",
     features: [
       "Professional 5-page website",
@@ -39,7 +44,7 @@ export const PLANS = {
   },
   growth: {
     name: "Growth",
-    price: 797_00,
+    priceCents: 797_00,
     description: "Website + AI chatbot + automations",
     features: [
       "Everything in Starter, plus:",
@@ -54,7 +59,7 @@ export const PLANS = {
   },
   premium: {
     name: "Premium",
-    price: 1297_00,
+    priceCents: 1297_00,
     description: "Full-service digital domination",
     features: [
       "Everything in Growth, plus:",

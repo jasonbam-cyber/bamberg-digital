@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe, PLANS, PlanKey } from "@/lib/stripe";
+import { square, PLANS, PlanKey } from "@/lib/square";
+import crypto from "crypto";
 
 export const dynamic = "force-dynamic";
 
@@ -17,60 +18,79 @@ export async function POST(req: NextRequest) {
 
     const selectedPlan = PLANS[plan as PlanKey];
     const origin = req.headers.get("origin") || "https://bambergdigital.com";
+    const locationId = process.env.SQUARE_LOCATION_ID;
 
-    // Create or retrieve customer
-    const customers = await stripe.customers.list({ email, limit: 1 });
-    let customer: { id: string };
-
-    if (customers.data.length > 0) {
-      customer = customers.data[0];
-    } else {
-      customer = await stripe.customers.create({
-        email,
-        metadata: {
-          business_name: businessName || "",
-          plan,
-          source: "bamberg-digital-website",
-        },
-      });
+    if (!locationId) {
+      return NextResponse.json({ error: "Square not configured" }, { status: 500 });
     }
 
-    // Create checkout session — forces autopay setup
-    const session = await stripe.checkout.sessions.create({
-      customer: customer.id,
-      payment_method_types: ["card"],
-      mode: "subscription",
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `Bamberg Digital — ${selectedPlan.name} Plan`,
-              description: selectedPlan.description,
-            },
-            unit_amount: selectedPlan.price,
-            recurring: { interval: "month" },
-          },
-          quantity: 1,
+    // Create or find customer
+    const searchResult = await square.customers.search({
+      query: {
+        filter: {
+          emailAddress: { exact: email },
         },
-      ],
-      subscription_data: {
-        metadata: {
-          plan,
-          business_name: businessName || "",
-        },
-      },
-      // Force autopay — card is saved and charged automatically
-      payment_method_collection: "always",
-      success_url: `${origin}/portal?session_id={CHECKOUT_SESSION_ID}&success=true`,
-      cancel_url: `${origin}/#pricing`,
-      metadata: {
-        plan,
-        business_name: businessName || "",
       },
     });
 
-    return NextResponse.json({ url: session.url });
+    let customerId: string;
+
+    if (searchResult.customers && searchResult.customers.length > 0) {
+      customerId = searchResult.customers[0].id!;
+    } else {
+      const createResult = await square.customers.create({
+        emailAddress: email,
+        companyName: businessName || undefined,
+        referenceId: `bd_${plan}`,
+        note: `Bamberg Digital — ${selectedPlan.name} Plan`,
+      });
+      customerId = createResult.customer!.id!;
+    }
+
+    // Create a Square Payment Link
+    const checkoutResult = await square.checkout.paymentLinks.create({
+      idempotencyKey: crypto.randomUUID(),
+      order: {
+        locationId,
+        customerId,
+        lineItems: [
+          {
+            name: `Bamberg Digital — ${selectedPlan.name} Plan (Monthly)`,
+            quantity: "1",
+            basePriceMoney: {
+              amount: BigInt(selectedPlan.priceCents),
+              currency: "USD",
+            },
+            note: `${selectedPlan.description} | Auto-pay subscription | Customer: ${email}`,
+          },
+        ],
+        metadata: {
+          plan,
+          business_name: businessName || "",
+          email,
+          subscription: "true",
+        },
+      },
+      checkoutOptions: {
+        redirectUrl: `${origin}/portal?success=true&plan=${plan}`,
+        askForShippingAddress: false,
+        acceptedPaymentMethods: {
+          applePay: true,
+          googlePay: true,
+        },
+      },
+      prePopulatedData: {
+        buyerEmail: email,
+      },
+    });
+
+    const paymentLink = checkoutResult.paymentLink;
+
+    if (!paymentLink?.url) {
+      return NextResponse.json({ error: "Failed to create checkout" }, { status: 500 });
+    }
+
+    return NextResponse.json({ url: paymentLink.url });
   } catch (err: unknown) {
     console.error("Checkout error:", err);
     const message = err instanceof Error ? err.message : "Checkout failed";

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { square } from "@/lib/square";
 
 export const dynamic = "force-dynamic";
 
-// Create a Stripe Customer Portal session (manage billing, update card, cancel)
+// Find customer invoices / manage billing
 export async function POST(req: NextRequest) {
   try {
     const { email } = await req.json();
@@ -12,26 +12,59 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const origin = req.headers.get("origin") || "https://bambergdigital.com";
-
     // Find customer by email
-    const customers = await stripe.customers.list({ email, limit: 1 });
-    if (customers.data.length === 0) {
+    const searchResult = await square.customers.search({
+      query: {
+        filter: {
+          emailAddress: { exact: email },
+        },
+      },
+    });
+
+    if (!searchResult.customers || searchResult.customers.length === 0) {
       return NextResponse.json(
         { error: "No account found with this email. Please sign up first." },
         { status: 404 }
       );
     }
 
-    const customer = customers.data[0];
+    const customer = searchResult.customers[0];
 
-    // Create portal session
-    const session = await stripe.billingPortal.sessions.create({
-      customer: customer.id,
-      return_url: `${origin}/portal`,
+    // Get customer's invoices
+    const invoiceResult = await square.invoices.list(
+      process.env.SQUARE_LOCATION_ID || ""
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const allInvoices = invoiceResult?.data || invoiceResult?.invoices || [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const customerInvoices = allInvoices.filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (inv: any) => inv.primaryRecipient?.customerId === customer.id
+    );
+
+    return NextResponse.json({
+      customer: {
+        id: customer.id,
+        email: customer.emailAddress,
+        name: customer.givenName
+          ? `${customer.givenName} ${customer.familyName || ""}`
+          : customer.companyName || "Customer",
+        company: customer.companyName,
+        created: customer.createdAt,
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      invoices: customerInvoices.map((inv: any) => ({
+        id: inv.id,
+        status: inv.status,
+        amount: inv.paymentRequests?.[0]?.computedAmountMoney?.amount
+          ? `$${(Number(inv.paymentRequests[0].computedAmountMoney.amount) / 100).toFixed(2)}`
+          : "N/A",
+        dueDate: inv.paymentRequests?.[0]?.dueDate,
+        title: inv.title,
+      })),
+      message: "Check your email for Square invoices to manage payment methods and view billing history.",
     });
-
-    return NextResponse.json({ url: session.url });
   } catch (err: unknown) {
     console.error("Portal error:", err);
     const message = err instanceof Error ? err.message : "Portal error";
