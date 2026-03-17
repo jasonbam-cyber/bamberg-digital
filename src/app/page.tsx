@@ -458,27 +458,55 @@ function AutomationShowcase() {
 
 /* ─── PRICING SECTION ─────────────────────────────────────────── */
 function PricingSection() {
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
   const plans = [
     {
-      name: "Starter", price: "497", description: "Perfect for businesses just getting online", popular: false,
+      key: "starter", name: "Starter", price: "497", description: "Perfect for businesses just getting online", popular: false,
       features: ["Professional 5-page website", "Mobile responsive design", "Google Business Profile setup", "Basic SEO optimization", "Monthly maintenance & updates", "SSL security certificate"],
     },
     {
-      name: "Growth", price: "797", description: "For businesses ready to dominate locally", popular: true,
+      key: "growth", name: "Growth", price: "797", description: "For businesses ready to dominate locally", popular: true,
       features: ["Everything in Starter, plus:", "AI chatbot (answers 24/7)", "Missed-call text-back system", "Automated review requests", "12 social media posts/month", "Google Maps optimization", "Monthly performance report", "Online booking / contact forms"],
     },
     {
-      name: "Premium", price: "1,297", description: "Full-service digital domination", popular: false,
+      key: "premium", name: "Premium", price: "1,297", description: "Full-service digital domination", popular: false,
       features: ["Everything in Growth, plus:", "Email marketing campaigns", "Advanced automation workflows", "Reputation management", "Competitor monitoring", "Priority support (same-day)", "Quarterly strategy sessions", "Custom integrations"],
     },
   ];
+
+  async function handleSubscribe(planKey: string) {
+    setLoadingPlan(planKey);
+    try {
+      const email = prompt("Enter your email to get started:");
+      if (!email) { setLoadingPlan(null); return; }
+      const businessName = prompt("Business name (optional):") || "";
+
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planKey, email, businessName }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      alert("Unable to connect. Please call us at (916) 834-7774.");
+    } finally {
+      setLoadingPlan(null);
+    }
+  }
+
   return (
     <section id="pricing" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <p className="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">Simple Pricing</p>
           <h2 className="font-[family-name:var(--font-montserrat)] text-3xl sm:text-4xl font-bold text-gray-900 mb-4">One new customer pays for months of service</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">No setup fees. No contracts. No hidden costs. Cancel anytime.</p>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">No setup fees. No contracts. No hidden costs. Auto-pay required.</p>
         </div>
         <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {plans.map((plan, i) => (
@@ -498,13 +526,17 @@ function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <a href="#contact" className={`block text-center py-3 rounded-xl font-semibold transition-colors ${plan.popular ? "bg-white text-blue-600 hover:bg-blue-50" : "bg-blue-600 text-white hover:bg-blue-700"}`}>
-                {plan.popular ? "Most Popular" : "Get Started"}
-              </a>
+              <button
+                onClick={() => handleSubscribe(plan.key)}
+                disabled={loadingPlan === plan.key}
+                className={`block w-full text-center py-3 rounded-xl font-semibold transition-colors cursor-pointer disabled:opacity-50 ${plan.popular ? "bg-white text-blue-600 hover:bg-blue-50" : "bg-blue-600 text-white hover:bg-blue-700"}`}
+              >
+                {loadingPlan === plan.key ? "Loading..." : plan.popular ? "Get Started — Most Popular" : "Get Started"}
+              </button>
             </div>
           ))}
         </div>
-        <p className="text-center text-gray-500 text-sm mt-8">All plans include hosting, SSL, maintenance, and support. Need something custom? <a href="#contact" className="text-blue-600 underline">Let&rsquo;s talk.</a></p>
+        <p className="text-center text-gray-500 text-sm mt-8">All plans include hosting, SSL, maintenance, and support. Auto-pay is required for all subscriptions. <a href="/portal" className="text-blue-600 underline">Manage billing</a> &bull; <a href="#contact" className="text-blue-600 underline">Need something custom?</a></p>
       </div>
     </section>
   );
