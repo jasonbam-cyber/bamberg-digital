@@ -17,14 +17,28 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Bamberg Digital | Websites & AI Automation for Local Businesses",
   description:
-    "We help Loomis, Roseville & Sacramento businesses get found online with professional websites, Google optimization, and AI-powered automation. More customers. Less hassle.",
+    "We build professional websites, optimize your Google presence, and set up AI-powered automation so you never miss a customer — even when you're closed. Serving Loomis, Roseville & Sacramento.",
   keywords:
-    "web design Loomis, website Roseville, local business marketing Sacramento, AI automation, Google Business Profile, digital presence",
+    "web design Loomis, website Roseville, local business marketing Sacramento, AI receptionist, AI automation, Google Business Profile, digital agency Placer County",
+  metadataBase: new URL("https://bambergdigital.com"),
   openGraph: {
-    title: "Bamberg Digital | Get Found Online",
+    title: "Bamberg Digital — Websites & AI for Local Businesses",
     description:
-      "Professional websites & AI automation for local businesses in Loomis, Roseville & Sacramento.",
+      "We build websites, optimize Google, and set up AI automation so you never miss a customer. Serving Loomis, Roseville & Sacramento. No contracts. Results in 7 days.",
+    url: "https://bambergdigital.com",
+    siteName: "Bamberg Digital",
     type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bamberg Digital — Websites & AI for Local Businesses",
+    description:
+      "Professional websites & AI automation for local businesses. No contracts. Results in 7 days.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
