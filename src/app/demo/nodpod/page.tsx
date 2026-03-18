@@ -394,7 +394,7 @@ export default function NodpodDemo() {
       .orb2 { animation: orb-float 12s ease-in-out 4s infinite; }
     `;
     document.head.appendChild(s);
-    return () => document.head.removeChild(s);
+    return () => { document.head.removeChild(s); };
   }, []);
 
   const addToCart = (product: typeof PRODUCTS[number]) => {
