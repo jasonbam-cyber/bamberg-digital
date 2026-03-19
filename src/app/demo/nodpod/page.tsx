@@ -1,117 +1,143 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-/* ─── Theme tokens ───────────────────────────────────────────────────────── */
-const BLUE      = "#2563eb";
-const BLUE_LT   = "#60a5fa";
-const BLUE_GRAD = "linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%)";
-const EMERALD   = "#34d399";
-const TEXT      = "#e2e8f0";
-const MUTED     = "#94a3b8";
-const GLASS_BG  = "rgba(255,255,255,0.07)";
-const GLASS_BR  = "rgba(255,255,255,0.11)";
-
-const glass = (extra: React.CSSProperties = {}): React.CSSProperties => ({
-  background:              GLASS_BG,
-  backdropFilter:          "blur(24px)",
-  WebkitBackdropFilter:    "blur(24px)",
-  border:                  `1px solid ${GLASS_BR}`,
-  ...extra,
-});
+/* ─── Theme tokens (nodpod clean/spa aesthetic) ─────────────────────────── */
+const WHITE = "#FFFFFF";
+const OFF_WHITE = "#FAFAF9";
+const WARM_GRAY = "#F5F5F4";
+const TEXT_PRIMARY = "#5D5E5D";
+const TEXT_SECONDARY = "#75787B";
+const TEXT_LIGHT = "#A3A5A8";
+const SAGE = "#A2B0A5";
+const BEIGE = "#EBEaE6";
+const BEIGE_DARK = "#C5B9AB";
+const MAUVE = "#EADCDE";
+const BORDER = "rgba(0,0,0,0.06)";
+const ACCENT_GREEN = "#7B9E87";
 
 /* ─── CDN assets ─────────────────────────────────────────────────────────── */
 const CDN = "https://nodpod.com/cdn/shop";
 const IMGS = {
-  logo:     `${CDN}/files/logo-v2.svg?v=1726976705`,
-  heroBg:   `${CDN}/files/Resort_Web_Banners_mobile.png?v=1773245245`,
+  logo: `${CDN}/files/logo-v2.svg?v=1726976705`,
+  heroBg: `${CDN}/files/Resort_Web_Banners_mobile.png?v=1773245245`,
   heroDark: `${CDN}/files/Midnight_Web_Banners_Mobile.png?v=1769014584`,
-  allure:   `${CDN}/files/allure3-new.svg?v=1743884874`,
-  nb:       `${CDN}/files/nb-logo-en.svg?v=1744512231`,
-  nymag:    `https://cdn.shopify.com/s/files/1/0253/2982/7939/files/new-york-mag-logo.svg?v=1727230418`,
+  allure: `${CDN}/files/allure3-new.svg?v=1743884874`,
+  nb: `${CDN}/files/nb-logo-en.svg?v=1744512231`,
+  nymag: `https://cdn.shopify.com/s/files/1/0253/2982/7939/files/new-york-mag-logo.svg?v=1727230418`,
 };
 
 /* ─── Product catalog ────────────────────────────────────────────────────── */
 const PRODUCTS = [
   {
     id: 1, name: "Nodpod Sleep Mask", price: 38,
+    desc: "The original weighted sleep mask",
     img: `${CDN}/products/Wisteria.jpg?v=1739677254&width=600`,
     colors: ["Slate", "Blush", "Sage", "Midnight", "Clay"], tag: "Best Seller",
+    rating: 4.9, reviews: 2847,
   },
   {
-    id: 2, name: "Mineralized Silk™ Sleep Mask", price: 68,
+    id: 2, name: "Mineralized Silk\u2122 Sleep Mask", price: 68,
+    desc: "Silk-infused weighted eye mask",
     img: `${CDN}/files/CopyofMask_Sage2.png?v=1706778858&width=600`,
     colors: ["Pearl", "Onyx", "Rose", "Sage"], tag: "Premium",
+    rating: 4.8, reviews: 1203,
   },
   {
     id: 3, name: "Nodpod BODY", price: 92,
+    desc: "Full-body weighted comfort pod",
     img: `${CDN}/files/DSC00837_7a10fb04-d25f-4f32-9f28-e7ba454971aa.jpg?v=1707854911&width=600`,
     colors: ["Oat", "Slate", "Sage", "Midnight"], tag: "",
+    rating: 4.7, reviews: 856,
   },
   {
     id: 4, name: "Teddy Sleep Mask", price: 42,
+    desc: "Ultra-soft teddy fleece mask",
     img: `${CDN}/files/image71.png?v=1760465998&width=600`,
     colors: ["Cream", "Cocoa"], tag: "Cozy",
+    rating: 4.9, reviews: 1542,
   },
   {
     id: 5, name: "Teddy Body", price: 102,
+    desc: "Plush weighted body pod",
     img: `${CDN}/files/Nodpod_TeddyBody_TeddyBear_01_6999a985-c5e6-4fc6-a402-3ea2c342356f.png?v=1761748039&width=600`,
     colors: ["Cream"], tag: "",
+    rating: 4.8, reviews: 432,
   },
   {
-    id: 6, name: "Mineralized Silk™ Pillowcase", price: 102,
+    id: 6, name: "Mineralized Silk\u2122 Pillowcase", price: 102,
+    desc: "Silk pillowcase for better skin & hair",
     img: `${CDN}/files/PEARL_PC_PDP_02.png?v=1757624739&width=600`,
     colors: ["Pearl", "Sage"], tag: "",
+    rating: 4.9, reviews: 674,
   },
   {
     id: 7, name: "Silk Scrunchies", price: 35,
-    img: `${CDN}/files/Silk_Wash_at_Laundromat_x_Nodpod_1832.jpg?v=1758900260&width=600`,
+    desc: "Set of silk hair scrunchies",
+    img: `${CDN}/files/Scrunchie_all_colors_BIRD_02.png?v=1759438810&width=600`,
     colors: ["Assorted"], tag: "Gift Idea",
+    rating: 4.7, reviews: 389,
   },
   {
     id: 8, name: "Silk Laundry Wash", price: 27,
+    desc: "Gentle formula for silk & delicates",
     img: `${CDN}/files/Silk_Wash_at_Laundromat_x_Nodpod_1832.jpg?v=1758900260&width=600`,
     colors: [], tag: "Add-on",
+    rating: 4.6, reviews: 218,
   },
 ];
 
 const BUNDLES = [
-  { name: "Sleep Ritual Bundle",  items: [1, 6], discount: 15, save: 21, desc: "Sleep Mask + Silk Pillowcase" },
+  { name: "Sleep Ritual Bundle", items: [1, 6], discount: 15, save: 21, desc: "Sleep Mask + Silk Pillowcase" },
   { name: "Ultimate Rest Bundle", items: [1, 3], discount: 12, save: 16, desc: "Sleep Mask + BODY Weighted Pod" },
-  { name: "Silk Luxury Bundle",   items: [2, 6, 7], discount: 10, save: 21, desc: "Silk Mask + Pillowcase + Scrunchies" },
+  { name: "Silk Luxury Bundle", items: [2, 6, 7], discount: 10, save: 20, desc: "Silk Mask + Pillowcase + Scrunchies" },
 ];
 
 const UPSELLS = [
-  { id: 8, reason: "Protect your silk — gentle wash formula", price: 27 },
-  { id: 7, reason: "Complete the set — silk scrunchies", price: 35 },
+  { id: 8, reason: "Protect your silk -- gentle wash formula", price: 27 },
+  { id: 7, reason: "Complete the set -- silk scrunchies", price: 35 },
   { id: 4, reason: "Try our coziest mask", price: 42 },
 ];
 
 const FREE_SHIP = 50;
 
+/* ─── Star rating display ────────────────────────────────────────────────── */
+function Stars({ rating, count }: { rating: number; count: number }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <div style={{ display: "flex", gap: 1 }}>
+        {[1, 2, 3, 4, 5].map((i) => (
+          <svg key={i} width="13" height="13" viewBox="0 0 24 24" fill={i <= Math.round(rating) ? TEXT_PRIMARY : "none"} stroke={TEXT_PRIMARY} strokeWidth="1.5">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+        ))}
+      </div>
+      <span style={{ fontSize: 11, color: TEXT_SECONDARY }}>{count}</span>
+    </div>
+  );
+}
+
 /* ─── Shipping progress bar ──────────────────────────────────────────────── */
 function ShippingBar({ total }: { total: number }) {
-  const pct       = Math.min((total / FREE_SHIP) * 100, 100);
+  const pct = Math.min((total / FREE_SHIP) * 100, 100);
   const remaining = Math.max(FREE_SHIP - total, 0);
   return (
-    <div style={{ ...glass({ borderRadius: 10, padding: "10px 14px", marginBottom: 14 }) }}>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: MUTED, marginBottom: 7 }}>
+    <div style={{ background: OFF_WHITE, borderRadius: 8, padding: "10px 14px", marginBottom: 14 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: TEXT_SECONDARY, marginBottom: 7 }}>
         {remaining > 0 ? (
-          <span style={{ color: TEXT }}>
-            <strong style={{ color: BLUE_LT }}>${remaining.toFixed(0)}</strong> away from{" "}
-            <strong style={{ color: BLUE_LT }}>FREE shipping</strong>
+          <span style={{ color: TEXT_PRIMARY }}>
+            <strong>${remaining.toFixed(0)}</strong> away from <strong>free shipping</strong>
           </span>
         ) : (
-          <span style={{ color: EMERALD, fontWeight: 600 }}>✓ Free shipping unlocked!</span>
+          <span style={{ color: ACCENT_GREEN, fontWeight: 500 }}>Free shipping unlocked</span>
         )}
         <span>${FREE_SHIP}</span>
       </div>
-      <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: 5, overflow: "hidden" }}>
+      <div style={{ background: "#E8E8E6", borderRadius: 99, height: 4, overflow: "hidden" }}>
         <div style={{
           width: `${pct}%`, height: "100%",
-          background: pct >= 100 ? `linear-gradient(90deg,${EMERALD},#10b981)` : BLUE_GRAD,
+          background: pct >= 100 ? ACCENT_GREEN : SAGE,
           borderRadius: 99, transition: "width 0.55s ease",
-          boxShadow: `0 0 10px ${pct >= 100 ? EMERALD : BLUE}88`,
         }} />
       </div>
     </div>
@@ -128,25 +154,25 @@ function CartDrawer({
   onRemove: (id: number) => void; onQty: (id: number, qty: number) => void;
   onAddUpsell: (id: number) => void;
 }) {
-  const subtotal       = cart.reduce((s, c) => s + c.product.price * c.qty, 0);
-  const inCartIds      = cart.map((c) => c.product.id);
-  const availUpsells   = UPSELLS.filter((u) => !inCartIds.includes(u.id));
+  const subtotal = cart.reduce((s, c) => s + c.product.price * c.qty, 0);
+  const inCartIds = cart.map((c) => c.product.id);
+  const availUpsells = UPSELLS.filter((u) => !inCartIds.includes(u.id));
 
   return (
     <>
       {isOpen && (
         <div onClick={onClose} style={{
           position: "fixed", inset: 0, zIndex: 998,
-          background: "rgba(0,0,0,0.55)",
-          backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
+          background: "rgba(0,0,0,0.25)",
+          transition: "opacity 0.3s",
         }} />
       )}
 
       <div style={{
         position: "fixed", top: 0, right: isOpen ? 0 : -440,
         width: 420, maxWidth: "93vw", height: "100vh", zIndex: 999,
-        background: "linear-gradient(180deg,#061428 0%,#030d18 100%)",
-        boxShadow: "-2px 0 60px rgba(0,0,0,0.6), inset 1px 0 0 rgba(255,255,255,0.07)",
+        background: WHITE,
+        boxShadow: isOpen ? "-4px 0 40px rgba(0,0,0,0.08)" : "none",
         transition: "right 0.35s cubic-bezier(0.4,0,0.2,1)",
         display: "flex", flexDirection: "column",
         fontFamily: "'Inter',sans-serif",
@@ -154,72 +180,70 @@ function CartDrawer({
 
         {/* Header */}
         <div style={{
-          padding: "18px 22px",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
+          padding: "20px 24px",
+          borderBottom: `1px solid ${BORDER}`,
           display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
-          <h3 style={{ margin: 0, fontSize: 16, color: TEXT, fontWeight: 600 }}>
-            Your Cart{" "}
-            <span style={{ color: BLUE_LT }}>({cart.reduce((s, c) => s + c.qty, 0)})</span>
+          <h3 style={{ margin: 0, fontSize: 15, color: TEXT_PRIMARY, fontWeight: 400, letterSpacing: "0.06rem" }}>
+            Your Cart ({cart.reduce((s, c) => s + c.qty, 0)})
           </h3>
           <button onClick={onClose} style={{
-            ...glass({ borderRadius: 8 }),
-            color: MUTED, border: `1px solid ${GLASS_BR}`,
-            fontSize: 18, cursor: "pointer",
-            width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
-          }}>×</button>
+            color: TEXT_SECONDARY, border: "none", background: "none",
+            fontSize: 22, cursor: "pointer", padding: 4,
+            lineHeight: 1,
+          }}>&times;</button>
         </div>
 
         {/* Shipping bar */}
-        <div style={{ padding: "12px 22px 0" }}>
+        <div style={{ padding: "14px 24px 0" }}>
           <ShippingBar total={subtotal} />
         </div>
 
         {/* Items */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "0 22px" }}>
+        <div style={{ flex: 1, overflowY: "auto", padding: "0 24px" }}>
           {cart.length === 0 ? (
-            <p style={{ textAlign: "center", color: MUTED, marginTop: 60, fontSize: 14 }}>Your cart is empty</p>
+            <p style={{ textAlign: "center", color: TEXT_LIGHT, marginTop: 60, fontSize: 14, fontWeight: 300 }}>Your cart is empty</p>
           ) : (
             cart.map((item) => (
               <div key={item.product.id} style={{
-                display: "flex", gap: 13, padding: "14px 0",
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
+                display: "flex", gap: 14, padding: "16px 0",
+                borderBottom: `1px solid ${BORDER}`,
               }}>
                 <div style={{
-                  width: 70, height: 70, borderRadius: 10, overflow: "hidden",
-                  flexShrink: 0, border: "1px solid rgba(255,255,255,0.1)",
+                  width: 72, height: 72, borderRadius: 8, overflow: "hidden",
+                  flexShrink: 0, background: OFF_WHITE,
                 }}>
                   <img src={item.product.img} alt={item.product.name}
                     style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: TEXT }}>{item.product.name}</div>
+                  <div style={{ fontSize: 13, fontWeight: 400, color: TEXT_PRIMARY }}>{item.product.name}</div>
                   {item.color && (
-                    <div style={{ fontSize: 11, color: MUTED, marginTop: 2 }}>{item.color}</div>
+                    <div style={{ fontSize: 11, color: TEXT_LIGHT, marginTop: 2 }}>{item.color}</div>
                   )}
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }}>
                     <div style={{
-                      display: "flex", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 6, overflow: "hidden",
+                      display: "flex", border: `1px solid ${BORDER}`, borderRadius: 4, overflow: "hidden",
                     }}>
                       <button onClick={() => onQty(item.product.id, item.qty - 1)}
-                        style={{ width: 28, height: 28, border: "none", background: "rgba(255,255,255,0.06)", color: TEXT, cursor: "pointer", fontSize: 14 }}>
-                        −
+                        style={{ width: 28, height: 28, border: "none", background: OFF_WHITE, color: TEXT_PRIMARY, cursor: "pointer", fontSize: 14 }}>
+                        &minus;
                       </button>
-                      <span style={{ width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: TEXT }}>
+                      <span style={{ width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: TEXT_PRIMARY, background: WHITE }}>
                         {item.qty}
                       </span>
                       <button onClick={() => onQty(item.product.id, item.qty + 1)}
-                        style={{ width: 28, height: 28, border: "none", background: "rgba(255,255,255,0.06)", color: TEXT, cursor: "pointer", fontSize: 14 }}>
+                        style={{ width: 28, height: 28, border: "none", background: OFF_WHITE, color: TEXT_PRIMARY, cursor: "pointer", fontSize: 14 }}>
                         +
                       </button>
                     </div>
                     <button onClick={() => onRemove(item.product.id)}
-                      style={{ fontSize: 11, color: MUTED, background: "none", border: "none", cursor: "pointer" }}>
+                      style={{ fontSize: 11, color: TEXT_LIGHT, background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>
                       Remove
                     </button>
                   </div>
                 </div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: BLUE_LT, whiteSpace: "nowrap" }}>
+                <div style={{ fontSize: 14, fontWeight: 400, color: TEXT_PRIMARY, whiteSpace: "nowrap" }}>
                   ${(item.product.price * item.qty).toFixed(2)}
                 </div>
               </div>
@@ -228,30 +252,34 @@ function CartDrawer({
 
           {/* Upsells */}
           {cart.length > 0 && availUpsells.length > 0 && (
-            <div style={{ marginTop: 16, paddingBottom: 16 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: BLUE_LT, marginBottom: 10, textTransform: "uppercase", letterSpacing: 2 }}>
+            <div style={{ marginTop: 20, paddingBottom: 16 }}>
+              <div style={{
+                fontSize: 10, fontWeight: 500, color: TEXT_SECONDARY, marginBottom: 12,
+                textTransform: "uppercase", letterSpacing: "1.5px",
+              }}>
                 Complete Your Sleep Ritual
               </div>
               {availUpsells.slice(0, 2).map((u) => {
                 const prod = PRODUCTS.find((p) => p.id === u.id)!;
                 return (
                   <div key={u.id} style={{
-                    ...glass({ borderRadius: 10, padding: "9px 12px", marginBottom: 8 }),
-                    display: "flex", alignItems: "center", gap: 11,
+                    background: OFF_WHITE, borderRadius: 8, padding: "10px 14px", marginBottom: 8,
+                    display: "flex", alignItems: "center", gap: 12,
                   }}>
-                    <div style={{ width: 42, height: 42, borderRadius: 7, overflow: "hidden", flexShrink: 0 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 6, overflow: "hidden", flexShrink: 0 }}>
                       <img src={prod.img} alt={prod.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 12, fontWeight: 500, color: TEXT }}>{prod.name}</div>
-                      <div style={{ fontSize: 10, color: MUTED }}>{u.reason}</div>
+                      <div style={{ fontSize: 12, fontWeight: 400, color: TEXT_PRIMARY }}>{prod.name}</div>
+                      <div style={{ fontSize: 10, color: TEXT_LIGHT }}>{u.reason}</div>
                     </div>
                     <button onClick={() => onAddUpsell(u.id)} style={{
-                      background: BLUE_GRAD, color: "#fff", border: "none",
-                      padding: "5px 11px", borderRadius: 6, fontSize: 11,
-                      fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap",
+                      background: TEXT_PRIMARY, color: WHITE, border: "none",
+                      padding: "6px 12px", borderRadius: 4, fontSize: 11,
+                      fontWeight: 400, cursor: "pointer", whiteSpace: "nowrap",
+                      letterSpacing: "0.03rem",
                     }}>
-                      +${prod.price}
+                      + ${prod.price}
                     </button>
                   </div>
                 );
@@ -262,27 +290,28 @@ function CartDrawer({
 
         {/* Checkout footer */}
         {cart.length > 0 && (
-          <div style={{ padding: "14px 22px 22px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-              <span style={{ fontSize: 13, color: MUTED }}>Subtotal</span>
-              <span style={{ fontSize: 16, fontWeight: 700, color: TEXT }}>${subtotal.toFixed(2)}</span>
+          <div style={{ padding: "16px 24px 24px", borderTop: `1px solid ${BORDER}` }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+              <span style={{ fontSize: 13, color: TEXT_SECONDARY, fontWeight: 300 }}>Subtotal</span>
+              <span style={{ fontSize: 15, fontWeight: 400, color: TEXT_PRIMARY }}>${subtotal.toFixed(2)}</span>
             </div>
-            <div style={{ fontSize: 11, color: MUTED, marginBottom: 14 }}>
-              {subtotal >= FREE_SHIP ? "✓ Free shipping included" : "Shipping calculated at checkout"}
+            <div style={{ fontSize: 11, color: TEXT_LIGHT, marginBottom: 16 }}>
+              {subtotal >= FREE_SHIP ? "Free shipping included" : "Shipping calculated at checkout"}
             </div>
             <button style={{
-              width: "100%", padding: "13px 0", background: BLUE_GRAD,
-              color: "#fff", border: "none", borderRadius: 10, fontSize: 14,
-              fontWeight: 600, cursor: "pointer",
-              boxShadow: `0 4px 20px ${BLUE}55`,
+              width: "100%", padding: "14px 0", background: TEXT_PRIMARY,
+              color: WHITE, border: "none", borderRadius: 4, fontSize: 13,
+              fontWeight: 400, cursor: "pointer", letterSpacing: "0.08rem",
+              textTransform: "uppercase",
             }}>
-              Checkout →
+              Checkout
             </button>
-            <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 11 }}>
+            <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 12 }}>
               {["Apple Pay", "Shop Pay", "Google Pay"].map((p) => (
                 <span key={p} style={{
-                  fontSize: 10, ...glass({ borderRadius: 4 }),
-                  padding: "3px 9px", color: MUTED, fontWeight: 500,
+                  fontSize: 10, background: OFF_WHITE,
+                  padding: "4px 10px", color: TEXT_LIGHT, fontWeight: 400,
+                  borderRadius: 3,
                 }}>
                   {p}
                 </span>
@@ -302,63 +331,62 @@ function PostPurchaseUpsell({ show, onClose }: { show: boolean; onClose: () => v
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 1000,
-      background: "rgba(0,0,0,0.7)",
-      backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
+      background: "rgba(0,0,0,0.2)",
       display: "flex", alignItems: "center", justifyContent: "center",
     }}>
       <div style={{
-        ...glass({
-          borderRadius: 22,
-          boxShadow: `0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px ${GLASS_BR}`,
-        }),
-        background: "linear-gradient(135deg,rgba(6,20,40,0.97),rgba(3,13,24,0.99))",
-        maxWidth: 420, width: "90%", padding: "32px 28px",
+        background: WHITE,
+        borderRadius: 12,
+        boxShadow: "0 20px 60px rgba(0,0,0,0.1)",
+        maxWidth: 420, width: "90%", padding: "36px 32px",
         textAlign: "center", fontFamily: "'Inter',sans-serif",
       }}>
         <div style={{
-          display: "inline-block", background: `${BLUE}33`,
-          border: `1px solid ${BLUE_LT}44`, padding: "5px 14px",
-          borderRadius: 99, fontSize: 10, color: BLUE_LT,
-          fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", marginBottom: 14,
+          display: "inline-block", background: BEIGE,
+          padding: "5px 16px",
+          borderRadius: 99, fontSize: 10, color: TEXT_SECONDARY,
+          fontWeight: 500, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 16,
         }}>
           One-Time Offer
         </div>
-        <h3 style={{ fontSize: 22, color: TEXT, margin: "0 0 10px", fontWeight: 700 }}>
+        <h3 style={{ fontSize: 22, color: TEXT_PRIMARY, margin: "0 0 10px", fontWeight: 400 }}>
           Protect Your Silk
         </h3>
-        <p style={{ fontSize: 13, color: MUTED, marginBottom: 22, lineHeight: 1.7 }}>
-          Add the <strong style={{ color: TEXT }}>Silk Laundry Wash</strong> to protect your investment.
+        <p style={{ fontSize: 13, color: TEXT_SECONDARY, marginBottom: 24, lineHeight: 1.7, fontWeight: 300 }}>
+          Add the <strong style={{ color: TEXT_PRIMARY, fontWeight: 500 }}>Silk Laundry Wash</strong> to protect your investment.
           This offer is only available right now.
         </p>
         <div style={{
-          ...glass({ borderRadius: 14, padding: "14px 18px", marginBottom: 20 }),
+          background: OFF_WHITE, borderRadius: 10, padding: "16px 18px", marginBottom: 24,
           display: "flex", alignItems: "center", gap: 16,
         }}>
-          <div style={{ width: 60, height: 60, borderRadius: 10, overflow: "hidden", flexShrink: 0 }}>
+          <div style={{ width: 64, height: 64, borderRadius: 8, overflow: "hidden", flexShrink: 0 }}>
             <img src={wash.img} alt={wash.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
           <div style={{ textAlign: "left" }}>
-            <div style={{ fontWeight: 600, color: TEXT, fontSize: 13 }}>Silk Laundry Wash</div>
-            <div style={{ color: MUTED, fontSize: 11, marginTop: 2 }}>Gentle formula for silk & delicates</div>
-            <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 7 }}>
-              <span style={{ fontWeight: 700, color: EMERALD, fontSize: 18 }}>$19</span>
-              <span style={{ textDecoration: "line-through", color: "#475569", fontSize: 13 }}>$27</span>
+            <div style={{ fontWeight: 400, color: TEXT_PRIMARY, fontSize: 14 }}>Silk Laundry Wash</div>
+            <div style={{ color: TEXT_LIGHT, fontSize: 12, marginTop: 2 }}>Gentle formula for silk & delicates</div>
+            <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 8 }}>
+              <span style={{ fontWeight: 500, color: ACCENT_GREEN, fontSize: 18 }}>$19</span>
+              <span style={{ textDecoration: "line-through", color: TEXT_LIGHT, fontSize: 13 }}>$27</span>
               <span style={{
-                background: `${EMERALD}22`, color: EMERALD,
-                fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 600,
+                background: "#EDF5EF", color: ACCENT_GREEN,
+                fontSize: 10, padding: "2px 8px", borderRadius: 3, fontWeight: 500,
               }}>SAVE 30%</span>
             </div>
           </div>
         </div>
         <button style={{
-          width: "100%", padding: 13, background: BLUE_GRAD, color: "#fff",
-          border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600,
-          cursor: "pointer", marginBottom: 10, boxShadow: `0 4px 20px ${BLUE}55`,
+          width: "100%", padding: 14, background: TEXT_PRIMARY, color: WHITE,
+          border: "none", borderRadius: 4, fontSize: 13, fontWeight: 400,
+          cursor: "pointer", marginBottom: 12, letterSpacing: "0.06rem",
+          textTransform: "uppercase",
         }}>
           Yes, Add to My Order — $19
         </button>
         <button onClick={onClose} style={{
-          background: "none", border: "none", color: MUTED, fontSize: 12, cursor: "pointer",
+          background: "none", border: "none", color: TEXT_LIGHT, fontSize: 12, cursor: "pointer",
+          textDecoration: "underline",
         }}>
           No thanks, I&apos;ll skip this
         </button>
@@ -367,31 +395,134 @@ function PostPurchaseUpsell({ show, onClose }: { show: boolean; onClose: () => v
   );
 }
 
+/* ─── Press logo marquee ─────────────────────────────────────────────────── */
+function PressMarquee() {
+  const logos = [IMGS.allure, IMGS.nb, IMGS.nymag, IMGS.allure, IMGS.nb, IMGS.nymag, IMGS.allure, IMGS.nb, IMGS.nymag, IMGS.allure, IMGS.nb, IMGS.nymag];
+  return (
+    <div style={{ overflow: "hidden", position: "relative" }}>
+      <div className="marquee-track" style={{
+        display: "flex", alignItems: "center", gap: 60,
+        width: "max-content",
+      }}>
+        {logos.map((src, i) => (
+          <img key={i} src={src} alt="press" style={{ height: 24, opacity: 0.6, objectFit: "contain" }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Color swatch helper ────────────────────────────────────────────────── */
+const COLOR_MAP: Record<string, string> = {
+  Slate: "#6B7B8D",
+  Blush: "#E8C4C4",
+  Sage: "#A2B0A5",
+  Midnight: "#2C3E50",
+  Clay: "#C5947C",
+  Pearl: "#F5F0EB",
+  Onyx: "#2C2C2C",
+  Rose: "#D4A5A5",
+  Oat: "#DCD0C0",
+  Cream: "#F5ECD7",
+  Cocoa: "#6B4226",
+  Assorted: "linear-gradient(135deg, #E8C4C4, #A2B0A5, #C5947C)",
+};
+
 /* ─── Main page ──────────────────────────────────────────────────────────── */
 export default function NodpodDemo() {
-  const [cart, setCart]                   = useState<CartItem[]>([]);
-  const [cartOpen, setCartOpen]           = useState(false);
-  const [showUpsell, setShowUpsell]       = useState(false);
-  const [addedFlash, setAddedFlash]       = useState<number | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [showUpsell, setShowUpsell] = useState(false);
+  const [addedFlash, setAddedFlash] = useState<number | null>(null);
   const [selectedColors, setSelectedColors] = useState<Record<number, string>>({});
+  const [heroSlide, setHeroSlide] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const heroSlides = [
+    { img: IMGS.heroBg, headline: "Chill More.\nStress Less.\nSleep Better.", sub: "" },
+    { img: IMGS.heroDark, headline: "Deep Touch\nPressure\nTechnology", sub: "" },
+  ];
+
+  /* Auto-rotate hero */
+  useEffect(() => {
+    const t = setInterval(() => setHeroSlide((s) => (s + 1) % heroSlides.length), 6000);
+    return () => clearInterval(t);
+  }, [heroSlides.length]);
 
   /* Inject global styles */
   useEffect(() => {
     const s = document.createElement("style");
     s.innerHTML = `
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
       *, *::before, *::after { box-sizing: border-box; }
-      ::-webkit-scrollbar { width: 4px; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; }
+      ::-webkit-scrollbar { width: 5px; }
       ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
-      .prod-card { transition: transform 0.25s, border-color 0.25s !important; }
-      .prod-card:hover { transform: translateY(-5px) !important; border-color: rgba(96,165,250,0.35) !important; }
-      .prod-card:hover .prod-img { transform: scale(1.06) !important; }
-      .bundle-card:hover { transform: translateY(-4px) !important; border-color: rgba(96,165,250,0.35) !important; }
-      .nav-link:hover { color: #e2e8f0 !important; }
-      @keyframes orb-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-      .orb { animation: orb-float 9s ease-in-out infinite; }
-      .orb2 { animation: orb-float 12s ease-in-out 4s infinite; }
+      ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 99px; }
+
+      .nodpod-prod-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+      }
+      .nodpod-prod-card:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.06) !important;
+      }
+      .nodpod-prod-card:hover .nodpod-prod-img {
+        transform: scale(1.03) !important;
+      }
+      .nodpod-bundle-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+      }
+      .nodpod-bundle-card:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.05) !important;
+      }
+      .nodpod-nav-link {
+        transition: color 0.2s ease !important;
+      }
+      .nodpod-nav-link:hover {
+        color: ${TEXT_PRIMARY} !important;
+      }
+      .nodpod-btn-primary {
+        transition: opacity 0.2s ease !important;
+      }
+      .nodpod-btn-primary:hover {
+        opacity: 0.85 !important;
+      }
+      .nodpod-add-btn {
+        transition: all 0.25s ease !important;
+      }
+      .nodpod-add-btn:hover {
+        background: ${TEXT_PRIMARY} !important;
+        color: #fff !important;
+      }
+
+      @keyframes nodpod-marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .marquee-track {
+        animation: nodpod-marquee 30s linear infinite;
+      }
+
+      @media (max-width: 768px) {
+        .nodpod-desktop-nav { display: none !important; }
+        .nodpod-mobile-toggle { display: flex !important; }
+        .nodpod-hero-headline { font-size: 36px !important; }
+        .nodpod-hero-inner { padding: 60px 24px !important; }
+        .nodpod-section { padding-left: 20px !important; padding-right: 20px !important; }
+        .nodpod-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+        .nodpod-grid-3 { grid-template-columns: 1fr !important; }
+        .nodpod-footer-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        .nodpod-features-grid { grid-template-columns: 1fr 1fr !important; }
+        .nodpod-story-grid { grid-template-columns: 1fr !important; }
+      }
+
+      @media (max-width: 480px) {
+        .nodpod-grid-4 { grid-template-columns: 1fr !important; }
+        .nodpod-features-grid { grid-template-columns: 1fr !important; }
+      }
     `;
     document.head.appendChild(s);
     return () => { document.head.removeChild(s); };
@@ -415,353 +546,830 @@ export default function NodpodDemo() {
     if (qty <= 0) { removeFromCart(id); return; }
     setCart((prev) => prev.map((c) => c.product.id === id ? { ...c, qty } : c));
   };
-  const addUpsell    = (id: number) => addToCart(PRODUCTS.find((p) => p.id === id)!);
-  const cartCount    = cart.reduce((s, c) => s + c.qty, 0);
+  const addUpsell = (id: number) => addToCart(PRODUCTS.find((p) => p.id === id)!);
+  const cartCount = cart.reduce((s, c) => s + c.qty, 0);
 
   return (
     <div style={{
-      background: "linear-gradient(160deg,#020c1a 0%,#050f22 45%,#071830 80%,#020c1a 100%)",
-      minHeight: "100vh", fontFamily: "'Inter',sans-serif", color: TEXT,
-      position: "relative", overflowX: "hidden",
+      background: WHITE,
+      minHeight: "100vh",
+      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+      color: TEXT_PRIMARY,
+      overflowX: "hidden",
     }}>
 
-      {/* Ambient glow orbs */}
-      <div className="orb" style={{
-        position: "fixed", top: "-5%", left: "-8%", width: 700, height: 700,
-        background: "radial-gradient(circle,rgba(37,99,235,0.13) 0%,transparent 68%)",
-        pointerEvents: "none", zIndex: 0, borderRadius: "50%",
-      }} />
-      <div className="orb2" style={{
-        position: "fixed", bottom: "-8%", right: "-8%", width: 900, height: 900,
-        background: "radial-gradient(circle,rgba(14,165,233,0.09) 0%,transparent 65%)",
-        pointerEvents: "none", zIndex: 0, borderRadius: "50%",
-      }} />
+      {/* ─── Announcement Bar ─── */}
       <div style={{
-        position: "fixed", top: "40%", left: "50%", transform: "translate(-50%,-50%)",
-        width: 1200, height: 600,
-        background: "radial-gradient(ellipse,rgba(37,99,235,0.05) 0%,transparent 70%)",
-        pointerEvents: "none", zIndex: 0,
-      }} />
+        background: SAGE,
+        textAlign: "center",
+        padding: "10px 16px",
+        fontSize: 12,
+        fontWeight: 400,
+        letterSpacing: "1px",
+        color: WHITE,
+        textTransform: "uppercase",
+      }}>
+        Free Shipping on Orders Over $50
+        <span style={{
+          marginLeft: 16,
+          textDecoration: "underline",
+          cursor: "pointer",
+          fontWeight: 500,
+        }}
+          onClick={() => document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          Shop Now
+        </span>
+      </div>
 
-      <div style={{ position: "relative", zIndex: 1 }}>
+      {/* ─── Sticky Header ─── */}
+      <header style={{
+        background: WHITE,
+        borderBottom: `1px solid ${BORDER}`,
+        padding: "16px 40px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+      }}>
+        {/* Left nav */}
+        <nav className="nodpod-desktop-nav" style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          {["Shop", "Sleep Masks", "About"].map((lnk) => (
+            <span key={lnk} className="nodpod-nav-link" style={{
+              fontSize: 13,
+              color: TEXT_SECONDARY,
+              cursor: "pointer",
+              fontWeight: 400,
+              letterSpacing: "0.04rem",
+            }}>{lnk}</span>
+          ))}
+        </nav>
 
-        {/* ─── Announcement bar ─── */}
-        <div style={{
-          background: `linear-gradient(90deg,rgba(37,99,235,0.18),rgba(14,165,233,0.18))`,
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-          textAlign: "center", padding: "9px 16px",
-          fontSize: 12, fontWeight: 500, letterSpacing: 0.8,
-        }}>
-          <span style={{ color: BLUE_LT }}>✦</span>
-          {"  "}FREE SHIPPING ON ORDERS OVER $50{"  ·  "}DEEP TOUCH PRESSURE TECHNOLOGY{"  "}
-          <span style={{ color: BLUE_LT }}>✦</span>
+        {/* Mobile hamburger */}
+        <button
+          className="nodpod-mobile-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          style={{
+            display: "none", alignItems: "center", justifyContent: "center",
+            background: "none", border: "none", cursor: "pointer", padding: 4,
+          }}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={TEXT_PRIMARY} strokeWidth="1.5">
+            <path d="M3 12h18M3 6h18M3 18h18" />
+          </svg>
+        </button>
+
+        {/* Center logo */}
+        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+          <img src={IMGS.logo} alt="nodpod" style={{ height: 28 }} />
         </div>
 
-        {/* ─── Header ─── */}
-        <header style={{
-          background: "rgba(2,12,26,0.82)",
-          backdropFilter: "blur(28px)", WebkitBackdropFilter: "blur(28px)",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
-          padding: "14px 40px",
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-          position: "sticky", top: 0, zIndex: 100,
-        }}>
-          <img src={IMGS.logo} alt="nodpod" style={{ height: 30, filter: "brightness(20) saturate(0)" }} />
-          <nav style={{ display: "flex", gap: 30, alignItems: "center" }}>
-            {["Shop", "Our Story", "Science", "Reviews"].map((lnk) => (
-              <span key={lnk} className="nav-link" style={{ fontSize: 13, color: MUTED, cursor: "pointer" }}>{lnk}</span>
-            ))}
-            <button onClick={() => setCartOpen(true)} style={{
-              display: "flex", alignItems: "center", gap: 7,
-              background: "rgba(37,99,235,0.14)", border: "1px solid rgba(37,99,235,0.3)",
-              color: TEXT, fontSize: 13, fontWeight: 500,
-              padding: "7px 16px", borderRadius: 8, cursor: "pointer",
-            }}>
-              <span>🛍</span> Cart
-              {cartCount > 0 && (
-                <span style={{
-                  background: BLUE_GRAD, color: "#fff", fontSize: 10,
-                  minWidth: 18, height: 18, borderRadius: 99,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontWeight: 700, padding: "0 4px",
-                }}>
-                  {cartCount}
-                </span>
-              )}
-            </button>
-          </nav>
-        </header>
-
-        {/* ─── Hero ─── */}
-        <section style={{ position: "relative", minHeight: 540, display: "flex", alignItems: "center", overflow: "hidden" }}>
-          {/* Background layer */}
-          <div style={{
-            position: "absolute", inset: 0,
-            backgroundImage: `linear-gradient(105deg,rgba(2,12,26,0.92) 0%,rgba(5,15,32,0.75) 50%,rgba(2,12,26,0.5) 100%), url('${IMGS.heroBg}')`,
-            backgroundSize: "cover", backgroundPosition: "center",
-          }} />
-          {/* Blue glow */}
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "radial-gradient(ellipse at 65% 50%,rgba(37,99,235,0.18) 0%,transparent 60%)",
-          }} />
-
-          <div style={{ position: "relative", padding: "90px 64px", maxWidth: 680 }}>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              background: "rgba(37,99,235,0.2)", border: "1px solid rgba(96,165,250,0.35)",
-              padding: "5px 14px", borderRadius: 99, marginBottom: 22,
-            }}>
-              <span style={{ fontSize: 9, width: 6, height: 6, borderRadius: "50%", background: BLUE_LT, display: "inline-block" }} />
-              <span style={{ fontSize: 11, color: BLUE_LT, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" }}>
-                Deep Touch Pressure Technology
-              </span>
-            </div>
-            <h1 style={{
-              fontSize: 58, fontWeight: 800, color: "#fff",
-              lineHeight: 1.07, margin: "0 0 20px",
-              textShadow: "0 2px 40px rgba(0,0,0,0.5)",
-            }}>
-              Chill More.<br />
+        {/* Right actions */}
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          {/* Search icon */}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={TEXT_SECONDARY} strokeWidth="1.5" style={{ cursor: "pointer" }}>
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          {/* Cart */}
+          <button onClick={() => setCartOpen(true)} style={{
+            display: "flex", alignItems: "center", gap: 4,
+            background: "none", border: "none",
+            color: TEXT_SECONDARY, fontSize: 13, fontWeight: 400,
+            cursor: "pointer", position: "relative", padding: 0,
+          }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={TEXT_SECONDARY} strokeWidth="1.5">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+            {cartCount > 0 && (
               <span style={{
-                background: BLUE_GRAD,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+                position: "absolute", top: -6, right: -8,
+                background: TEXT_PRIMARY, color: WHITE, fontSize: 9,
+                minWidth: 16, height: 16, borderRadius: 99,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontWeight: 500,
               }}>
-                Sleep Better.
+                {cartCount}
               </span>
-            </h1>
-            <p style={{ fontSize: 16, color: "#c8d8e8", lineHeight: 1.75, maxWidth: 460, margin: "0 0 34px" }}>
-              The weighted blanket for your eyes. Our patented 4-pod design uses Deep Touch Pressure
-              to calm your nervous system and prepare you for deep, restorative sleep.
-            </p>
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <button
-                onClick={() => document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" })}
-                style={{
-                  padding: "14px 38px", background: BLUE_GRAD, color: "#fff",
-                  border: "none", borderRadius: 10, fontSize: 15,
-                  fontWeight: 600, cursor: "pointer",
-                  boxShadow: `0 6px 28px ${BLUE}66`,
-                }}>
-                Shop Now →
-              </button>
-              <button style={{
-                padding: "14px 28px",
-                ...glass({ borderRadius: 10 }),
-                color: TEXT, fontSize: 15, fontWeight: 500, cursor: "pointer",
-                border: "1px solid rgba(255,255,255,0.15)",
-              }}>
-                Our Science
-              </button>
-            </div>
+            )}
+          </button>
+        </div>
+      </header>
 
-            {/* Social proof chips */}
-            <div style={{ display: "flex", gap: 20, marginTop: 36, flexWrap: "wrap" }}>
-              {[
-                { icon: "⭐", label: "4.9 / 5", sub: "2,400+ reviews" },
-                { icon: "🏆", label: "Allure", sub: "Best of Beauty" },
-                { icon: "💡", label: "Patented", sub: "4-Pod Design" },
-              ].map(({ icon, label, sub }) => (
-                <div key={label} style={{
-                  display: "flex", gap: 9, alignItems: "center",
-                  ...glass({ borderRadius: 10, padding: "9px 14px" }),
-                }}>
-                  <span style={{ fontSize: 22 }}>{icon}</span>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: TEXT }}>{label}</div>
-                    <div style={{ fontSize: 10, color: MUTED }}>{sub}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ─── Press strip ─── */}
+      {/* Mobile menu dropdown */}
+      {mobileMenuOpen && (
         <div style={{
-          background: "rgba(255,255,255,0.025)",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
-          padding: "16px 40px",
-          display: "flex", justifyContent: "center", alignItems: "center",
-          gap: 44, flexWrap: "wrap",
+          background: WHITE, borderBottom: `1px solid ${BORDER}`,
+          padding: "16px 20px", display: "flex", flexDirection: "column", gap: 14,
+          position: "sticky", top: 58, zIndex: 99,
         }}>
-          <span style={{ fontSize: 10, color: "#475569", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" }}>
-            As seen in
-          </span>
-          {[IMGS.allure, IMGS.nb, IMGS.nymag].map((src, i) => (
-            <img key={i} src={src} alt="press" style={{ height: 20, opacity: 0.4, filter: "brightness(20) saturate(0)", objectFit: "contain" }} />
+          {["Shop", "Sleep Masks", "About", "Reviews"].map((lnk) => (
+            <span key={lnk} style={{ fontSize: 14, color: TEXT_SECONDARY, cursor: "pointer", fontWeight: 400 }}>{lnk}</span>
           ))}
         </div>
+      )}
 
-        {/* ─── Trust features ─── */}
-        <section style={{ padding: "52px 40px", maxWidth: 980, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 14 }}>
-            {[
-              { icon: "🧠", title: "Clinically Backed",    desc: "Deep Touch Pressure reduces cortisol and promotes melatonin for deeper sleep" },
-              { icon: "✨", title: "Premium Materials",    desc: "Mineralized Silk and weighted microbeads for the ultimate sleep experience" },
-              { icon: "🔄", title: "30-Night Sleep Trial", desc: "Love it or return it — no questions asked, free returns on all orders" },
-              { icon: "📦", title: "Ships in 24 Hours",    desc: "All orders ship next business day. Free shipping over $50, always" },
-            ].map((f) => (
-              <div key={f.title} style={{ ...glass({ borderRadius: 14, padding: "20px 18px" }), transition: "transform 0.2s,border-color 0.2s" }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-3px)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(96,165,250,0.3)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = ""; (e.currentTarget as HTMLElement).style.borderColor = GLASS_BR; }}>
-                <div style={{ fontSize: 28, marginBottom: 10 }}>{f.icon}</div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: TEXT, marginBottom: 5 }}>{f.title}</div>
-                <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.55 }}>{f.desc}</div>
-              </div>
+      {/* ─── Hero Carousel ─── */}
+      <section style={{
+        position: "relative",
+        minHeight: "75vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+      }}>
+        {/* Background image */}
+        {heroSlides.map((slide, i) => (
+          <div key={i} style={{
+            position: "absolute", inset: 0,
+            backgroundImage: `url('${slide.img}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: heroSlide === i ? 1 : 0,
+            transition: "opacity 1s ease",
+          }}>
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "rgba(0,0,0,0.22)",
+            }} />
+          </div>
+        ))}
+
+        {/* Text overlay */}
+        <div className="nodpod-hero-inner" style={{
+          position: "relative",
+          textAlign: "center",
+          padding: "80px 40px",
+          maxWidth: 700,
+        }}>
+          <h1 className="nodpod-hero-headline" style={{
+            fontSize: 52,
+            fontWeight: 400,
+            color: WHITE,
+            lineHeight: 1.15,
+            margin: "0 0 28px",
+            letterSpacing: "0.02em",
+            whiteSpace: "pre-line",
+          }}>
+            {heroSlides[heroSlide].headline}
+          </h1>
+          <button
+            className="nodpod-btn-primary"
+            onClick={() => document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" })}
+            style={{
+              padding: "14px 44px",
+              background: WHITE,
+              color: TEXT_PRIMARY,
+              border: "none",
+              borderRadius: 2,
+              fontSize: 13,
+              fontWeight: 400,
+              cursor: "pointer",
+              letterSpacing: "0.12rem",
+              textTransform: "uppercase",
+            }}>
+            Shop Now
+          </button>
+
+          {/* Pagination dots */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 32 }}>
+            {heroSlides.map((_, i) => (
+              <button key={i} onClick={() => setHeroSlide(i)} style={{
+                width: heroSlide === i ? 24 : 8,
+                height: 8,
+                borderRadius: 99,
+                background: heroSlide === i ? WHITE : "rgba(255,255,255,0.5)",
+                border: "none",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                padding: 0,
+              }} />
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ─── Bundles ─── */}
-        <section style={{ padding: "0 40px 52px", maxWidth: 980, margin: "0 auto" }}>
-          <div style={{ marginBottom: 24 }}>
-            <h2 style={{ fontSize: 26, fontWeight: 700, color: TEXT, margin: "0 0 6px" }}>Save with Bundles</h2>
-            <p style={{ fontSize: 13, color: MUTED, margin: 0 }}>Curated sleep sets — save up to 15% when you bundle.</p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(265px,1fr))", gap: 18 }}>
-            {BUNDLES.map((bundle) => {
-              const items         = bundle.items.map((id) => PRODUCTS.find((p) => p.id === id)!);
-              const origTotal     = items.reduce((s, p) => s + p.price, 0);
-              const saleTotal     = Math.round(origTotal * (1 - bundle.discount / 100));
-              return (
-                <div key={bundle.name} className="bundle-card" style={{
-                  ...glass({ borderRadius: 16, overflow: "hidden" }),
-                  transition: "transform 0.25s,border-color 0.25s",
-                }}>
-                  {/* Image mosaic */}
-                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${items.length},1fr)`, height: 130 }}>
-                    {items.map((p) => (
-                      <img key={p.id} src={p.img} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ))}
-                  </div>
-                  <div style={{ padding: "16px 18px" }}>
-                    <div style={{ fontWeight: 700, color: TEXT, fontSize: 15, marginBottom: 3 }}>{bundle.name}</div>
-                    <div style={{ fontSize: 12, color: MUTED, marginBottom: 12 }}>{bundle.desc}</div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 14 }}>
-                      <span style={{ fontSize: 22, fontWeight: 700, color: BLUE_LT }}>${saleTotal}</span>
-                      <span style={{ fontSize: 13, textDecoration: "line-through", color: "#475569" }}>${origTotal}</span>
-                      <span style={{ background: `${EMERALD}22`, color: EMERALD, fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 600 }}>
-                        SAVE ${bundle.save}
-                      </span>
-                    </div>
-                    <button onClick={() => items.forEach((p) => addToCart(p))} style={{
-                      width: "100%", padding: 10, background: BLUE_GRAD,
-                      color: "#fff", border: "none", borderRadius: 8,
-                      fontSize: 13, fontWeight: 600, cursor: "pointer",
-                      boxShadow: `0 2px 14px ${BLUE}44`,
-                    }}>
-                      Add Bundle to Cart
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
+      {/* ─── Press Quote ─── */}
+      <section style={{
+        padding: "64px 40px",
+        textAlign: "center",
+        background: WHITE,
+        maxWidth: 780,
+        margin: "0 auto",
+      }}>
+        <p style={{
+          fontSize: 11,
+          textTransform: "uppercase",
+          letterSpacing: "2px",
+          color: TEXT_LIGHT,
+          marginBottom: 20,
+          fontWeight: 400,
+        }}>
+          New York Magazine
+        </p>
+        <p style={{
+          fontSize: 22,
+          fontWeight: 300,
+          color: TEXT_PRIMARY,
+          lineHeight: 1.7,
+          fontStyle: "italic",
+          margin: "0 0 28px",
+        }}>
+          &ldquo;A gentle nudge toward sleep that actually works.&rdquo;
+        </p>
+        <button
+          className="nodpod-btn-primary"
+          onClick={() => document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" })}
+          style={{
+            padding: "12px 36px",
+            background: TEXT_PRIMARY,
+            color: WHITE,
+            border: "none",
+            borderRadius: 2,
+            fontSize: 12,
+            fontWeight: 400,
+            cursor: "pointer",
+            letterSpacing: "0.12rem",
+            textTransform: "uppercase",
+          }}>
+          Get My Nodpod
+        </button>
+      </section>
 
-        {/* ─── Product grid ─── */}
-        <section id="shop" style={{ padding: "0 40px 90px", maxWidth: 980, margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 26 }}>
-            <h2 style={{ fontSize: 26, fontWeight: 700, color: TEXT, margin: 0 }}>Shop All</h2>
-            <span style={{ fontSize: 12, color: MUTED }}>{PRODUCTS.length} products</span>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(215px,1fr))", gap: 20 }}>
-            {PRODUCTS.map((product) => (
-              <div key={product.id} className="prod-card" style={{
-                ...glass({ borderRadius: 16, overflow: "hidden" }),
-                cursor: "default",
+      {/* ─── Press Logo Marquee ─── */}
+      <section style={{
+        padding: "28px 0",
+        background: OFF_WHITE,
+        borderTop: `1px solid ${BORDER}`,
+        borderBottom: `1px solid ${BORDER}`,
+      }}>
+        <p style={{
+          fontSize: 10,
+          textTransform: "uppercase",
+          letterSpacing: "2px",
+          color: TEXT_LIGHT,
+          textAlign: "center",
+          marginBottom: 16,
+          marginTop: 0,
+          fontWeight: 400,
+        }}>
+          As seen in
+        </p>
+        <PressMarquee />
+      </section>
+
+      {/* ─── Product Grid ─── */}
+      <section id="shop" className="nodpod-section" style={{
+        padding: "72px 40px",
+        maxWidth: 1120,
+        margin: "0 auto",
+      }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <h2 style={{
+            fontSize: 28,
+            fontWeight: 400,
+            color: TEXT_PRIMARY,
+            margin: "0 0 8px",
+            letterSpacing: "0.04rem",
+          }}>
+            Shop All
+          </h2>
+          <p style={{ fontSize: 14, color: TEXT_SECONDARY, margin: 0, fontWeight: 300 }}>
+            Weighted comfort for better rest
+          </p>
+        </div>
+
+        <div className="nodpod-grid-4" style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: 24,
+        }}>
+          {PRODUCTS.map((product) => (
+            <div key={product.id} className="nodpod-prod-card" style={{
+              borderRadius: 8,
+              overflow: "hidden",
+              cursor: "default",
+              background: WHITE,
+              border: `1px solid ${BORDER}`,
+            }}>
+              {/* Product image */}
+              <div style={{
+                aspectRatio: "4/5",
+                overflow: "hidden",
+                position: "relative",
+                background: OFF_WHITE,
               }}>
-                {/* Product image */}
-                <div style={{ height: 210, overflow: "hidden", position: "relative", background: "rgba(255,255,255,0.04)" }}>
-                  <img className="prod-img" src={product.img} alt={product.name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.45s" }} />
-                  {product.tag && (
-                    <span style={{
-                      position: "absolute", top: 10, left: 10,
-                      background:
-                        product.tag === "Best Seller" ? BLUE_GRAD :
-                        product.tag === "Premium" ? "linear-gradient(135deg,#c9a200,#f5d56a)" :
-                        "rgba(255,255,255,0.2)",
-                      backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
-                      color: "#fff", fontSize: 10, padding: "4px 10px",
-                      borderRadius: 6, fontWeight: 700, letterSpacing: 0.5,
-                    }}>
-                      {product.tag}
-                    </span>
-                  )}
+                <img className="nodpod-prod-img" src={product.img} alt={product.name}
+                  style={{
+                    width: "100%", height: "100%", objectFit: "cover",
+                    transition: "transform 0.5s ease",
+                  }} />
+                {product.tag && (
+                  <span style={{
+                    position: "absolute", top: 12, left: 12,
+                    background: product.tag === "Best Seller" ? SAGE
+                      : product.tag === "Premium" ? BEIGE_DARK
+                      : product.tag === "Cozy" ? MAUVE
+                      : BEIGE,
+                    color: product.tag === "Best Seller" ? WHITE : TEXT_PRIMARY,
+                    fontSize: 10,
+                    padding: "4px 12px",
+                    borderRadius: 2,
+                    fontWeight: 500,
+                    letterSpacing: "0.5px",
+                    textTransform: "uppercase",
+                  }}>
+                    {product.tag}
+                  </span>
+                )}
+              </div>
+
+              {/* Info */}
+              <div style={{ padding: "16px 16px 20px" }}>
+                <div style={{
+                  fontSize: 14,
+                  fontWeight: 400,
+                  color: TEXT_PRIMARY,
+                  marginBottom: 4,
+                  letterSpacing: "0.02rem",
+                }}>
+                  {product.name}
+                </div>
+                <div style={{
+                  fontSize: 12,
+                  fontWeight: 300,
+                  color: TEXT_LIGHT,
+                  marginBottom: 8,
+                }}>
+                  {product.desc}
+                </div>
+                <div style={{
+                  fontSize: 14,
+                  fontWeight: 400,
+                  color: TEXT_PRIMARY,
+                  marginBottom: 10,
+                }}>
+                  ${product.price}.00
                 </div>
 
-                {/* Info */}
-                <div style={{ padding: "14px 16px 16px" }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: TEXT, marginBottom: 4 }}>{product.name}</div>
-                  <div style={{ fontSize: 19, fontWeight: 700, color: BLUE_LT, marginBottom: 10 }}>${product.price}</div>
+                {/* Star rating */}
+                <div style={{ marginBottom: 12 }}>
+                  <Stars rating={product.rating} count={product.reviews} />
+                </div>
 
-                  {product.colors.length > 0 && (
-                    <div style={{ display: "flex", gap: 4, marginBottom: 12, flexWrap: "wrap" }}>
-                      {product.colors.slice(0, 5).map((color) => {
-                        const selected = (selectedColors[product.id] ?? product.colors[0]) === color;
-                        return (
-                          <button key={color}
-                            onClick={() => setSelectedColors((prev) => ({ ...prev, [product.id]: color }))}
-                            style={{
-                              fontSize: 10, padding: "3px 8px", borderRadius: 4,
-                              border: `1px solid ${selected ? BLUE_LT : "rgba(255,255,255,0.14)"}`,
-                              background: selected ? "rgba(96,165,250,0.15)" : "rgba(255,255,255,0.04)",
-                              cursor: "pointer", color: selected ? BLUE_LT : MUTED,
-                              fontWeight: selected ? 600 : 400, transition: "all 0.15s",
-                            }}>
-                            {color}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
+                {/* Color swatches */}
+                {product.colors.length > 0 && (
+                  <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
+                    {product.colors.slice(0, 5).map((color) => {
+                      const selected = (selectedColors[product.id] ?? product.colors[0]) === color;
+                      const bg = COLOR_MAP[color] || "#ccc";
+                      return (
+                        <button key={color}
+                          title={color}
+                          onClick={() => setSelectedColors((prev) => ({ ...prev, [product.id]: color }))}
+                          style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: "50%",
+                            border: selected ? `2px solid ${TEXT_PRIMARY}` : `1px solid ${BORDER}`,
+                            background: bg,
+                            cursor: "pointer",
+                            padding: 0,
+                            transition: "border 0.2s",
+                            outline: selected ? `2px solid ${WHITE}` : "none",
+                            outlineOffset: -3,
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
 
-                  <button onClick={() => addToCart(product)} style={{
-                    width: "100%", padding: "9px 0",
-                    background: addedFlash === product.id
-                      ? `linear-gradient(135deg,${EMERALD},#10b981)`
-                      : BLUE_GRAD,
-                    color: "#fff", border: "none", borderRadius: 8,
-                    fontSize: 12, fontWeight: 600, cursor: "pointer",
-                    transition: "all 0.3s",
-                    boxShadow: addedFlash === product.id
-                      ? `0 2px 14px ${EMERALD}55`
-                      : `0 2px 14px ${BLUE}44`,
+                <button
+                  className="nodpod-add-btn"
+                  onClick={() => addToCart(product)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 0",
+                    background: addedFlash === product.id ? ACCENT_GREEN : "transparent",
+                    color: addedFlash === product.id ? WHITE : TEXT_PRIMARY,
+                    border: addedFlash === product.id ? "none" : `1px solid ${TEXT_PRIMARY}`,
+                    borderRadius: 2,
+                    fontSize: 12,
+                    fontWeight: 400,
+                    cursor: "pointer",
+                    letterSpacing: "0.08rem",
+                    textTransform: "uppercase",
+                    transition: "all 0.3s ease",
                   }}>
-                    {addedFlash === product.id ? "✓ Added!" : "Add to Cart"}
+                  {addedFlash === product.id ? "Added" : "Add to Cart"}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Bundles ─── */}
+      <section className="nodpod-section" style={{
+        padding: "0 40px 72px",
+        maxWidth: 1120,
+        margin: "0 auto",
+      }}>
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <h2 style={{
+            fontSize: 28,
+            fontWeight: 400,
+            color: TEXT_PRIMARY,
+            margin: "0 0 8px",
+            letterSpacing: "0.04rem",
+          }}>
+            Save with Bundles
+          </h2>
+          <p style={{ fontSize: 14, color: TEXT_SECONDARY, margin: 0, fontWeight: 300 }}>
+            Curated sleep sets at a special price
+          </p>
+        </div>
+
+        <div className="nodpod-grid-3" style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 24,
+        }}>
+          {BUNDLES.map((bundle) => {
+            const items = bundle.items.map((id) => PRODUCTS.find((p) => p.id === id)!);
+            const origTotal = items.reduce((s, p) => s + p.price, 0);
+            const saleTotal = Math.round(origTotal * (1 - bundle.discount / 100));
+            return (
+              <div key={bundle.name} className="nodpod-bundle-card" style={{
+                borderRadius: 8,
+                overflow: "hidden",
+                background: WHITE,
+                border: `1px solid ${BORDER}`,
+              }}>
+                {/* Image mosaic */}
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: `repeat(${items.length}, 1fr)`,
+                  height: 180,
+                }}>
+                  {items.map((p) => (
+                    <img key={p.id} src={p.img} alt={p.name} style={{
+                      width: "100%", height: "100%", objectFit: "cover",
+                    }} />
+                  ))}
+                </div>
+                <div style={{ padding: "20px 20px 24px" }}>
+                  <div style={{
+                    fontWeight: 400, color: TEXT_PRIMARY, fontSize: 16,
+                    marginBottom: 4, letterSpacing: "0.02rem",
+                  }}>
+                    {bundle.name}
+                  </div>
+                  <div style={{ fontSize: 12, color: TEXT_LIGHT, marginBottom: 16, fontWeight: 300 }}>
+                    {bundle.desc}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 18 }}>
+                    <span style={{ fontSize: 20, fontWeight: 400, color: TEXT_PRIMARY }}>
+                      ${saleTotal}
+                    </span>
+                    <span style={{ fontSize: 14, textDecoration: "line-through", color: TEXT_LIGHT }}>
+                      ${origTotal}
+                    </span>
+                    <span style={{
+                      background: "#EDF5EF",
+                      color: ACCENT_GREEN,
+                      fontSize: 10,
+                      padding: "3px 10px",
+                      borderRadius: 2,
+                      fontWeight: 500,
+                      letterSpacing: "0.5px",
+                    }}>
+                      SAVE ${bundle.save}
+                    </span>
+                  </div>
+                  <button
+                    className="nodpod-btn-primary"
+                    onClick={() => items.forEach((p) => addToCart(p))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 0",
+                      background: TEXT_PRIMARY,
+                      color: WHITE,
+                      border: "none",
+                      borderRadius: 2,
+                      fontSize: 12,
+                      fontWeight: 400,
+                      cursor: "pointer",
+                      letterSpacing: "0.08rem",
+                      textTransform: "uppercase",
+                    }}>
+                    Add Bundle to Cart
                   </button>
                 </div>
               </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ─── Our Story ─── */}
+      <section style={{
+        background: OFF_WHITE,
+        padding: "80px 40px",
+      }}>
+        <div className="nodpod-story-grid" style={{
+          maxWidth: 1000,
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 60,
+          alignItems: "center",
+        }}>
+          <div>
+            <p style={{
+              fontSize: 10,
+              textTransform: "uppercase",
+              letterSpacing: "2px",
+              color: SAGE,
+              marginBottom: 16,
+              marginTop: 0,
+              fontWeight: 500,
+            }}>
+              Our Story
+            </p>
+            <h2 style={{
+              fontSize: 28,
+              fontWeight: 400,
+              color: TEXT_PRIMARY,
+              margin: "0 0 20px",
+              lineHeight: 1.4,
+            }}>
+              Born from a simple idea
+            </h2>
+            <p style={{
+              fontSize: 14,
+              color: TEXT_SECONDARY,
+              lineHeight: 1.8,
+              fontWeight: 300,
+              margin: "0 0 16px",
+            }}>
+              In 2009, Melissa began sewing the first nodpod prototype in her kitchen. Inspired by the
+              calming science of Deep Touch Pressure, she set out to create the perfect sleep companion
+              -- one that would feel like a gentle, reassuring weight across your eyes.
+            </p>
+            <p style={{
+              fontSize: 14,
+              color: TEXT_SECONDARY,
+              lineHeight: 1.8,
+              fontWeight: 300,
+              margin: 0,
+            }}>
+              Today, nodpod is trusted by over 100,000 sleepers. Every mask is thoughtfully designed
+              with premium materials and our patented 4-pod system to deliver the deep rest you deserve.
+            </p>
+          </div>
+          <div style={{
+            borderRadius: 8,
+            overflow: "hidden",
+            height: 380,
+          }}>
+            <img
+              src={IMGS.heroBg}
+              alt="Our story"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Features / Trust ─── */}
+      <section className="nodpod-section" style={{ padding: "72px 40px", maxWidth: 1000, margin: "0 auto" }}>
+        <div className="nodpod-features-grid" style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: 32,
+          textAlign: "center",
+        }}>
+          {[
+            { title: "Clinically Backed", icon: "\u{1F9E0}", desc: "Deep Touch Pressure calms the nervous system for deeper rest" },
+            { title: "Premium Materials", icon: "\u2728", desc: "Mineralized silk and weighted microbeads for ultimate comfort" },
+            { title: "30-Night Trial", icon: "\u{1F504}", desc: "Love it or return it, no questions asked" },
+            { title: "Ships in 24 Hours", icon: "\u{1F4E6}", desc: "Complimentary shipping on all orders over $50" },
+          ].map((f) => (
+            <div key={f.title} style={{ padding: "8px 0" }}>
+              <div style={{ fontSize: 24, marginBottom: 8 }}>{f.icon}</div>
+              <div style={{
+                fontSize: 14,
+                fontWeight: 400,
+                color: TEXT_PRIMARY,
+                marginBottom: 8,
+                letterSpacing: "0.03rem",
+              }}>
+                {f.title}
+              </div>
+              <div style={{
+                fontSize: 13,
+                color: TEXT_LIGHT,
+                lineHeight: 1.6,
+                fontWeight: 300,
+              }}>
+                {f.desc}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Sustainability ─── */}
+      <section style={{
+        background: BEIGE,
+        padding: "64px 40px",
+        textAlign: "center",
+      }}>
+        <div style={{ maxWidth: 640, margin: "0 auto" }}>
+          <p style={{
+            fontSize: 10,
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            color: SAGE,
+            marginBottom: 16,
+            marginTop: 0,
+            fontWeight: 500,
+          }}>
+            Our Commitment
+          </p>
+          <h2 style={{
+            fontSize: 26,
+            fontWeight: 400,
+            color: TEXT_PRIMARY,
+            margin: "0 0 16px",
+            lineHeight: 1.4,
+          }}>
+            Better sleep, better planet
+          </h2>
+          <p style={{
+            fontSize: 14,
+            color: TEXT_SECONDARY,
+            lineHeight: 1.8,
+            fontWeight: 300,
+            margin: "0 0 24px",
+          }}>
+            All nodpod products are OEKO-TEX certified, ensuring they are free from harmful
+            substances. We use recyclable packaging and are committed to reducing our environmental
+            footprint with every product we make.
+          </p>
+          <div style={{ display: "flex", justifyContent: "center", gap: 32, flexWrap: "wrap" }}>
+            {["OEKO-TEX Certified", "Recyclable Packaging", "Vegan & Cruelty-Free"].map((label) => (
+              <span key={label} style={{
+                fontSize: 11,
+                color: TEXT_SECONDARY,
+                fontWeight: 400,
+                letterSpacing: "0.5px",
+                textTransform: "uppercase",
+                padding: "8px 0",
+              }}>
+                {label}
+              </span>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ─── Footer ─── */}
-        <footer style={{
-          background: "rgba(2,8,20,0.8)",
-          backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          padding: "32px 40px",
+      {/* ─── Footer ─── */}
+      <footer style={{
+        background: WARM_GRAY,
+        borderTop: `1px solid ${BORDER}`,
+        padding: "56px 40px 40px",
+      }}>
+        <div className="nodpod-footer-grid" style={{
+          maxWidth: 1000,
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "2fr 1fr 1fr 1fr",
+          gap: 48,
+          marginBottom: 48,
         }}>
-          <div style={{ maxWidth: 980, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
-            <div>
-              <img src={IMGS.logo} alt="nodpod" style={{ height: 26, filter: "brightness(20) saturate(0)", marginBottom: 6, display: "block" }} />
-              <div style={{ fontSize: 11, color: "#334155" }}>Deep Touch Pressure for Better Sleep</div>
+          {/* Brand column */}
+          <div>
+            <img src={IMGS.logo} alt="nodpod" style={{ height: 24, marginBottom: 14, display: "block" }} />
+            <p style={{ fontSize: 13, color: TEXT_LIGHT, lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
+              The original weighted sleep mask, designed to help you chill more, stress less, and sleep better.
+            </p>
+          </div>
+
+          {/* Shop links */}
+          <div>
+            <div style={{
+              fontSize: 11, fontWeight: 500, color: TEXT_PRIMARY,
+              textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 16,
+            }}>
+              Shop
             </div>
-            <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-              {["Shop", "Science", "Reviews", "FAQ", "Contact"].map((lnk) => (
-                <span key={lnk} style={{ fontSize: 12, color: "#475569", cursor: "pointer" }}>{lnk}</span>
+            {["Sleep Masks", "Body", "Silk Pillowcase", "Bundles", "Gift Cards"].map((lnk) => (
+              <div key={lnk} style={{
+                fontSize: 13, color: TEXT_SECONDARY, cursor: "pointer",
+                marginBottom: 10, fontWeight: 300,
+              }}>
+                {lnk}
+              </div>
+            ))}
+          </div>
+
+          {/* About links */}
+          <div>
+            <div style={{
+              fontSize: 11, fontWeight: 500, color: TEXT_PRIMARY,
+              textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 16,
+            }}>
+              About
+            </div>
+            {["Our Story", "The Science", "Reviews", "Press"].map((lnk) => (
+              <a key={lnk} href="#" style={{
+                display: "block",
+                fontSize: 13, color: TEXT_SECONDARY, cursor: "pointer",
+                marginBottom: 10, fontWeight: 300,
+                textDecoration: "none",
+                transition: "opacity 0.2s",
+              }} onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
+                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}>
+                {lnk}
+              </a>
+            ))}
+          </div>
+
+          {/* Support links */}
+          <div>
+            <div style={{
+              fontSize: 11, fontWeight: 500, color: TEXT_PRIMARY,
+              textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 16,
+            }}>
+              Support
+            </div>
+            {["FAQ", "Shipping & Returns", "Contact Us", "Privacy Policy"].map((lnk) => (
+              <a key={lnk} href="#" style={{
+                display: "block",
+                fontSize: 13, color: TEXT_SECONDARY, cursor: "pointer",
+                marginBottom: 10, fontWeight: 300,
+                textDecoration: "none",
+                transition: "opacity 0.2s",
+              }} onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
+                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}>
+                {lnk}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div style={{
+          borderTop: `1px solid ${BORDER}`,
+          paddingTop: 24,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 12,
+          maxWidth: 1000,
+          margin: "0 auto",
+        }}>
+          <div style={{ fontSize: 11, color: TEXT_LIGHT, fontWeight: 300 }}>
+            &copy; {new Date().getFullYear()} Nodpod. All rights reserved.
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            {/* Country selector */}
+            <span style={{
+              fontSize: 11, color: TEXT_SECONDARY, cursor: "pointer",
+              padding: "4px 10px", border: `1px solid ${BORDER}`, borderRadius: 3,
+              fontWeight: 300,
+            }}>
+              United States (USD $)
+            </span>
+            {/* Social icons */}
+            <div style={{ display: "flex", gap: 12 }}>
+              {[
+                { name: "Instagram", icon: "\u{1F4F7}" },
+                { name: "TikTok", icon: "\u{1F3B5}" },
+                { name: "Facebook", icon: "\u{1F310}" },
+              ].map((soc) => (
+                <a key={soc.name} href="#" style={{
+                  fontSize: 10, color: TEXT_LIGHT, cursor: "pointer",
+                  fontWeight: 300, letterSpacing: "0.5px",
+                  textDecoration: "none",
+                  transition: "opacity 0.2s",
+                }} onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
+                   onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}>
+                  {soc.icon} {soc.name}
+                </a>
               ))}
             </div>
-            <div style={{ fontSize: 11, color: "#1e293b" }}>© 2025 Nodpod · nodpod.com</div>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
 
       {/* ─── Cart Drawer ─── */}
       <CartDrawer
@@ -776,9 +1384,11 @@ export default function NodpodDemo() {
       {cart.length > 0 && (
         <button onClick={() => setShowUpsell(true)} style={{
           position: "fixed", bottom: 20, left: 20, zIndex: 50,
-          ...glass({ borderRadius: 8 }),
-          border: "1px solid rgba(255,255,255,0.12)",
-          color: MUTED, padding: "8px 16px", fontSize: 11, cursor: "pointer",
+          background: OFF_WHITE,
+          border: `1px solid ${BORDER}`,
+          borderRadius: 4,
+          color: TEXT_SECONDARY, padding: "8px 16px", fontSize: 11, cursor: "pointer",
+          fontWeight: 300,
         }}>
           Demo: Post-Purchase Upsell
         </button>
