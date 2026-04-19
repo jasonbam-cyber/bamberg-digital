@@ -29,6 +29,17 @@ export const metadata: Metadata = {
     siteName: "Bamberg Digital",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "https://bambergdigital.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Bamberg Digital — Websites & AI Automation for Local Businesses",
+      },
+    ],
+  },
+  alternates: {
+    canonical: "https://bambergdigital.com",
   },
   twitter: {
     card: "summary_large_image",
@@ -49,6 +60,38 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Bamberg Digital",
+              url: "https://bambergdigital.com",
+              description:
+                "Professional websites, Google optimization, and AI-powered automation for local businesses. Serving Loomis, Roseville & Sacramento.",
+              areaServed: [
+                { "@type": "City", name: "Loomis" },
+                { "@type": "City", name: "Roseville" },
+                { "@type": "City", name: "Sacramento" },
+              ],
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Loomis",
+                addressRegion: "CA",
+                addressCountry: "US",
+              },
+              serviceType: [
+                "Web Design",
+                "AI Automation",
+                "Google Business Profile Optimization",
+                "Digital Marketing",
+              ],
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${montserrat.variable} antialiased bg-white text-gray-900`}
       >
