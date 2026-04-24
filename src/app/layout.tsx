@@ -15,16 +15,16 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Bamberg Digital | Websites & AI Automation for Local Businesses",
+  title: "Bamberg Digital | AI-Powered SEO Audits & Lead Generation",
   description:
-    "We build professional websites, optimize your Google presence, and set up AI-powered automation so you never miss a customer — even when you're closed. Serving Loomis, Roseville & Sacramento.",
+    "Bamberg Digital uses AI to find the customers your competitors miss. SEO audits, verified lead generation, and marketing automation for small businesses nationwide.",
   keywords:
-    "web design Loomis, website Roseville, local business marketing Sacramento, AI receptionist, AI automation, Google Business Profile, digital agency Placer County",
+    "SEO audit, lead generation, AI marketing automation, small business SEO, verified leads, digital marketing agency, AI automation, online marketing",
   metadataBase: new URL("https://bambergdigital.com"),
   openGraph: {
-    title: "Bamberg Digital — Websites & AI for Local Businesses",
+    title: "Bamberg Digital — We find the customers your competitors miss.",
     description:
-      "We build websites, optimize Google, and set up AI automation so you never miss a customer. Serving Loomis, Roseville & Sacramento. No contracts. Results in 7 days.",
+      "AI-powered SEO audits, verified lead generation, and marketing automation for small businesses. Start with a free SEO audit.",
     url: "https://bambergdigital.com",
     siteName: "Bamberg Digital",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
         url: "https://bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Bamberg Digital — Websites & AI Automation for Local Businesses",
+        alt: "Bamberg Digital — AI-Powered Marketing for Small Businesses",
       },
     ],
   },
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bamberg Digital — Websites & AI for Local Businesses",
+    title: "Bamberg Digital — AI-Powered SEO & Lead Generation",
     description:
-      "Professional websites & AI automation for local businesses. No contracts. Results in 7 days.",
+      "SEO audits, verified leads, and marketing automation for small businesses. Start free.",
   },
   robots: {
     index: true,
@@ -66,27 +66,28 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "LocalBusiness",
+              "@type": "ProfessionalService",
               name: "Bamberg Digital",
               url: "https://bambergdigital.com",
+              email: "hello@bambergdigital.com",
               description:
-                "Professional websites, Google optimization, and AI-powered automation for local businesses. Serving Loomis, Roseville & Sacramento.",
-              areaServed: [
-                { "@type": "City", name: "Loomis" },
-                { "@type": "City", name: "Roseville" },
-                { "@type": "City", name: "Sacramento" },
-              ],
+                "AI-powered SEO audits, verified lead generation, and marketing automation for small businesses nationwide.",
+              founder: {
+                "@type": "Person",
+                name: "Jason Bamberg",
+              },
               address: {
                 "@type": "PostalAddress",
-                addressLocality: "Loomis",
+                addressLocality: "Sacramento",
                 addressRegion: "CA",
                 addressCountry: "US",
               },
+              areaServed: { "@type": "Country", name: "United States" },
               serviceType: [
-                "Web Design",
-                "AI Automation",
-                "Google Business Profile Optimization",
-                "Digital Marketing",
+                "SEO Audit",
+                "Lead Generation",
+                "Marketing Automation",
+                "AI-Powered Digital Marketing",
               ],
             }),
           }}
