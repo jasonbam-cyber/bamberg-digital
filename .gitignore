@@ -43,3 +43,6 @@ PROSPECT_DATABASE.md
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# worktrees
+.worktrees
