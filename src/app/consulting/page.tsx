@@ -4,15 +4,15 @@ import SiteFooter from "@/components/SiteFooter";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Lead Generation Services | Bamberg Digital",
+  title: "AI & Automation Consulting | Bamberg Digital",
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-  alternates: { canonical: "https://bambergdigital.com/leads" },
+    "AI and automation consulting for small businesses. Cut manual work, automate follow-up, and scale without hiring. From $197/hr or $1,997 project.",
+  alternates: { canonical: "https://bambergdigital.com/consulting" },
   openGraph: {
-    title: "Lead Generation Services | Bamberg Digital",
+    title: "AI & Automation Consulting | Bamberg Digital",
     description:
-      "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-    url: "https://bambergdigital.com/leads",
+      "AI and automation consulting for small businesses. Cut manual work, automate follow-up, and scale without hiring. From $197/hr or $1,997 project.",
+    url: "https://bambergdigital.com/consulting",
     images: [
       {
         url: "https://bambergdigital.com/og-image.jpg",
@@ -24,58 +24,56 @@ export const metadata: Metadata = {
 };
 
 const included = [
-  "Phone verification — every number checked within 30 days of delivery",
-  "Email verification — no bounces, no dead inboxes",
-  "Business details — company size, revenue estimate, and decision maker name",
-  "Industry and geography targeting — city, county, zip code, or nationwide",
-  "CSV or CRM-ready format — HubSpot, Salesforce, and Zoho supported",
-  "Replacement guarantee — we replace any contacts that bounce above 5%",
+  "Business process audit — we map every repetitive task and find what to automate first",
+  "AI tool selection and setup — the right tools for your workflow, not the most expensive ones",
+  "Custom automation workflows — built in n8n, Zapier, or Make depending on your stack",
+  "CRM integration — connect your contact database to your automations",
+  "Email sequence automation — follow-ups that run 24/7 without you touching them",
+  "Team training session — your staff learns to use the system confidently",
 ];
 
 const pricing = [
   {
-    name: "Starter",
+    name: "Hourly Consulting",
     price: "$197",
-    period: "one-time",
-    desc: "50 verified leads for your target industry and geography — perfect for testing a new market.",
+    period: "/hr",
+    desc: "Strategy sessions, tech stack review, and automation scoping — pay only for what you need.",
     features: [
-      "50 verified leads",
-      "Your target industry",
-      "Your target geography",
-      "Phone + email verified",
-      "CSV delivery",
-      "5% bounce replacement guarantee",
+      "Strategy and planning sessions",
+      "Tech stack review",
+      "Automation scoping",
+      "Tool recommendations",
+      "Minimum 2-hour block",
     ],
     highlight: false,
   },
   {
-    name: "Growth",
-    price: "$397",
-    period: "/mo",
-    desc: "200 leads per month delivered weekly — a steady, scalable pipeline.",
+    name: "Project Package",
+    price: "$1,997",
+    period: "one-time",
+    desc: "Full audit, custom automation build, and 30 days of support — hands-off for you from day one.",
     features: [
-      "200 verified leads/month",
-      "Weekly delivery",
-      "Up to 3 industries",
-      "Phone + email + LinkedIn",
-      "CSV or CRM upload",
-      "5% bounce replacement guarantee",
+      "Business process audit",
+      "Custom automation build",
+      "CRM integration",
+      "Team training session",
+      "30-day support window",
+      "Documentation included",
     ],
     highlight: true,
   },
   {
-    name: "Pro",
-    price: "$797",
+    name: "Ongoing Advisory",
+    price: "$997",
     period: "/mo",
-    desc: "500 leads per month plus email sequence setup and direct CRM upload.",
+    desc: "Monthly strategy calls, implementation support, and priority access — your AI partner on retainer.",
     features: [
-      "500 verified leads/month",
-      "Weekly delivery",
-      "Unlimited industries",
-      "Full contact enrichment",
-      "Email sequence included",
-      "Direct CRM upload",
-      "Dedicated account manager",
+      "Monthly strategy calls",
+      "Implementation support",
+      "Priority response",
+      "New automation builds",
+      "Performance reviews",
+      "Permanent support coverage",
     ],
     highlight: false,
   },
@@ -83,31 +81,31 @@ const pricing = [
 
 const faqs = [
   {
-    q: "How are leads verified?",
-    a: "Phone and email are checked within 30 days of delivery using live verification tools. We don't deliver contacts that haven't been confirmed active.",
+    q: "What kinds of businesses benefit most?",
+    a: "Any business spending more than 5 hours per week on repetitive tasks — scheduling, follow-up, data entry, reporting, quoting, or invoicing. We work with Sacramento businesses and clients across Folsom, Roseville, Rancho Cordova, and nationwide.",
   },
   {
-    q: "What industries do you source leads for?",
-    a: "Any B2B industry. We specialize in real estate, home services, legal, medical, and financial — but we've built lists for over 40 industry categories.",
+    q: "Do I need technical knowledge?",
+    a: "No. We handle all the technical setup. You review, approve, and then just use the finished system. We write the documentation so your team can maintain it.",
   },
   {
-    q: "What format do I receive leads in?",
-    a: "CSV file or direct CRM upload. We support HubSpot, Salesforce, and Zoho. Other CRMs available on request.",
+    q: "What tools do you use?",
+    a: "n8n, Zapier, Make, OpenAI, Claude, HubSpot, and custom-built solutions depending on your existing tech stack. We work with what you have, not what we prefer.",
   },
   {
-    q: "What's your bounce rate?",
-    a: "Under 5%. We replace any contacts that bounce above that threshold at no extra charge.",
+    q: "How long does a project take?",
+    a: "Most automation projects are complete in 2–4 weeks. More complex builds with multiple integrations can run 5–6 weeks.",
   },
   {
-    q: "Can you target specific cities or zip codes?",
-    a: "Yes. We can target by city (Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova), county, zip code, metro area, or nationwide. The more specific your ICP, the better the list quality.",
+    q: "What if it breaks after you're done?",
+    a: "The 30-day support window covers any issues after delivery at no extra cost. Ongoing Advisory clients have permanent support coverage.",
   },
 ];
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  serviceType: "Lead Generation",
+  serviceType: "AI Automation Consulting",
   provider: {
     "@type": "LocalBusiness",
     name: "Bamberg Digital",
@@ -121,40 +119,39 @@ const schema = {
     },
   },
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified.",
+    "AI and automation consulting for small businesses. Cut manual work, automate follow-up, and scale without hiring.",
 };
 
-export default function LeadsPage() {
+export default function ConsultingPage() {
   return (
     <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <SiteNav active="/leads" />
+      <SiteNav active="/consulting" />
 
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
             <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-            Verified Lead Generation
+            AI & Automation Consulting
           </div>
           <h1 className="font-[family-name:var(--font-montserrat)] text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-            Verified Lead Generation — No Bounces, No Wasted Calls
+            AI Consulting That Automates the Work Slowing Your Business Down
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Every lead is phone and email verified before it reaches you.
-            Targeted by industry, city, or zip code — Sacramento businesses and
-            clients nationwide use our lists to fill their pipelines without
-            wasting time on dead contacts.
+            We identify the manual tasks eating your team's time — follow-up,
+            scheduling, reporting, data entry — and automate them. Sacramento
+            small businesses use our systems to scale without hiring.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#contact"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg shadow-blue-600/30"
             >
-              Get your first 50 leads
+              Book a free discovery call
             </a>
             <a
               href="#pricing"
@@ -171,11 +168,11 @@ export default function LeadsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              What every lead list includes
+              What every project includes
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Not a scraped database dump — a curated, verified, and targeted
-              list ready to work the moment you receive it.
+              We build the system, train your team, and hand you the keys. No
+              ongoing dependency on us — unless you want it.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -213,13 +210,13 @@ export default function LeadsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-blue-600 text-sm font-semibold uppercase tracking-widest mb-2">
-              New client intro rates
+              Flexible engagement options
             </p>
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Lead generation plans
+              Choose your engagement
             </h2>
             <p className="text-gray-600">
-              Start with a one-time order or subscribe for weekly delivery.
+              Hour by hour, one project, or ongoing — whichever fits your needs.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -343,9 +340,9 @@ export default function LeadsPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              { href: "/consulting", label: "AI & Automation Consulting" },
               { href: "/digital-marketing", label: "Digital Marketing" },
               { href: "/seo", label: "SEO Services" },
+              { href: "/leads", label: "Lead Generation" },
             ].map((s) => (
               <a
                 key={s.href}
@@ -364,11 +361,11 @@ export default function LeadsPage() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Tell us your target market
+              Stop doing manually what a system can do for you
             </h2>
             <p className="text-gray-600 text-lg">
-              Share your industry, geography, and ideal customer — we&apos;ll
-              tell you what a list looks like before you pay anything.
+              Book a free 30-minute discovery call. We'll identify your top 3
+              automation opportunities before we hang up.
             </p>
             <p className="text-gray-500 text-sm mt-2">
               Call us:{" "}
@@ -377,8 +374,8 @@ export default function LeadsPage() {
                 className="text-blue-600 hover:underline"
               >
                 (916) 907-7782
-              </a>{" "}
-              &middot;{" "}
+              </a>
+              {" · "}
               <a
                 href="mailto:hello@bambergdigital.com"
                 className="text-blue-600 hover:underline"
@@ -388,7 +385,7 @@ export default function LeadsPage() {
             </p>
           </div>
           <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-            <ContactForm service="lead-generation" />
+            <ContactForm service="ai-consulting" />
           </div>
         </div>
       </section>

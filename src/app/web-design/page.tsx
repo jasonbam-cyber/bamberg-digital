@@ -4,15 +4,15 @@ import SiteFooter from "@/components/SiteFooter";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Lead Generation Services | Bamberg Digital",
+  title: "Web Design Sacramento | Bamberg Digital",
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-  alternates: { canonical: "https://bambergdigital.com/leads" },
+    "Professional website design for Sacramento small businesses. Custom sites from $497. Mobile-first, SEO-ready, and built to convert. Free consultation.",
+  alternates: { canonical: "https://bambergdigital.com/web-design" },
   openGraph: {
-    title: "Lead Generation Services | Bamberg Digital",
+    title: "Web Design Sacramento | Bamberg Digital",
     description:
-      "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-    url: "https://bambergdigital.com/leads",
+      "Professional website design for Sacramento small businesses. Custom sites from $497. Mobile-first, SEO-ready, and built to convert.",
+    url: "https://bambergdigital.com/web-design",
     images: [
       {
         url: "https://bambergdigital.com/og-image.jpg",
@@ -24,58 +24,57 @@ export const metadata: Metadata = {
 };
 
 const included = [
-  "Phone verification — every number checked within 30 days of delivery",
-  "Email verification — no bounces, no dead inboxes",
-  "Business details — company size, revenue estimate, and decision maker name",
-  "Industry and geography targeting — city, county, zip code, or nationwide",
-  "CSV or CRM-ready format — HubSpot, Salesforce, and Zoho supported",
-  "Replacement guarantee — we replace any contacts that bounce above 5%",
+  "Mobile-first responsive design — works perfectly on every device",
+  "SEO-optimized structure — built to rank from day one",
+  "Google Analytics setup — know exactly where visitors come from",
+  "Contact and lead capture forms — turn visitors into inquiries",
+  "Fast load times under 3 seconds — don't lose visitors to slow pages",
+  "1-year hosting guidance and platform recommendations",
 ];
 
 const pricing = [
   {
     name: "Starter",
-    price: "$197",
+    price: "$497",
     period: "one-time",
-    desc: "50 verified leads for your target industry and geography — perfect for testing a new market.",
+    desc: "A clean, professional 3–5 page brochure site that builds trust and captures leads.",
     features: [
-      "50 verified leads",
-      "Your target industry",
-      "Your target geography",
-      "Phone + email verified",
-      "CSV delivery",
-      "5% bounce replacement guarantee",
+      "3–5 page custom website",
+      "Mobile-first responsive design",
+      "Contact form + lead capture",
+      "SEO-optimized structure",
+      "Google Analytics setup",
+      "Delivered in 2–3 weeks",
     ],
     highlight: false,
   },
   {
-    name: "Growth",
-    price: "$397",
-    period: "/mo",
-    desc: "200 leads per month delivered weekly — a steady, scalable pipeline.",
+    name: "Business",
+    price: "$997",
+    period: "one-time",
+    desc: "Up to 10 pages with blog and forms — everything a growing business needs online.",
     features: [
-      "200 verified leads/month",
-      "Weekly delivery",
-      "Up to 3 industries",
-      "Phone + email + LinkedIn",
-      "CSV or CRM upload",
-      "5% bounce replacement guarantee",
+      "Up to 10 pages",
+      "Blog setup",
+      "Multiple contact/lead forms",
+      "Basic SEO setup",
+      "Google Business integration",
+      "14-day post-launch support",
     ],
     highlight: true,
   },
   {
-    name: "Pro",
-    price: "$797",
-    period: "/mo",
-    desc: "500 leads per month plus email sequence setup and direct CRM upload.",
+    name: "Growth",
+    price: "$1,997",
+    period: "one-time",
+    desc: "Custom design from scratch, SEO-ready architecture, and 30 days of post-launch support.",
     features: [
-      "500 verified leads/month",
-      "Weekly delivery",
-      "Unlimited industries",
-      "Full contact enrichment",
-      "Email sequence included",
-      "Direct CRM upload",
-      "Dedicated account manager",
+      "Fully custom design",
+      "Unlimited pages",
+      "Advanced SEO setup",
+      "Speed optimization",
+      "Analytics dashboard setup",
+      "30-day post-launch support",
     ],
     highlight: false,
   },
@@ -83,31 +82,31 @@ const pricing = [
 
 const faqs = [
   {
-    q: "How are leads verified?",
-    a: "Phone and email are checked within 30 days of delivery using live verification tools. We don't deliver contacts that haven't been confirmed active.",
+    q: "How long does a website take?",
+    a: "Typically 2–3 weeks for a 5-page site. Larger or more complex projects run 4–6 weeks. We give you a clear timeline before we start.",
   },
   {
-    q: "What industries do you source leads for?",
-    a: "Any B2B industry. We specialize in real estate, home services, legal, medical, and financial — but we've built lists for over 40 industry categories.",
+    q: "Do I own the website?",
+    a: "Yes, 100%. You own all code, content, and hosting. We hand everything over when the project is complete.",
   },
   {
-    q: "What format do I receive leads in?",
-    a: "CSV file or direct CRM upload. We support HubSpot, Salesforce, and Zoho. Other CRMs available on request.",
+    q: "Can you redesign my existing site?",
+    a: "Yes — redesigns start at $497. We'll modernize your current site or build a completely fresh design depending on your needs.",
   },
   {
-    q: "What's your bounce rate?",
-    a: "Under 5%. We replace any contacts that bounce above that threshold at no extra charge.",
+    q: "Do you build e-commerce sites?",
+    a: "Yes. Shopify and WooCommerce stores starting at $1,497. We handle product setup, payment integration, and launch.",
   },
   {
-    q: "Can you target specific cities or zip codes?",
-    a: "Yes. We can target by city (Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova), county, zip code, metro area, or nationwide. The more specific your ICP, the better the list quality.",
+    q: "What cities do you serve?",
+    a: "We're based in Sacramento, CA and serve clients in Elk Grove, Folsom, Roseville, Rancho Cordova, and nationwide remotely.",
   },
 ];
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  serviceType: "Lead Generation",
+  serviceType: "Website Design",
   provider: {
     "@type": "LocalBusiness",
     name: "Bamberg Digital",
@@ -120,41 +119,41 @@ const schema = {
       addressCountry: "US",
     },
   },
+  areaServed: { "@type": "City", name: "Sacramento", addressRegion: "CA" },
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified.",
+    "Professional website design for Sacramento small businesses. Custom sites from $497. Mobile-first, SEO-ready, and built to convert.",
 };
 
-export default function LeadsPage() {
+export default function WebDesignPage() {
   return (
     <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <SiteNav active="/leads" />
+      <SiteNav active="/web-design" />
 
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
             <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-            Verified Lead Generation
+            Website Design · Sacramento, CA
           </div>
           <h1 className="font-[family-name:var(--font-montserrat)] text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-            Verified Lead Generation — No Bounces, No Wasted Calls
+            Sacramento Website Design That Converts Visitors Into Customers
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Every lead is phone and email verified before it reaches you.
-            Targeted by industry, city, or zip code — Sacramento businesses and
-            clients nationwide use our lists to fill their pipelines without
-            wasting time on dead contacts.
+            We build fast, mobile-first websites for Sacramento small businesses
+            — from plumbers in Rancho Cordova to law firms in Folsom. Sites
+            starting at $497, delivered in 2–3 weeks.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#contact"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg shadow-blue-600/30"
             >
-              Get your first 50 leads
+              Get a free consultation
             </a>
             <a
               href="#pricing"
@@ -171,11 +170,11 @@ export default function LeadsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              What every lead list includes
+              What every site includes
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Not a scraped database dump — a curated, verified, and targeted
-              list ready to work the moment you receive it.
+              No cookie-cutter templates. Every site is built to perform in
+              Sacramento search results and convert your specific customers.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -216,10 +215,10 @@ export default function LeadsPage() {
               New client intro rates
             </p>
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Lead generation plans
+              Simple, transparent pricing
             </h2>
             <p className="text-gray-600">
-              Start with a one-time order or subscribe for weekly delivery.
+              No setup fees. No surprises. You own everything.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -343,9 +342,9 @@ export default function LeadsPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              { href: "/consulting", label: "AI & Automation Consulting" },
-              { href: "/digital-marketing", label: "Digital Marketing" },
+              { href: "/branding", label: "Brand Identity Design" },
               { href: "/seo", label: "SEO Services" },
+              { href: "/digital-marketing", label: "Digital Marketing" },
             ].map((s) => (
               <a
                 key={s.href}
@@ -364,11 +363,11 @@ export default function LeadsPage() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Tell us your target market
+              Ready for a site that actually converts?
             </h2>
             <p className="text-gray-600 text-lg">
-              Share your industry, geography, and ideal customer — we&apos;ll
-              tell you what a list looks like before you pay anything.
+              Tell us about your business and we'll put together a proposal — no
+              obligation, no pitch deck.
             </p>
             <p className="text-gray-500 text-sm mt-2">
               Call us:{" "}
@@ -377,8 +376,8 @@ export default function LeadsPage() {
                 className="text-blue-600 hover:underline"
               >
                 (916) 907-7782
-              </a>{" "}
-              &middot;{" "}
+              </a>
+              {" · "}
               <a
                 href="mailto:hello@bambergdigital.com"
                 className="text-blue-600 hover:underline"
@@ -388,7 +387,7 @@ export default function LeadsPage() {
             </p>
           </div>
           <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-            <ContactForm service="lead-generation" />
+            <ContactForm service="web-design" />
           </div>
         </div>
       </section>

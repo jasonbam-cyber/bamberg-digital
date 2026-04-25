@@ -4,15 +4,15 @@ import SiteFooter from "@/components/SiteFooter";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Lead Generation Services | Bamberg Digital",
+  title: "Brand Identity & Design Sacramento | Bamberg Digital",
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-  alternates: { canonical: "https://bambergdigital.com/leads" },
+    "Logo design, brand identity, and full brand guidelines for Sacramento businesses. Starter brand from $697. Full brand package from $1,497.",
+  alternates: { canonical: "https://bambergdigital.com/branding" },
   openGraph: {
-    title: "Lead Generation Services | Bamberg Digital",
+    title: "Brand Identity & Design Sacramento | Bamberg Digital",
     description:
-      "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-    url: "https://bambergdigital.com/leads",
+      "Logo design, brand identity, and full brand guidelines for Sacramento businesses. Starter brand from $697. Full brand package from $1,497.",
+    url: "https://bambergdigital.com/branding",
     images: [
       {
         url: "https://bambergdigital.com/og-image.jpg",
@@ -24,58 +24,55 @@ export const metadata: Metadata = {
 };
 
 const included = [
-  "Phone verification — every number checked within 30 days of delivery",
-  "Email verification — no bounces, no dead inboxes",
-  "Business details — company size, revenue estimate, and decision maker name",
-  "Industry and geography targeting — city, county, zip code, or nationwide",
-  "CSV or CRM-ready format — HubSpot, Salesforce, and Zoho supported",
-  "Replacement guarantee — we replace any contacts that bounce above 5%",
+  "Logo design — 3 concepts, 2 rounds of revisions, final files in all formats",
+  "Brand color palette — primary, secondary, and neutral colors with hex codes",
+  "Typography system — heading and body font pairings with usage rules",
+  "Brand guidelines PDF — everything in one shareable document",
+  "Business card design — print-ready files included",
+  "Social media profile graphics — cover photos and profile images for all platforms",
 ];
 
 const pricing = [
   {
-    name: "Starter",
-    price: "$197",
+    name: "Brand Starter",
+    price: "$697",
     period: "one-time",
-    desc: "50 verified leads for your target industry and geography — perfect for testing a new market.",
+    desc: "Everything a new business needs to look professional and consistent from day one.",
     features: [
-      "50 verified leads",
-      "Your target industry",
-      "Your target geography",
-      "Phone + email verified",
-      "CSV delivery",
-      "5% bounce replacement guarantee",
+      "Logo design (3 concepts, 2 revisions)",
+      "Brand color palette",
+      "2 font pairings",
+      "Usage guide PDF",
+      "Final files: AI, SVG, PNG, PDF",
     ],
     highlight: false,
   },
   {
-    name: "Growth",
-    price: "$397",
-    period: "/mo",
-    desc: "200 leads per month delivered weekly — a steady, scalable pipeline.",
+    name: "Brand Standard",
+    price: "$1,497",
+    period: "one-time",
+    desc: "Full brand identity with guidelines, business card, and social media kit.",
     features: [
-      "200 verified leads/month",
-      "Weekly delivery",
-      "Up to 3 industries",
-      "Phone + email + LinkedIn",
-      "CSV or CRM upload",
-      "5% bounce replacement guarantee",
+      "Logo suite (primary, secondary, icon)",
+      "Full brand guidelines",
+      "Business card design",
+      "Social media profile kit",
+      "Brand color palette",
+      "Typography system",
     ],
     highlight: true,
   },
   {
-    name: "Pro",
-    price: "$797",
-    period: "/mo",
-    desc: "500 leads per month plus email sequence setup and direct CRM upload.",
+    name: "Brand Premium",
+    price: "$2,497",
+    period: "one-time",
+    desc: "Complete brand identity bundled with a professional website — launch-ready in one package.",
     features: [
-      "500 verified leads/month",
-      "Weekly delivery",
-      "Unlimited industries",
-      "Full contact enrichment",
-      "Email sequence included",
-      "Direct CRM upload",
-      "Dedicated account manager",
+      "Everything in Brand Standard",
+      "5-page website design",
+      "Brand launch kit",
+      "Email signature design",
+      "30-day post-launch support",
     ],
     highlight: false,
   },
@@ -83,31 +80,31 @@ const pricing = [
 
 const faqs = [
   {
-    q: "How are leads verified?",
-    a: "Phone and email are checked within 30 days of delivery using live verification tools. We don't deliver contacts that haven't been confirmed active.",
+    q: "How many logo concepts do I get?",
+    a: "Three distinct logo concepts. Once you pick your direction, we refine it through two revision rounds until it's exactly right.",
   },
   {
-    q: "What industries do you source leads for?",
-    a: "Any B2B industry. We specialize in real estate, home services, legal, medical, and financial — but we've built lists for over 40 industry categories.",
+    q: "How long does branding take?",
+    a: "Brand Starter typically takes 2–4 weeks. Brand Standard is 3–5 weeks. Brand Premium (with website) runs 5–7 weeks.",
   },
   {
-    q: "What format do I receive leads in?",
-    a: "CSV file or direct CRM upload. We support HubSpot, Salesforce, and Zoho. Other CRMs available on request.",
+    q: "Do I own the logo files?",
+    a: "Yes — you receive all source files including AI (Illustrator), SVG, PNG, and PDF. Full ownership, no licensing strings.",
   },
   {
-    q: "What's your bounce rate?",
-    a: "Under 5%. We replace any contacts that bounce above that threshold at no extra charge.",
+    q: "Can you rebrand an existing business?",
+    a: "Yes. Rebrands follow the same process and start at $697. We'll review what exists and either refresh it or start fresh depending on what you need.",
   },
   {
-    q: "Can you target specific cities or zip codes?",
-    a: "Yes. We can target by city (Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova), county, zip code, metro area, or nationwide. The more specific your ICP, the better the list quality.",
+    q: "Do you design websites too?",
+    a: "Yes — Brand Premium bundles branding with website design. You can also add a website to any package. See our web design page for standalone pricing.",
   },
 ];
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  serviceType: "Lead Generation",
+  serviceType: "Brand Identity Design",
   provider: {
     "@type": "LocalBusiness",
     name: "Bamberg Digital",
@@ -120,41 +117,42 @@ const schema = {
       addressCountry: "US",
     },
   },
+  areaServed: { "@type": "City", name: "Sacramento", addressRegion: "CA" },
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified.",
+    "Logo design, brand identity, and full brand guidelines for Sacramento businesses.",
 };
 
-export default function LeadsPage() {
+export default function BrandingPage() {
   return (
     <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <SiteNav active="/leads" />
+      <SiteNav active="/branding" />
 
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
             <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-            Verified Lead Generation
+            Brand Identity Design · Sacramento, CA
           </div>
           <h1 className="font-[family-name:var(--font-montserrat)] text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-            Verified Lead Generation — No Bounces, No Wasted Calls
+            Brand Identity Design That Makes Sacramento Businesses Unforgettable
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Every lead is phone and email verified before it reaches you.
-            Targeted by industry, city, or zip code — Sacramento businesses and
-            clients nationwide use our lists to fill their pipelines without
-            wasting time on dead contacts.
+            We design logos, color systems, and brand guidelines for businesses
+            in Sacramento, Elk Grove, Roseville, and nationwide. From a quick
+            brand refresh at $697 to a complete identity with website launch at
+            $2,497.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#contact"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg shadow-blue-600/30"
             >
-              Get your first 50 leads
+              Start your brand project
             </a>
             <a
               href="#pricing"
@@ -171,11 +169,11 @@ export default function LeadsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              What every lead list includes
+              What every brand package includes
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Not a scraped database dump — a curated, verified, and targeted
-              list ready to work the moment you receive it.
+              A brand is more than a logo. We give you a complete system so
+              every touchpoint looks intentional.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -216,10 +214,10 @@ export default function LeadsPage() {
               New client intro rates
             </p>
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Lead generation plans
+              Brand packages
             </h2>
             <p className="text-gray-600">
-              Start with a one-time order or subscribe for weekly delivery.
+              All files included. You own everything.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -343,9 +341,9 @@ export default function LeadsPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              { href: "/consulting", label: "AI & Automation Consulting" },
-              { href: "/digital-marketing", label: "Digital Marketing" },
-              { href: "/seo", label: "SEO Services" },
+              { href: "/web-design", label: "Website Design" },
+              { href: "/content-creation", label: "Content Creation" },
+              { href: "/social-media", label: "Social Media Marketing" },
             ].map((s) => (
               <a
                 key={s.href}
@@ -364,11 +362,11 @@ export default function LeadsPage() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Tell us your target market
+              Ready to build a brand that stands out?
             </h2>
             <p className="text-gray-600 text-lg">
-              Share your industry, geography, and ideal customer — we&apos;ll
-              tell you what a list looks like before you pay anything.
+              Tell us about your business and we'll share examples from your
+              industry.
             </p>
             <p className="text-gray-500 text-sm mt-2">
               Call us:{" "}
@@ -377,8 +375,8 @@ export default function LeadsPage() {
                 className="text-blue-600 hover:underline"
               >
                 (916) 907-7782
-              </a>{" "}
-              &middot;{" "}
+              </a>
+              {" · "}
               <a
                 href="mailto:hello@bambergdigital.com"
                 className="text-blue-600 hover:underline"
@@ -388,7 +386,7 @@ export default function LeadsPage() {
             </p>
           </div>
           <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-            <ContactForm service="lead-generation" />
+            <ContactForm service="branding" />
           </div>
         </div>
       </section>

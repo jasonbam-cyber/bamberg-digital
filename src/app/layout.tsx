@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description:
     "Bamberg Digital uses AI to find the customers your competitors miss. SEO audits, verified lead generation, and marketing automation for small businesses nationwide.",
   keywords:
-    "SEO audit, lead generation, AI marketing automation, small business SEO, verified leads, digital marketing agency, AI automation, online marketing",
+    "digital marketing agency sacramento, web design sacramento, SEO services sacramento, social media marketing sacramento, lead generation, AI marketing automation, small business website design, branding sacramento, content creation, AI consulting",
   metadataBase: new URL("https://bambergdigital.com"),
   openGraph: {
     title: "Bamberg Digital — We find the customers your competitors miss.",
@@ -70,8 +70,9 @@ export default function RootLayout({
               name: "Bamberg Digital",
               url: "https://bambergdigital.com",
               email: "hello@bambergdigital.com",
+              telephone: "+19169077782",
               description:
-                "AI-powered SEO audits, verified lead generation, and marketing automation for small businesses nationwide.",
+                "Sacramento's AI-powered digital marketing agency. Website design, SEO, social media, lead generation, branding, content creation, and AI consulting for small businesses nationwide.",
               founder: {
                 "@type": "Person",
                 name: "Jason Bamberg",
@@ -82,12 +83,24 @@ export default function RootLayout({
                 addressRegion: "CA",
                 addressCountry: "US",
               },
-              areaServed: { "@type": "Country", name: "United States" },
+              areaServed: [
+                { "@type": "City", name: "Sacramento" },
+                { "@type": "City", name: "Elk Grove" },
+                { "@type": "City", name: "Folsom" },
+                { "@type": "City", name: "Roseville" },
+                { "@type": "City", name: "Rancho Cordova" },
+                { "@type": "Country", name: "United States" },
+              ],
               serviceType: [
-                "SEO Audit",
+                "Website Design",
+                "SEO Services",
+                "Social Media Marketing",
                 "Lead Generation",
+                "Content Creation",
+                "Digital Marketing Strategy",
+                "Brand Identity Design",
+                "AI & Automation Consulting",
                 "Marketing Automation",
-                "AI-Powered Digital Marketing",
               ],
             }),
           }}
