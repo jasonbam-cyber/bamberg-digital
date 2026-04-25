@@ -11,6 +11,8 @@ const services = [
   { href: "/branding", label: "Branding" },
   { href: "/leads", label: "Lead Generation" },
   { href: "/consulting", label: "AI Consulting" },
+  { href: "/ai-integration", label: "AI Integration" },
+  { href: "/custom-tools", label: "Custom Business Tools" },
 ];
 
 export default function SiteNav({ active = "" }: { active?: string }) {

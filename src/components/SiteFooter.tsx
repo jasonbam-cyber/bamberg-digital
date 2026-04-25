@@ -69,6 +69,8 @@ export default function SiteFooter() {
                 { href: "/branding", label: "Branding" },
                 { href: "/leads", label: "Lead Generation" },
                 { href: "/consulting", label: "AI Consulting" },
+                { href: "/ai-integration", label: "AI Integration" },
+                { href: "/custom-tools", label: "Custom Tools" },
               ].map((l) => (
                 <li key={l.href}>
                   <a
