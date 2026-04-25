@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <SiteNav />
+      <SiteNav dark />
       <HomeNarrative />
       <div className="bd-footer-wrap">
         <SiteFooter />

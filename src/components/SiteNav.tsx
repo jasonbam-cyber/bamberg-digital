@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const services = [
   { href: "/web-design", label: "Website Design" },
@@ -15,35 +15,143 @@ const services = [
   { href: "/custom-tools", label: "Custom Business Tools" },
 ];
 
-export default function SiteNav({ active = "" }: { active?: string }) {
+export default function SiteNav({
+  active = "",
+  dark = false,
+}: {
+  active?: string;
+  dark?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Dark mode: transparent nav with white text, blur on scroll
+  const isDark = dark;
+  const navBg = isDark
+    ? scrolled
+      ? "rgba(5,5,7,0.85)"
+      : "transparent"
+    : scrolled
+      ? "rgba(255,255,255,0.95)"
+      : "rgba(255,255,255,0.95)";
+  const navBorder = isDark
+    ? scrolled
+      ? "rgba(255,255,255,0.06)"
+      : "transparent"
+    : "#f3f4f6";
+  const textColor = isDark ? "rgba(255,255,255,0.65)" : "#4b5563";
+  const textHover = isDark ? "#fff" : "#2563eb";
+  const logoText = isDark ? "#fff" : "#111827";
+  const logoAccent = isDark ? "#6366f1" : "#2563eb";
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">BD</span>
+    <nav
+      style={{
+        position: "fixed",
+        top: 0,
+        width: "100%",
+        zIndex: 50,
+        background: navBg,
+        backdropFilter: scrolled ? "blur(20px)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
+        borderBottom: `1px solid ${navBorder}`,
+        transition: "all 0.3s ease",
+      }}
+    >
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 16px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            height: 64,
+          }}
+        >
+          {/* Logo */}
+          <a
+            href="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              textDecoration: "none",
+            }}
+          >
+            <div
+              style={{
+                width: 32,
+                height: 32,
+                background: isDark
+                  ? "linear-gradient(135deg, #6366f1, #4f46e5)"
+                  : "linear-gradient(135deg, #2563eb, #06b6d4)",
+                borderRadius: 8,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span
+                style={{
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: 13,
+                }}
+              >
+                BD
+              </span>
             </div>
-            <span className="font-[family-name:var(--font-montserrat)] font-bold text-lg text-gray-900">
-              Bamberg <span className="text-blue-600">Digital</span>
+            <span
+              style={{
+                fontFamily: "var(--font-montserrat), ui-sans-serif, system-ui, sans-serif",
+                fontWeight: 700,
+                fontSize: "1.1rem",
+                color: logoText,
+              }}
+            >
+              Bamberg{" "}
+              <span style={{ color: logoAccent }}>Digital</span>
             </span>
           </a>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-6">
+          <div
+            className="desktop-nav"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 24,
+            }}
+          >
             {/* Services dropdown */}
-            <div className="relative">
+            <div style={{ position: "relative" }}>
               <button
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
-                className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                  color: textColor,
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "color 0.2s",
+                  fontFamily: "inherit",
+                }}
               >
                 Services
                 <svg
-                  className="w-4 h-4"
+                  style={{ width: 16, height: 16 }}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -60,17 +168,43 @@ export default function SiteNav({ active = "" }: { active?: string }) {
                 <div
                   onMouseEnter={() => setServicesOpen(true)}
                   onMouseLeave={() => setServicesOpen(false)}
-                  className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: 0,
+                    marginTop: 4,
+                    width: 220,
+                    background: isDark ? "rgba(15,15,20,0.95)" : "#fff",
+                    borderRadius: 12,
+                    boxShadow: isDark
+                      ? "0 20px 60px rgba(0,0,0,0.6)"
+                      : "0 10px 40px rgba(0,0,0,0.1)",
+                    border: isDark
+                      ? "1px solid rgba(255,255,255,0.08)"
+                      : "1px solid #f3f4f6",
+                    padding: "8px 0",
+                    zIndex: 50,
+                    backdropFilter: "blur(20px)",
+                  }}
                 >
                   {services.map((s) => (
                     <a
                       key={s.href}
                       href={s.href}
-                      className={`block px-4 py-2 text-sm transition-colors ${
-                        active === s.href
-                          ? "text-blue-600 font-semibold bg-blue-50"
-                          : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                      }`}
+                      style={{
+                        display: "block",
+                        padding: "8px 16px",
+                        fontSize: "0.875rem",
+                        color:
+                          active === s.href
+                            ? logoAccent
+                            : isDark
+                              ? "rgba(255,255,255,0.65)"
+                              : "#374151",
+                        fontWeight: active === s.href ? 600 : 400,
+                        textDecoration: "none",
+                        transition: "all 0.15s ease",
+                      }}
                     >
                       {s.label}
                     </a>
@@ -78,39 +212,49 @@ export default function SiteNav({ active = "" }: { active?: string }) {
                 </div>
               )}
             </div>
-            <a
-              href="/pricing"
-              className={`text-sm font-medium transition-colors ${active === "/pricing" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-            >
-              Pricing
-            </a>
-            <a
-              href="/bundles"
-              className={`text-sm font-medium transition-colors ${active === "/bundles" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-            >
-              Bundles
-            </a>
-            <a
-              href="/portfolio"
-              className={`text-sm font-medium transition-colors ${active === "/portfolio" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-            >
-              Portfolio
-            </a>
-            <a
-              href="/about"
-              className={`text-sm font-medium transition-colors ${active === "/about" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-            >
-              About
-            </a>
-            <a
-              href="/story"
-              className={`text-sm font-medium transition-colors ${active === "/story" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-            >
-              Our Story
-            </a>
+
+            {["Pricing", "Bundles", "Portfolio", "About", "Our Story"].map(
+              (label) => {
+                const href =
+                  label === "Our Story"
+                    ? "/story"
+                    : `/${label.toLowerCase()}`;
+                return (
+                  <a
+                    key={label}
+                    href={href}
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      color:
+                        active === href ? textHover : textColor,
+                      textDecoration: "none",
+                      transition: "color 0.2s",
+                    }}
+                  >
+                    {label}
+                  </a>
+                );
+              }
+            )}
+
             <a
               href="/#contact"
-              className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md shadow-blue-600/25"
+              style={{
+                background: isDark
+                  ? "linear-gradient(135deg, #6366f1, #4f46e5)"
+                  : "#2563eb",
+                color: "#fff",
+                padding: "10px 20px",
+                borderRadius: 8,
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                textDecoration: "none",
+                transition: "all 0.2s",
+                boxShadow: isDark
+                  ? "0 0 20px rgba(99,102,241,0.3)"
+                  : "0 4px 12px rgba(37,99,235,0.25)",
+              }}
             >
               Free Consultation
             </a>
@@ -118,12 +262,20 @@ export default function SiteNav({ active = "" }: { active?: string }) {
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2"
+            style={{
+              display: "none",
+              padding: 8,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: isDark ? "#fff" : "#111",
+            }}
+            className="mobile-menu-btn"
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
           >
             <svg
-              className="w-6 h-6"
+              style={{ width: 24, height: 24 }}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -149,59 +301,112 @@ export default function SiteNav({ active = "" }: { active?: string }) {
 
         {/* Mobile menu */}
         {open && (
-          <div className="md:hidden border-t border-gray-100 py-4 space-y-1">
-            <p className="px-2 py-1 text-xs font-bold text-gray-400 uppercase tracking-widest">
+          <div
+            style={{
+              borderTop: isDark
+                ? "1px solid rgba(255,255,255,0.06)"
+                : "1px solid #f3f4f6",
+              padding: "16px 0",
+              background: isDark ? "rgba(5,5,7,0.95)" : "#fff",
+            }}
+            className="mobile-menu"
+          >
+            <p
+              style={{
+                padding: "4px 8px",
+                fontSize: "0.7rem",
+                fontWeight: 700,
+                color: isDark ? "rgba(255,255,255,0.25)" : "#9ca3af",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+              }}
+            >
               Services
             </p>
             {services.map((s) => (
               <a
                 key={s.href}
                 href={s.href}
-                className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
+                style={{
+                  display: "block",
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                  color: isDark ? "rgba(255,255,255,0.65)" : "#374151",
+                  textDecoration: "none",
+                  padding: "6px 8px",
+                }}
               >
                 {s.label}
               </a>
             ))}
-            <div className="border-t border-gray-100 my-2" />
-            <a
-              href="/pricing"
-              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
-            >
-              Pricing
-            </a>
-            <a
-              href="/bundles"
-              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
-            >
-              Bundles
-            </a>
-            <a
-              href="/portfolio"
-              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
-            >
-              Portfolio
-            </a>
-            <a
-              href="/about"
-              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
-            >
-              About
-            </a>
-            <a
-              href="/story"
-              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
-            >
-              Our Story
-            </a>
+            <div
+              style={{
+                borderTop: isDark
+                  ? "1px solid rgba(255,255,255,0.06)"
+                  : "1px solid #f3f4f6",
+                margin: "8px 0",
+              }}
+            />
+            {["Pricing", "Bundles", "Portfolio", "About", "Our Story"].map(
+              (label) => {
+                const href =
+                  label === "Our Story" ? "/story" : `/${label.toLowerCase()}`;
+                return (
+                  <a
+                    key={label}
+                    href={href}
+                    style={{
+                      display: "block",
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      color: isDark ? "rgba(255,255,255,0.65)" : "#374151",
+                      textDecoration: "none",
+                      padding: "6px 8px",
+                    }}
+                  >
+                    {label}
+                  </a>
+                );
+              }
+            )}
             <a
               href="/#contact"
-              className="block bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold text-center hover:bg-blue-700 transition-colors mt-2"
+              style={{
+                display: "block",
+                background: isDark
+                  ? "linear-gradient(135deg, #6366f1, #4f46e5)"
+                  : "#2563eb",
+                color: "#fff",
+                padding: "10px 20px",
+                borderRadius: 8,
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                textDecoration: "none",
+                textAlign: "center",
+                marginTop: 8,
+              }}
             >
               Free Consultation
             </a>
           </div>
         )}
       </div>
+
+      {/* Responsive CSS */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-menu-btn { display: block !important; }
+        }
+        @media (min-width: 769px) {
+          .mobile-menu { display: none !important; }
+          .mobile-menu-btn { display: none !important; }
+        }
+      `,
+        }}
+      />
     </nav>
   );
 }
