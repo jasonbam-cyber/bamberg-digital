@@ -1,3 +1,5 @@
+import Logo from "./Logo";
+
 export default function SiteFooter() {
   return (
     <footer className="bg-slate-900 text-slate-400 py-12 px-4">
@@ -5,17 +7,13 @@ export default function SiteFooter() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <a href="/" className="flex items-center gap-2 mb-3">
-              <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md flex items-center justify-center">
-                <span className="text-white font-bold text-xs">BD</span>
-              </div>
-              <span className="font-[family-name:var(--font-montserrat)] font-bold text-white text-base">
-                Bamberg Digital
-              </span>
-            </a>
+            <div className="mb-3">
+              <Logo variant="wordmark" theme="dark" size={32} />
+            </div>
             <p className="text-sm leading-relaxed mb-4">
-              Sacramento&apos;s AI-powered digital marketing agency. SEO, leads,
-              websites, and automation for small businesses nationwide.
+              Sacramento&apos;s founder-led digital agency. Web design, SEO,
+              social media, and lead generation for small businesses. Jason
+              picks up the phone.
             </p>
             <div className="space-y-1 text-sm">
               <p>

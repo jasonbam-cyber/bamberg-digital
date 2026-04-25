@@ -1034,7 +1034,7 @@ export default function HomeNarrative() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            padding: "0 6vw",
+            padding: "100px 6vw 60px",
             position: "relative",
             overflow: "hidden",
           }}
