@@ -90,6 +90,7 @@ export default function SiteFooter() {
             <ul className="space-y-2 text-sm">
               {[
                 { href: "/pricing", label: "Pricing" },
+                { href: "/bundles", label: "Bundles" },
                 { href: "/portfolio", label: "Portfolio" },
                 { href: "/about", label: "About" },
                 { href: "/#contact", label: "Contact" },

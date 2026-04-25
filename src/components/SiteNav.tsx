@@ -85,6 +85,12 @@ export default function SiteNav({ active = "" }: { active?: string }) {
               Pricing
             </a>
             <a
+              href="/bundles"
+              className={`text-sm font-medium transition-colors ${active === "/bundles" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+            >
+              Bundles
+            </a>
+            <a
               href="/portfolio"
               className={`text-sm font-medium transition-colors ${active === "/portfolio" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
             >
@@ -162,6 +168,12 @@ export default function SiteNav({ active = "" }: { active?: string }) {
               className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
             >
               Pricing
+            </a>
+            <a
+              href="/bundles"
+              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
+            >
+              Bundles
             </a>
             <a
               href="/portfolio"
