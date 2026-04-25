@@ -32,29 +32,34 @@ export default function StoryClient() {
 
     let startX = 0;
     let isDragging = false;
-    document.addEventListener("touchstart", (e) => {
+
+    const onTouchStart = (e: TouchEvent) => {
       startX = e.touches[0].clientX;
       isDragging = true;
-    });
-    document.addEventListener("touchend", (e) => {
+    };
+    const onTouchEnd = (e: TouchEvent) => {
       if (!isDragging) return;
       isDragging = false;
       const dx = e.changedTouches[0].clientX - startX;
       if (Math.abs(dx) < 40) return;
-      dx < 0 ? goTo(cur + 1) : goTo(cur - 1);
-    });
-
-    document.addEventListener("click", (e) => {
+      if (dx < 0) goTo(cur + 1);
+      else goTo(cur - 1);
+    };
+    const onClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.closest("a") || target.closest("button")) return;
-      const x = (e as MouseEvent).clientX;
-      x > window.innerWidth / 2 ? goTo(cur + 1) : goTo(cur - 1);
-    });
-
-    document.addEventListener("keydown", (e) => {
+      if (e.clientX > window.innerWidth / 2) goTo(cur + 1);
+      else goTo(cur - 1);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === " ") goTo(cur + 1);
       if (e.key === "ArrowLeft") goTo(cur - 1);
-    });
+    };
+
+    document.addEventListener("touchstart", onTouchStart);
+    document.addEventListener("touchend", onTouchEnd);
+    document.addEventListener("click", onClick);
+    document.addEventListener("keydown", onKeyDown);
 
     const slide3Words = document.querySelectorAll(".word-reveal");
     slide3Words.forEach((w, i) => {
@@ -62,6 +67,13 @@ export default function StoryClient() {
     });
 
     goTo(0);
+
+    return () => {
+      document.removeEventListener("touchstart", onTouchStart);
+      document.removeEventListener("touchend", onTouchEnd);
+      document.removeEventListener("click", onClick);
+      document.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   return null;
