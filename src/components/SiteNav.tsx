@@ -95,6 +95,12 @@ export default function SiteNav({ active = "" }: { active?: string }) {
               About
             </a>
             <a
+              href="/story"
+              className={`text-sm font-medium transition-colors ${active === "/story" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+            >
+              Our Story
+            </a>
+            <a
               href="/#contact"
               className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md shadow-blue-600/25"
             >
@@ -166,6 +172,12 @@ export default function SiteNav({ active = "" }: { active?: string }) {
               className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
             >
               About
+            </a>
+            <a
+              href="/story"
+              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1.5"
+            >
+              Our Story
             </a>
             <a
               href="/#contact"
