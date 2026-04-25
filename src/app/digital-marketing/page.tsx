@@ -4,15 +4,15 @@ import SiteFooter from "@/components/SiteFooter";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Lead Generation Services | Bamberg Digital",
+  title: "Digital Marketing Agency Sacramento | Bamberg Digital",
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-  alternates: { canonical: "https://bambergdigital.com/leads" },
+    "Full-service digital marketing for Sacramento businesses. Strategy, execution, and AI automation. Consultation from $497. Retainers from $997/mo.",
+  alternates: { canonical: "https://bambergdigital.com/digital-marketing" },
   openGraph: {
-    title: "Lead Generation Services | Bamberg Digital",
+    title: "Digital Marketing Agency Sacramento | Bamberg Digital",
     description:
-      "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-    url: "https://bambergdigital.com/leads",
+      "Full-service digital marketing for Sacramento businesses. Strategy, execution, and AI automation. Consultation from $497. Retainers from $997/mo.",
+    url: "https://bambergdigital.com/digital-marketing",
     images: [
       {
         url: "https://bambergdigital.com/og-image.jpg",
@@ -24,58 +24,57 @@ export const metadata: Metadata = {
 };
 
 const included = [
-  "Phone verification — every number checked within 30 days of delivery",
-  "Email verification — no bounces, no dead inboxes",
-  "Business details — company size, revenue estimate, and decision maker name",
-  "Industry and geography targeting — city, county, zip code, or nationwide",
-  "CSV or CRM-ready format — HubSpot, Salesforce, and Zoho supported",
-  "Replacement guarantee — we replace any contacts that bounce above 5%",
+  "Multi-channel strategy — SEO, social, email, and PPC working together",
+  "AI-powered campaign optimization — we use automation to do more with less budget",
+  "Competitor analysis — know exactly what your rivals are doing and where they're weak",
+  "Monthly performance reports — clear metrics tied to revenue, not vanity numbers",
+  "A/B testing — continuous improvement on copy, creative, and targeting",
+  "Marketing automation setup — email sequences and follow-ups that run themselves",
 ];
 
 const pricing = [
   {
-    name: "Starter",
-    price: "$197",
+    name: "Strategy Consultation",
+    price: "$497",
     period: "one-time",
-    desc: "50 verified leads for your target industry and geography — perfect for testing a new market.",
+    desc: "A 90-minute deep dive into your business — custom marketing plan and channel prioritization delivered.",
     features: [
-      "50 verified leads",
-      "Your target industry",
-      "Your target geography",
-      "Phone + email verified",
-      "CSV delivery",
-      "5% bounce replacement guarantee",
+      "90-minute strategy session",
+      "Custom marketing plan",
+      "Channel prioritization",
+      "Competitor snapshot",
+      "Budget recommendations",
     ],
     highlight: false,
   },
   {
-    name: "Growth",
-    price: "$397",
+    name: "Starter Retainer",
+    price: "$997",
     period: "/mo",
-    desc: "200 leads per month delivered weekly — a steady, scalable pipeline.",
+    desc: "SEO, social media, and email handled monthly with a full performance report.",
     features: [
-      "200 verified leads/month",
-      "Weekly delivery",
-      "Up to 3 industries",
-      "Phone + email + LinkedIn",
-      "CSV or CRM upload",
-      "5% bounce replacement guarantee",
+      "SEO maintenance",
+      "Social media management",
+      "Email marketing",
+      "Monthly performance report",
+      "Dedicated account manager",
+      "Priority support",
     ],
     highlight: true,
   },
   {
-    name: "Pro",
-    price: "$797",
+    name: "Growth Retainer",
+    price: "$1,997",
     period: "/mo",
-    desc: "500 leads per month plus email sequence setup and direct CRM upload.",
+    desc: "All channels plus paid ads and weekly optimization — for businesses ready to scale fast.",
     features: [
-      "500 verified leads/month",
-      "Weekly delivery",
-      "Unlimited industries",
-      "Full contact enrichment",
-      "Email sequence included",
-      "Direct CRM upload",
-      "Dedicated account manager",
+      "All Starter features",
+      "Paid ads management (PPC)",
+      "Weekly optimization calls",
+      "A/B testing",
+      "Marketing automation",
+      "Competitor tracking",
+      "Weekly performance report",
     ],
     highlight: false,
   },
@@ -83,31 +82,31 @@ const pricing = [
 
 const faqs = [
   {
-    q: "How are leads verified?",
-    a: "Phone and email are checked within 30 days of delivery using live verification tools. We don't deliver contacts that haven't been confirmed active.",
+    q: "What channels are included in a retainer?",
+    a: "SEO, social media, and email are included in Starter. Growth adds paid ads (PPC) management. Ad spend is separate and goes directly to the platform.",
   },
   {
-    q: "What industries do you source leads for?",
-    a: "Any B2B industry. We specialize in real estate, home services, legal, medical, and financial — but we've built lists for over 40 industry categories.",
+    q: "How is Bamberg Digital different from other agencies?",
+    a: "We use AI to automate and optimize — most agencies are still doing things manually. That means we move faster, spot opportunities sooner, and deliver more value per dollar spent.",
   },
   {
-    q: "What format do I receive leads in?",
-    a: "CSV file or direct CRM upload. We support HubSpot, Salesforce, and Zoho. Other CRMs available on request.",
+    q: "Do you work with specific industries?",
+    a: "We specialize in real estate, home services, medical practices, legal firms, restaurants, and e-commerce. Sacramento businesses in Elk Grove, Folsom, Roseville, and Rancho Cordova are our backyard.",
   },
   {
-    q: "What's your bounce rate?",
-    a: "Under 5%. We replace any contacts that bounce above that threshold at no extra charge.",
+    q: "What's a realistic budget for paid ads?",
+    a: "We recommend $500–$2,000/mo in ad spend for meaningful results. We optimize every dollar, but ad spend goes directly to Google, Meta, or wherever your customers are.",
   },
   {
-    q: "Can you target specific cities or zip codes?",
-    a: "Yes. We can target by city (Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova), county, zip code, metro area, or nationwide. The more specific your ICP, the better the list quality.",
+    q: "Is there a contract?",
+    a: "Month-to-month after the first 90 days. We earn your business every month, not lock you in.",
   },
 ];
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  serviceType: "Lead Generation",
+  serviceType: "Digital Marketing",
   provider: {
     "@type": "LocalBusiness",
     name: "Bamberg Digital",
@@ -120,47 +119,48 @@ const schema = {
       addressCountry: "US",
     },
   },
+  areaServed: { "@type": "City", name: "Sacramento", addressRegion: "CA" },
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified.",
+    "Full-service digital marketing agency in Sacramento using AI to deliver results.",
 };
 
-export default function LeadsPage() {
+export default function DigitalMarketingPage() {
   return (
     <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <SiteNav active="/leads" />
+      <SiteNav active="/digital-marketing" />
 
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
             <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-            Verified Lead Generation
+            Digital Marketing Agency · Sacramento, CA
           </div>
           <h1 className="font-[family-name:var(--font-montserrat)] text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-            Verified Lead Generation — No Bounces, No Wasted Calls
+            Sacramento Digital Marketing Agency Powered by AI
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Every lead is phone and email verified before it reaches you.
-            Targeted by industry, city, or zip code — Sacramento businesses and
-            clients nationwide use our lists to fill their pipelines without
-            wasting time on dead contacts.
+            We run the full playbook — SEO, social, email, and paid ads — using
+            AI to move faster and optimize harder than traditional agencies.
+            Sacramento businesses and clients nationwide rely on us to drive
+            consistent, measurable growth.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#contact"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg shadow-blue-600/30"
             >
-              Get your first 50 leads
+              Book a strategy consultation
             </a>
             <a
               href="#pricing"
               className="border border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 font-semibold px-8 py-4 rounded-lg transition-colors bg-white"
             >
-              See pricing →
+              See retainer pricing →
             </a>
           </div>
         </div>
@@ -171,11 +171,11 @@ export default function LeadsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              What every lead list includes
+              What every retainer includes
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Not a scraped database dump — a curated, verified, and targeted
-              list ready to work the moment you receive it.
+              We don't just manage channels — we build a system that compounds
+              over time.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -216,10 +216,10 @@ export default function LeadsPage() {
               New client intro rates
             </p>
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Lead generation plans
+              Marketing plans
             </h2>
             <p className="text-gray-600">
-              Start with a one-time order or subscribe for weekly delivery.
+              Start with a strategy session or go straight to a retainer.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -343,9 +343,9 @@ export default function LeadsPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              { href: "/consulting", label: "AI & Automation Consulting" },
-              { href: "/digital-marketing", label: "Digital Marketing" },
               { href: "/seo", label: "SEO Services" },
+              { href: "/social-media", label: "Social Media Marketing" },
+              { href: "/consulting", label: "AI & Automation Consulting" },
             ].map((s) => (
               <a
                 key={s.href}
@@ -364,11 +364,11 @@ export default function LeadsPage() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Tell us your target market
+              Let's build your growth engine
             </h2>
             <p className="text-gray-600 text-lg">
-              Share your industry, geography, and ideal customer — we&apos;ll
-              tell you what a list looks like before you pay anything.
+              Start with a $497 strategy consultation — you'll leave with a full
+              marketing plan whether you hire us or not.
             </p>
             <p className="text-gray-500 text-sm mt-2">
               Call us:{" "}
@@ -377,8 +377,8 @@ export default function LeadsPage() {
                 className="text-blue-600 hover:underline"
               >
                 (916) 907-7782
-              </a>{" "}
-              &middot;{" "}
+              </a>
+              {" · "}
               <a
                 href="mailto:hello@bambergdigital.com"
                 className="text-blue-600 hover:underline"
@@ -388,7 +388,7 @@ export default function LeadsPage() {
             </p>
           </div>
           <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-            <ContactForm service="lead-generation" />
+            <ContactForm service="digital-marketing" />
           </div>
         </div>
       </section>

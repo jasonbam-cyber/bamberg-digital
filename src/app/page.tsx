@@ -1,135 +1,27 @@
-"use client";
+import type { Metadata } from "next";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
+import ContactForm from "@/components/ContactForm";
 
-import { useState } from "react";
-
-function Navbar() {
-  const [open, setOpen] = useState(false);
-  return (
-    <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">BD</span>
-            </div>
-            <span className="font-[family-name:var(--font-montserrat)] font-bold text-lg text-gray-900">
-              Bamberg <span className="text-blue-600">Digital</span>
-            </span>
-          </a>
-          <div className="hidden md:flex items-center gap-8">
-            <a
-              href="/seo"
-              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              SEO Audits
-            </a>
-            <a
-              href="/leads"
-              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              Lead Generation
-            </a>
-            <a
-              href="/about"
-              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              About
-            </a>
-            <a
-              href="#contact"
-              className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md shadow-blue-600/25"
-            >
-              Free Consultation
-            </a>
-          </div>
-          <button
-            className="md:hidden p-2"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {open ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
-        </div>
-        {open && (
-          <div className="md:hidden border-t border-gray-100 py-4 space-y-3">
-            <a
-              href="/seo"
-              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1"
-            >
-              SEO Audits
-            </a>
-            <a
-              href="/leads"
-              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1"
-            >
-              Lead Generation
-            </a>
-            <a
-              href="/about"
-              className="block text-sm font-medium text-gray-700 hover:text-blue-600 px-2 py-1"
-            >
-              About
-            </a>
-            <a
-              href="#contact"
-              className="block bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold text-center hover:bg-blue-700 transition-colors"
-            >
-              Free Consultation
-            </a>
-          </div>
-        )}
-      </div>
-    </nav>
-  );
-}
-
-const testimonials = [
-  {
-    quote:
-      "Bamberg Digital ran an SEO audit on our plumbing business and found issues we had no idea existed. Within 60 days we went from page 4 to page 1 for our top keywords.",
-    name: "Marcus T.",
-    title: "Owner, ProFlow Plumbing",
-    initials: "MT",
-    color: "bg-blue-100 text-blue-700",
+export const metadata: Metadata = {
+  title: "Bamberg Digital | Sacramento's AI-Powered Digital Agency",
+  description:
+    "Bamberg Digital uses AI to find the customers your competitors miss. Web design, SEO, social media, lead generation, branding, and AI automation for small businesses in Sacramento and nationwide.",
+  alternates: { canonical: "https://bambergdigital.com" },
+  openGraph: {
+    title: "Bamberg Digital — Sacramento's AI-Powered Digital Agency",
+    description:
+      "Web design, SEO, social media, lead generation, branding, and AI automation for small businesses. Start with a free consultation.",
+    url: "https://bambergdigital.com",
+    images: [
+      {
+        url: "https://bambergdigital.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
-  {
-    quote:
-      "The lead lists they deliver are actually verified. No bounced emails, no disconnected numbers. We closed 4 new clients from the first batch of 50 leads.",
-    name: "Sandra R.",
-    title: "Broker, Realty One Group",
-    initials: "SR",
-    color: "bg-emerald-100 text-emerald-700",
-  },
-  {
-    quote:
-      "Their AI automation set up a follow-up sequence that runs without me touching it. I got 3 consultation requests last week while I was on vacation.",
-    name: "David K.",
-    title: "Founder, Summit Legal Group",
-    initials: "DK",
-    color: "bg-purple-100 text-purple-700",
-  },
-];
+};
 
 const services = [
   {
@@ -186,14 +78,104 @@ const services = [
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
+          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        />
+      </svg>
+    ),
+    title: "Website Design",
+    desc: "Mobile-first, SEO-ready websites that load fast and convert visitors into customers. Starter sites from $497 — built and delivered in 2–3 weeks.",
+    cta: "See our work →",
+    href: "/web-design",
+  },
+  {
+    icon: (
+      <svg
+        className="w-7 h-7 text-blue-600"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+        />
+      </svg>
+    ),
+    title: "Social Media Marketing",
+    desc: "Custom content, community management, and paid ads across Instagram, Facebook, LinkedIn, TikTok, and X. Plans from $199/mo.",
+    cta: "See plans →",
+    href: "/social-media",
+  },
+  {
+    icon: (
+      <svg
+        className="w-7 h-7 text-blue-600"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+        />
+      </svg>
+    ),
+    title: "Brand Identity Design",
+    desc: "Logo, color palette, typography, and brand guidelines that make your Sacramento business look as good as it operates. Packages from $697.",
+    cta: "View packages →",
+    href: "/branding",
+  },
+  {
+    icon: (
+      <svg
+        className="w-7 h-7 text-blue-600"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
           d="M13 10V3L4 14h7v7l9-11h-7z"
         />
       </svg>
     ),
-    title: "Marketing Automation",
-    desc: "We build email sequences, follow-up systems, and AI-driven workflows that nurture prospects automatically — so you close more deals without adding headcount.",
+    title: "AI & Automation Consulting",
+    desc: "We build email sequences, follow-up systems, and AI-driven workflows that run 24/7 — so you close more deals without adding headcount. From $197/hr.",
     cta: "Learn more →",
-    href: "/about",
+    href: "/consulting",
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "Bamberg Digital ran an SEO audit on our plumbing business and found issues we had no idea existed. Within 60 days we went from page 4 to page 1 for our top keywords.",
+    name: "Marcus T.",
+    title: "Owner, ProFlow Plumbing",
+    initials: "MT",
+    color: "bg-blue-100 text-blue-700",
+  },
+  {
+    quote:
+      "The lead lists they deliver are actually verified. No bounced emails, no disconnected numbers. We closed 4 new clients from the first batch of 50 leads.",
+    name: "Sandra R.",
+    title: "Broker, Realty One Group",
+    initials: "SR",
+    color: "bg-emerald-100 text-emerald-700",
+  },
+  {
+    quote:
+      "Their AI automation set up a follow-up sequence that runs without me touching it. I got 3 consultation requests last week while I was on vacation.",
+    name: "David K.",
+    title: "Founder, Summit Legal Group",
+    initials: "DK",
+    color: "bg-purple-100 text-purple-700",
   },
 ];
 
@@ -215,120 +197,10 @@ const industries = [
   "Financial Services",
 ];
 
-function ContactForm() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    business: "",
-    message: "",
-  });
-  const [sent, setSent] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSent(true);
-  };
-
-  if (sent) {
-    return (
-      <div className="text-center py-12">
-        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg
-            className="w-8 h-8 text-emerald-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        </div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2">
-          We'll be in touch within 24 hours
-        </h3>
-        <p className="text-gray-600">
-          Check your inbox — we may have already sent you a quick note.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Your name
-          </label>
-          <input
-            type="text"
-            required
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Jane Smith"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email address
-          </label>
-          <input
-            type="email"
-            required
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="jane@company.com"
-          />
-        </div>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Business name
-        </label>
-        <input
-          type="text"
-          value={form.business}
-          onChange={(e) => setForm({ ...form, business: e.target.value })}
-          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Acme Plumbing Co."
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          What's your biggest challenge right now?
-        </label>
-        <textarea
-          rows={4}
-          value={form.message}
-          onChange={(e) => setForm({ ...form, message: e.target.value })}
-          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-          placeholder="Not enough leads, low website traffic, slow follow-up..."
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors shadow-md shadow-blue-600/25"
-      >
-        Book my free consultation →
-      </button>
-      <p className="text-xs text-gray-400 text-center">
-        No sales pitch. No contract. We'll tell you exactly what we'd do for
-        your business.
-      </p>
-    </form>
-  );
-}
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
+      <SiteNav />
 
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
@@ -338,19 +210,19 @@ export default function Home() {
             AI-powered growth for small businesses
           </div>
           <h1 className="font-[family-name:var(--font-montserrat)] text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-            We find the customers
+            Sacramento&apos;s AI-Powered
             <br />
-            <span className="text-gradient-blue">your competitors miss.</span>
+            <span className="text-blue-600">Digital Agency</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
             Bamberg Digital uses AI to surface SEO gaps, deliver verified leads,
-            and automate your follow-up — so your pipeline fills itself while
-            you run your business.
+            build websites that convert, and automate your follow-up — so your
+            pipeline fills itself while you run your business.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#contact"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg shadow-blue-600/30 pulse-cta"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg shadow-blue-600/30"
             >
               Book a free consultation
             </a>
@@ -386,7 +258,7 @@ export default function Home() {
               What we do
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Three services. One goal: more customers finding you, not your
+              Six services. One goal: more customers finding you, not your
               competitors.
             </p>
           </div>
@@ -394,7 +266,7 @@ export default function Home() {
             {services.map((s) => (
               <div
                 key={s.title}
-                className="bg-gray-50 rounded-2xl p-8 card-hover border border-gray-100"
+                className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-blue-200 transition-colors"
               >
                 <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-5">
                   {s.icon}
@@ -413,6 +285,14 @@ export default function Home() {
                 </a>
               </div>
             ))}
+          </div>
+          <div className="text-center mt-10">
+            <a
+              href="/pricing"
+              className="border border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 font-semibold px-8 py-4 rounded-lg transition-colors bg-white"
+            >
+              View all pricing →
+            </a>
           </div>
         </div>
       </section>
@@ -433,6 +313,10 @@ export default function Home() {
               </span>
             ))}
           </div>
+          <p className="text-gray-500 text-sm mt-6">
+            Serving Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova,
+            and businesses nationwide.
+          </p>
         </div>
       </section>
 
@@ -466,7 +350,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-gray-700 text-sm leading-relaxed mb-6 italic">
-                  "{t.quote}"
+                  &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
                   <div
@@ -499,7 +383,7 @@ export default function Home() {
           </div>
           <div>
             <p className="text-blue-400 text-sm font-semibold uppercase tracking-widest mb-3">
-              Founded by Jason Bamberg
+              Founded by Jason Bamberg · Sacramento, CA
             </p>
             <h2 className="font-[family-name:var(--font-montserrat)] text-3xl font-bold text-white mb-4">
               Enterprise AI tools, built for small business budgets.
@@ -509,7 +393,7 @@ export default function Home() {
               hundreds of companies, Jason founded Bamberg Digital to bring
               those same tools to the small businesses that need them most —
               without the enterprise price tag. Today, our AI-powered systems
-              run 24/7 so our clients don't have to.
+              run 24/7 so our clients don&apos;t have to.
             </p>
             <a
               href="/about"
@@ -529,112 +413,34 @@ export default function Home() {
               Book your free consultation
             </h2>
             <p className="text-gray-600 text-lg">
-              15 minutes. No pitch deck. We'll look at your specific situation
-              and tell you exactly what we'd do — whether you hire us or not.
+              15 minutes. No pitch deck. We&apos;ll look at your specific
+              situation and tell you exactly what we&apos;d do — whether you
+              hire us or not.
+            </p>
+            <p className="text-gray-500 text-sm mt-3">
+              Call us directly:{" "}
+              <a
+                href="tel:9169077782"
+                className="text-blue-600 hover:underline font-medium"
+              >
+                (916) 907-7782
+              </a>
+              {" · "}
+              <a
+                href="mailto:hello@bambergdigital.com"
+                className="text-blue-600 hover:underline"
+              >
+                hello@bambergdigital.com
+              </a>
             </p>
           </div>
           <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
             <ContactForm />
           </div>
-          <p className="text-center text-gray-500 text-sm mt-6">
-            Prefer email? Reach us at{" "}
-            <a
-              href="mailto:hello@bambergdigital.com"
-              className="text-blue-600 hover:underline"
-            >
-              hello@bambergdigital.com
-            </a>
-          </p>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-10 mb-10">
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">BD</span>
-                </div>
-                <span className="font-[family-name:var(--font-montserrat)] font-bold text-white text-base">
-                  Bamberg Digital
-                </span>
-              </div>
-              <p className="text-sm max-w-xs leading-relaxed">
-                AI-powered marketing for small businesses. SEO audits, verified
-                leads, and automation that works while you sleep.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-10 text-sm">
-              <div>
-                <p className="text-white font-semibold mb-3">Services</p>
-                <ul className="space-y-2">
-                  <li>
-                    <a
-                      href="/seo"
-                      className="hover:text-white transition-colors"
-                    >
-                      SEO Audits
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/leads"
-                      className="hover:text-white transition-colors"
-                    >
-                      Lead Generation
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/about"
-                      className="hover:text-white transition-colors"
-                    >
-                      Marketing Automation
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <p className="text-white font-semibold mb-3">Company</p>
-                <ul className="space-y-2">
-                  <li>
-                    <a
-                      href="/about"
-                      className="hover:text-white transition-colors"
-                    >
-                      About
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#contact"
-                      className="hover:text-white transition-colors"
-                    >
-                      Contact
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="mailto:hello@bambergdigital.com"
-                      className="hover:text-white transition-colors"
-                    >
-                      hello@bambergdigital.com
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
-            <p>
-              © {new Date().getFullYear()} Bamberg Digital. All rights reserved.
-            </p>
-            <p>Sacramento, CA · Serving businesses nationwide</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

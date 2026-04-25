@@ -4,15 +4,15 @@ import SiteFooter from "@/components/SiteFooter";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Lead Generation Services | Bamberg Digital",
+  title: "Content Creation & Copywriting | Bamberg Digital",
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-  alternates: { canonical: "https://bambergdigital.com/leads" },
+    "Blog posts, website copy, email sequences, and social content for small businesses. Strategy from $297. Ongoing content from $397/mo.",
+  alternates: { canonical: "https://bambergdigital.com/content-creation" },
   openGraph: {
-    title: "Lead Generation Services | Bamberg Digital",
+    title: "Content Creation & Copywriting | Bamberg Digital",
     description:
-      "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-    url: "https://bambergdigital.com/leads",
+      "Blog posts, website copy, email sequences, and social content for small businesses. Strategy from $297. Ongoing content from $397/mo.",
+    url: "https://bambergdigital.com/content-creation",
     images: [
       {
         url: "https://bambergdigital.com/og-image.jpg",
@@ -24,58 +24,55 @@ export const metadata: Metadata = {
 };
 
 const included = [
-  "Phone verification — every number checked within 30 days of delivery",
-  "Email verification — no bounces, no dead inboxes",
-  "Business details — company size, revenue estimate, and decision maker name",
-  "Industry and geography targeting — city, county, zip code, or nationwide",
-  "CSV or CRM-ready format — HubSpot, Salesforce, and Zoho supported",
-  "Replacement guarantee — we replace any contacts that bounce above 5%",
+  "SEO-optimized blog posts — written to rank and educate your audience",
+  "Website copywriting — landing pages, service pages, and about sections that convert",
+  "Email newsletter content — keep customers engaged and coming back",
+  "Social media captions — platform-ready copy for every post",
+  "Product and service descriptions — clear, compelling, and search-friendly",
+  "Brand voice guidelines — consistent messaging across every channel",
 ];
 
 const pricing = [
   {
-    name: "Starter",
-    price: "$197",
+    name: "Strategy Session",
+    price: "$297",
     period: "one-time",
-    desc: "50 verified leads for your target industry and geography — perfect for testing a new market.",
+    desc: "A full content audit, 3-month calendar, and keyword targets — everything you need to execute yourself.",
     features: [
-      "50 verified leads",
-      "Your target industry",
-      "Your target geography",
-      "Phone + email verified",
-      "CSV delivery",
-      "5% bounce replacement guarantee",
+      "Content audit of existing assets",
+      "3-month content calendar",
+      "Keyword targets by page/post",
+      "Competitor content analysis",
+      "Brand voice recommendations",
     ],
     highlight: false,
   },
   {
-    name: "Growth",
+    name: "Monthly Content",
     price: "$397",
     period: "/mo",
-    desc: "200 leads per month delivered weekly — a steady, scalable pipeline.",
+    desc: "Steady stream of SEO blog posts plus social captions to keep your pipeline moving.",
     features: [
-      "200 verified leads/month",
-      "Weekly delivery",
-      "Up to 3 industries",
-      "Phone + email + LinkedIn",
-      "CSV or CRM upload",
-      "5% bounce replacement guarantee",
+      "4 SEO blog posts/month",
+      "Social media captions",
+      "2 revision rounds per piece",
+      "Monthly editorial calendar",
+      "Performance tracking",
     ],
     highlight: true,
   },
   {
-    name: "Pro",
-    price: "$797",
+    name: "Full Package",
+    price: "$697",
     period: "/mo",
-    desc: "500 leads per month plus email sequence setup and direct CRM upload.",
+    desc: "Maximum content output — blogs, email, and social all handled for you.",
     features: [
-      "500 verified leads/month",
-      "Weekly delivery",
-      "Unlimited industries",
-      "Full contact enrichment",
-      "Email sequence included",
-      "Direct CRM upload",
-      "Dedicated account manager",
+      "8 SEO blog posts/month",
+      "Monthly email newsletter",
+      "Social media captions",
+      "2 revision rounds per piece",
+      "SEO optimization on all pieces",
+      "Monthly content report",
     ],
     highlight: false,
   },
@@ -83,31 +80,31 @@ const pricing = [
 
 const faqs = [
   {
-    q: "How are leads verified?",
-    a: "Phone and email are checked within 30 days of delivery using live verification tools. We don't deliver contacts that haven't been confirmed active.",
+    q: "Do you write for my industry?",
+    a: "Yes — we research your industry, competitors, and target customers before writing a single word. We've written for real estate, home services, medical practices, legal firms, restaurants, and e-commerce.",
   },
   {
-    q: "What industries do you source leads for?",
-    a: "Any B2B industry. We specialize in real estate, home services, legal, medical, and financial — but we've built lists for over 40 industry categories.",
+    q: "Do I own the content?",
+    a: "Yes, all content belongs to you. We hand over full rights when each piece is delivered.",
   },
   {
-    q: "What format do I receive leads in?",
-    a: "CSV file or direct CRM upload. We support HubSpot, Salesforce, and Zoho. Other CRMs available on request.",
+    q: "Can you match our existing brand voice?",
+    a: "Yes — we study your existing content, website, and any style guide you have before writing. Most clients say our content sounds like they wrote it themselves.",
   },
   {
-    q: "What's your bounce rate?",
-    a: "Under 5%. We replace any contacts that bounce above that threshold at no extra charge.",
+    q: "How many revisions are included?",
+    a: "Two rounds of revisions per piece are included at every tier. We rarely need more than one.",
   },
   {
-    q: "Can you target specific cities or zip codes?",
-    a: "Yes. We can target by city (Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova), county, zip code, metro area, or nationwide. The more specific your ICP, the better the list quality.",
+    q: "Can I see samples?",
+    a: "Yes — email hello@bambergdigital.com and we'll send samples from your industry.",
   },
 ];
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  serviceType: "Lead Generation",
+  serviceType: "Content Creation",
   provider: {
     "@type": "LocalBusiness",
     name: "Bamberg Digital",
@@ -121,40 +118,40 @@ const schema = {
     },
   },
   description:
-    "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified.",
+    "Blog posts, website copy, email sequences, and social content for small businesses.",
 };
 
-export default function LeadsPage() {
+export default function ContentCreationPage() {
   return (
     <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <SiteNav active="/leads" />
+      <SiteNav active="/content-creation" />
 
       {/* Hero */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
             <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-            Verified Lead Generation
+            Content Creation & Copywriting
           </div>
           <h1 className="font-[family-name:var(--font-montserrat)] text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-            Verified Lead Generation — No Bounces, No Wasted Calls
+            Content Creation That Attracts Customers and Ranks on Google
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Every lead is phone and email verified before it reaches you.
-            Targeted by industry, city, or zip code — Sacramento businesses and
-            clients nationwide use our lists to fill their pipelines without
-            wasting time on dead contacts.
+            We write blog posts, web copy, emails, and social content that
+            actually move the needle — SEO-optimized, written in your voice, and
+            built to convert. Sacramento businesses and clients nationwide trust
+            us to fill their content calendars.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#contact"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors shadow-lg shadow-blue-600/30"
             >
-              Get your first 50 leads
+              Start with a strategy session
             </a>
             <a
               href="#pricing"
@@ -171,11 +168,11 @@ export default function LeadsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              What every lead list includes
+              What we create
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Not a scraped database dump — a curated, verified, and targeted
-              list ready to work the moment you receive it.
+              Every piece is researched, SEO-optimized, and written to your
+              brand voice — ready to publish.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -216,10 +213,11 @@ export default function LeadsPage() {
               New client intro rates
             </p>
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Lead generation plans
+              Content packages
             </h2>
             <p className="text-gray-600">
-              Start with a one-time order or subscribe for weekly delivery.
+              Start with a one-time strategy session or go straight to ongoing
+              content.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -343,9 +341,9 @@ export default function LeadsPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              { href: "/consulting", label: "AI & Automation Consulting" },
-              { href: "/digital-marketing", label: "Digital Marketing" },
               { href: "/seo", label: "SEO Services" },
+              { href: "/social-media", label: "Social Media Marketing" },
+              { href: "/digital-marketing", label: "Digital Marketing" },
             ].map((s) => (
               <a
                 key={s.href}
@@ -364,11 +362,11 @@ export default function LeadsPage() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="font-[family-name:var(--font-montserrat)] text-4xl font-bold text-gray-900 mb-4">
-              Tell us your target market
+              Let's build your content engine
             </h2>
             <p className="text-gray-600 text-lg">
-              Share your industry, geography, and ideal customer — we&apos;ll
-              tell you what a list looks like before you pay anything.
+              Tell us about your business and we'll show you what a 3-month
+              content plan would look like.
             </p>
             <p className="text-gray-500 text-sm mt-2">
               Call us:{" "}
@@ -377,8 +375,8 @@ export default function LeadsPage() {
                 className="text-blue-600 hover:underline"
               >
                 (916) 907-7782
-              </a>{" "}
-              &middot;{" "}
+              </a>
+              {" · "}
               <a
                 href="mailto:hello@bambergdigital.com"
                 className="text-blue-600 hover:underline"
@@ -388,7 +386,7 @@ export default function LeadsPage() {
             </p>
           </div>
           <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-            <ContactForm service="lead-generation" />
+            <ContactForm service="content-creation" />
           </div>
         </div>
       </section>
