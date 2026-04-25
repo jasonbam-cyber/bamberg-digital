@@ -1,1250 +1,863 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
-/* ─────────────────────────────────────────────
-   AWWWARDS-LEVEL HOMEPAGE
-   Scroll-driven, kinetic typography, dramatic spacing,
-   interactive cursor elements, NO generic cards/grids
-   ───────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   CSS — namespaced .hn- to avoid collisions with other pages
+   ═══════════════════════════════════════════════════════════════ */
+const CSS = `
+/* ── Reset old scroll-snap ── */
+html { scroll-snap-type: none !important; scroll-padding-top: 0 !important; }
 
-/* ── Utility: lerp ── */
-function lerp(a: number, b: number, t: number) {
-  return a + (b - a) * t;
+/* ── Cursor glow ── */
+.hn-cursor {
+  position: fixed; width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,240,255,0.06) 0%, transparent 70%);
+  pointer-events: none; z-index: 1;
+  transform: translate(-50%, -50%);
+  will-change: left, top;
 }
 
-/* ── Cursor Glow ── */
-function CursorGlow() {
-  const ref = useRef<HTMLDivElement>(null);
-  const pos = useRef({ x: -600, y: -600 });
-  const target = useRef({ x: -600, y: -600 });
+/* ── Noise overlay ── */
+.hn-noise {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9998;
+  opacity: 0.03; mix-blend-mode: overlay;
+}
 
+/* ════════════════ NAV ════════════════ */
+.hn-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 20px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: background 0.5s, backdrop-filter 0.5s;
+}
+.hn-nav.scrolled {
+  background: rgba(5,5,5,0.8);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+}
+.hn-nav-logo {
+  font-size: 1rem; font-weight: 700; color: #fff;
+  text-decoration: none; letter-spacing: -0.02em;
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-nav-logo span { color: #00f0ff; }
+.hn-nav-links {
+  display: flex; align-items: center; gap: 32px;
+}
+.hn-nav-link {
+  font-size: 0.75rem; color: rgba(255,255,255,0.35);
+  text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: color 0.3s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-nav-link:hover { color: #fff; }
+.hn-nav-cta {
+  font-size: 0.75rem; color: #00f0ff; text-decoration: none;
+  letter-spacing: 0.05em; padding: 8px 20px;
+  border: 1px solid rgba(0,240,255,0.25); border-radius: 100px;
+  transition: background 0.3s, border-color 0.3s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-nav-cta:hover {
+  background: rgba(0,240,255,0.08);
+  border-color: rgba(0,240,255,0.5);
+}
+
+/* Hamburger */
+.hn-hamburger {
+  display: none; background: none; border: none; cursor: pointer; padding: 8px;
+}
+.hn-hamburger span {
+  display: block; width: 24px; height: 2px; background: #fff;
+  margin: 5px 0; transition: transform 0.3s, opacity 0.3s;
+}
+
+/* Full-screen overlay menu */
+.hn-menu-overlay {
+  position: fixed; inset: 0; z-index: 99;
+  background: rgba(5,5,5,0.97);
+  backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 28px;
+  opacity: 0; pointer-events: none; transition: opacity 0.4s;
+}
+.hn-menu-overlay.open { opacity: 1; pointer-events: all; }
+.hn-menu-overlay a {
+  font-size: clamp(1.4rem, 4.5vw, 2.2rem); font-weight: 700;
+  color: rgba(255,255,255,0.6); text-decoration: none;
+  transition: color 0.3s;
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-menu-overlay a:hover { color: #00f0ff; }
+
+/* ════════════════ SECTIONS ════════════════ */
+.hn-section {
+  position: relative; min-height: 100vh; min-height: 100svh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 120px 8vw; overflow: hidden; box-sizing: border-box;
+}
+
+/* ── HERO ── */
+.hn-hero { flex-direction: column; background: #050505; }
+.hn-hero-title {
+  font-size: clamp(3.5rem, 20vw, 16rem);
+  font-weight: 900; line-height: 0.85; letter-spacing: -0.05em;
+  text-align: center; margin: 0; user-select: none;
+  background: linear-gradient(135deg, #fff 0%, #777 50%, #fff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0; transform: translateY(40px);
+  animation:
+    hn-entrance 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s forwards,
+    hn-gradient 8s ease 1.5s infinite;
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-hero-subtitle {
+  font-size: clamp(1.8rem, 8vw, 6.5rem);
+  font-weight: 200; letter-spacing: 0.18em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.2);
+  text-align: center; margin-top: -0.05em; user-select: none;
+  opacity: 0; transform: translateY(30px);
+  animation: hn-entrance 1.2s cubic-bezier(0.16,1,0.3,1) 0.45s forwards;
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-hero-tagline {
+  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+  color: rgba(255,255,255,0.18); letter-spacing: 0.3em;
+  text-transform: uppercase; margin-top: 3rem;
+  opacity: 0;
+  animation: hn-entrance 1s cubic-bezier(0.16,1,0.3,1) 0.9s forwards;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-scroll-cue {
+  position: absolute; bottom: 36px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: hn-float 2.8s ease-in-out infinite;
+}
+.hn-scroll-cue span {
+  font-size: 0.6rem; color: rgba(255,255,255,0.12);
+  letter-spacing: 0.25em; text-transform: uppercase;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+}
+
+@keyframes hn-entrance {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes hn-gradient {
+  0%,100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes hn-float {
+  0%,100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+  50% { transform: translateX(-50%) translateY(14px); opacity: 0.15; }
+}
+
+/* ── QUESTION (word reveal) ── */
+.hn-question { background: #050505; flex-direction: column; text-align: center; }
+.hn-question-text {
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  font-weight: 800; color: #fff; line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-word {
+  display: inline-block; margin-right: 0.28em;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.45s, transform 0.45s;
+  transition-timing-function: cubic-bezier(0.16,1,0.3,1);
+}
+.hn-word.visible { opacity: 1; transform: translateY(0); }
+.hn-question-answer {
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 700; color: #00f0ff; margin-top: 2.5rem;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s 0.2s, transform 0.7s 0.2s;
+  transition-timing-function: cubic-bezier(0.16,1,0.3,1);
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-question-answer.visible { opacity: 1; transform: translateY(0); }
+
+/* ── STAT ── */
+.hn-stat { background: #060608; flex-direction: column; text-align: center; }
+.hn-stat-wrap { position: relative; display: inline-block; }
+.hn-stat-number {
+  font-size: clamp(7rem, 26vw, 17rem);
+  font-weight: 900; color: #fff; line-height: 0.85;
+  letter-spacing: -0.05em;
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-stat-number span { color: #00f0ff; font-size: 0.5em; }
+.hn-stat-ring {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(240px, 42vw, 460px); height: clamp(240px, 42vw, 460px);
+  pointer-events: none;
+}
+.hn-stat-ring circle { fill: none; stroke-width: 1.5; }
+.hn-ring-bg { stroke: rgba(255,255,255,0.04); }
+.hn-ring-fill {
+  stroke: rgba(0,240,255,0.25);
+  stroke-dasharray: 1570; stroke-dashoffset: 1570;
+  transform: rotate(-90deg); transform-origin: center;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.16,1,0.3,1);
+}
+.hn-ring-fill.animate { stroke-dashoffset: 110; }
+.hn-stat-desc {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: rgba(255,255,255,0.3); margin-top: 2.5rem; line-height: 1.6;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-stat-punch {
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+  color: #00f0ff; margin-top: 1rem; font-style: italic;
+  opacity: 0; transition: opacity 0.7s 0.6s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-stat-punch.visible { opacity: 1; }
+
+/* ── ANSWER ── */
+.hn-answer { background: #050505; text-align: center; }
+.hn-answer-text {
+  font-size: clamp(2rem, 5.5vw, 4.2rem);
+  font-weight: 800; line-height: 1.15; letter-spacing: -0.03em;
+  color: #fff; opacity: 0; transform: scale(0.92);
+  transition: opacity 0.9s, transform 0.9s;
+  transition-timing-function: cubic-bezier(0.16,1,0.3,1);
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-answer-text.visible { opacity: 1; transform: scale(1); }
+.hn-accent { color: #00f0ff; }
+
+/* ── HORIZONTAL SCROLL (services) ── */
+.hn-hscroll-outer { position: relative; height: 300vh; background: #050505; }
+.hn-hscroll-sticky {
+  position: sticky; top: 0; height: 100vh;
+  overflow: hidden; display: flex; align-items: center;
+}
+.hn-hscroll-track {
+  display: flex; will-change: transform;
+}
+.hn-hscroll-panel {
+  min-width: 100vw; height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 12vw; box-sizing: border-box;
+}
+.hn-svc-label {
+  font-size: clamp(0.6rem, 1.1vw, 0.75rem);
+  color: rgba(255,255,255,0.15); letter-spacing: 0.25em;
+  text-transform: uppercase; margin-bottom: 1.2rem;
+  font-family: ui-monospace, 'Fira Code', monospace;
+}
+.hn-svc-word {
+  font-size: clamp(4rem, 15vw, 11rem);
+  font-weight: 900; line-height: 0.9; letter-spacing: -0.05em; margin: 0;
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-svc-desc {
+  font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+  color: rgba(255,255,255,0.35); margin-top: 1.8rem;
+  max-width: 480px; line-height: 1.65;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-svc-link {
+  display: inline-block; margin-top: 1.8rem;
+  font-size: 0.8rem; color: rgba(255,255,255,0.25);
+  text-decoration: none; letter-spacing: 0.06em;
+  transition: color 0.3s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-svc-link:hover { color: #fff; }
+.hn-svc-link::after { content: ' \\2192'; }
+
+/* Progress dots */
+.hn-hscroll-dots {
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;
+}
+.hn-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  transition: background 0.4s, transform 0.4s;
+}
+.hn-dot.active { background: #00f0ff; transform: scale(1.5); }
+
+/* ── PRICE ── */
+.hn-price { background: #060608; flex-direction: column; text-align: center; }
+.hn-price-amount {
+  font-size: clamp(5rem, 20vw, 15rem);
+  font-weight: 900; color: #00f0ff; line-height: 0.85;
+  letter-spacing: -0.05em;
+  text-shadow: 0 0 100px rgba(0,240,255,0.25);
+  opacity: 0; transform: scale(0.4);
+  transition: opacity 0.9s, transform 0.9s;
+  transition-timing-function: cubic-bezier(0.175,0.885,0.32,1.275);
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-price-amount.visible { opacity: 1; transform: scale(1); }
+.hn-price-label {
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 700; color: #fff; margin-top: 1.8rem;
+  letter-spacing: -0.02em;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s 0.3s, transform 0.6s 0.3s;
+  transition-timing-function: cubic-bezier(0.16,1,0.3,1);
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-price-label.visible { opacity: 1; transform: translateY(0); }
+.hn-price-detail {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: rgba(255,255,255,0.28); margin-top: 0.8rem;
+  opacity: 0; transition: opacity 0.6s 0.65s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-price-detail.visible { opacity: 1; }
+.hn-price-sub {
+  font-size: clamp(0.7rem, 1.3vw, 0.8rem);
+  color: rgba(255,255,255,0.12); margin-top: 0.5rem;
+  opacity: 0; transition: opacity 0.6s 1s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-price-sub.visible { opacity: 1; }
+
+/* ── CTA ── */
+.hn-cta { background: #050505; flex-direction: column; text-align: center; }
+.hn-cta-glow {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 550px; height: 550px;
+  background: radial-gradient(circle, rgba(0,240,255,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hn-cta-name {
+  font-size: clamp(2rem, 5.5vw, 3.2rem);
+  font-weight: 800; color: #fff; letter-spacing: -0.03em;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s, transform 0.7s;
+  transition-timing-function: cubic-bezier(0.16,1,0.3,1);
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-cta-name.visible { opacity: 1; transform: translateY(0); }
+.hn-cta-role {
+  font-size: clamp(0.65rem, 1.3vw, 0.8rem);
+  color: #00f0ff; letter-spacing: 0.22em; text-transform: uppercase;
+  margin-top: 0.6rem;
+  opacity: 0; transition: opacity 0.5s 0.2s;
+  font-family: ui-monospace, 'Fira Code', monospace;
+}
+.hn-cta-role.visible { opacity: 1; }
+.hn-cta-tagline {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: rgba(255,255,255,0.35); margin-top: 2rem;
+  line-height: 1.7; max-width: 400px;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.6s 0.35s, transform 0.6s 0.35s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-cta-tagline.visible { opacity: 1; transform: translateY(0); }
+.hn-cta-phone {
+  display: block;
+  font-size: clamp(2rem, 7vw, 3.8rem);
+  font-weight: 900; color: #fff; text-decoration: none;
+  letter-spacing: -0.025em; margin-top: 2.5rem;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s 0.5s, transform 0.7s 0.5s, color 0.3s;
+  transition-timing-function: cubic-bezier(0.16,1,0.3,1);
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-cta-phone.visible { opacity: 1; transform: translateY(0); }
+.hn-cta-phone:hover { color: #00f0ff; }
+.hn-cta-pickup {
+  font-size: clamp(0.75rem, 1.4vw, 0.85rem);
+  color: rgba(255,255,255,0.18); margin-top: 0.35rem;
+  opacity: 0; transition: opacity 0.5s 0.8s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-cta-pickup.visible { opacity: 1; }
+.hn-cta-email {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  margin-top: 3rem; padding: 12px 28px;
+  background: rgba(0,240,255,0.04);
+  border: 1px solid rgba(0,240,255,0.18);
+  color: #00f0ff; border-radius: 100px;
+  text-decoration: none; font-weight: 600;
+  font-size: clamp(0.82rem, 1.8vw, 0.92rem);
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.6s 1s, transform 0.6s 1s, background 0.3s, border-color 0.3s;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+.hn-cta-email.visible { opacity: 1; transform: translateY(0); }
+.hn-cta-email:hover {
+  background: rgba(0,240,255,0.09);
+  border-color: rgba(0,240,255,0.45);
+}
+
+/* ════════════════ REDUCED MOTION ════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .hn-cursor, .hn-scroll-cue, .hn-noise { display: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.15s !important;
+  }
+  .hn-hero-title, .hn-hero-subtitle, .hn-hero-tagline {
+    opacity: 1 !important; transform: none !important;
+  }
+}
+
+/* ════════════════ MOBILE ════════════════ */
+@media (max-width: 768px) {
+  .hn-nav { padding: 14px 20px; }
+  .hn-nav-links { display: none; }
+  .hn-hamburger { display: block; }
+  .hn-section { padding: 100px 7vw; }
+  .hn-hero-subtitle { -webkit-text-stroke-width: 1px; }
+  .hn-noise { display: none; }
+  .hn-cursor { display: none; }
+
+  /* Vertical stack for services on mobile */
+  .hn-hscroll-outer { height: auto !important; }
+  .hn-hscroll-sticky { position: relative !important; height: auto !important; flex-direction: column; }
+  .hn-hscroll-track {
+    flex-direction: column !important;
+    transform: none !important;
+  }
+  .hn-hscroll-panel {
+    min-width: 100% !important; height: auto !important;
+    min-height: 80svh; padding: 60px 8vw !important;
+  }
+  .hn-hscroll-dots { display: none; }
+}
+`;
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT
+   ═══════════════════════════════════════════════════════════════ */
+export default function HomeNarrative() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [navScrolled, setNavScrolled] = useState(false);
+  const [hasMouse, setHasMouse] = useState(false);
+  const [statCount, setStatCount] = useState(0);
+  const [visible, setVisible] = useState<Record<string, boolean>>({});
+  const [hProgress, setHProgress] = useState(0);
+
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const hscrollRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const questionRef = useRef<HTMLDivElement>(null);
+  const statCounted = useRef(false);
+
+  /* ── Body override ── */
   useEffect(() => {
-    // Don't run on mobile / touch devices
-    if (typeof window !== "undefined" && "ontouchstart" in window) return;
-
-    const onMove = (e: MouseEvent) => {
-      target.current = { x: e.clientX, y: e.clientY };
-    };
-    window.addEventListener("mousemove", onMove);
-
-    let raf: number;
-    const animate = () => {
-      pos.current.x = lerp(pos.current.x, target.current.x, 0.08);
-      pos.current.y = lerp(pos.current.y, target.current.y, 0.08);
-      if (ref.current) {
-        ref.current.style.transform = `translate(${pos.current.x - 300}px, ${pos.current.y - 300}px)`;
-      }
-      raf = requestAnimationFrame(animate);
-    };
-    raf = requestAnimationFrame(animate);
-
+    const prevBg = document.body.style.background;
+    const prevColor = document.body.style.color;
+    document.body.style.background = "#050505";
+    document.body.style.color = "#fff";
     return () => {
-      window.removeEventListener("mousemove", onMove);
+      document.body.style.background = prevBg;
+      document.body.style.color = prevColor;
+    };
+  }, []);
+
+  /* ── Cursor tracking + mouse detection ── */
+  useEffect(() => {
+    const onMouse = (e: MouseEvent) => {
+      setHasMouse(true);
+      if (cursorRef.current) {
+        cursorRef.current.style.left = e.clientX + "px";
+        cursorRef.current.style.top = e.clientY + "px";
+      }
+    };
+    const onTouch = () => setHasMouse(false);
+    window.addEventListener("mousemove", onMouse);
+    window.addEventListener("touchstart", onTouch, { once: true });
+    return () => {
+      window.removeEventListener("mousemove", onMouse);
+      window.removeEventListener("touchstart", onTouch);
+    };
+  }, []);
+
+  /* ── Intersection observer for reveal triggers ── */
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const id = e.target.getAttribute("data-section");
+          if (id) {
+            setVisible((prev) => ({ ...prev, [id]: e.isIntersecting }));
+          }
+        });
+      },
+      { threshold: 0.3 },
+    );
+    document
+      .querySelectorAll("[data-section]")
+      .forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  /* ── Stat counter animation ── */
+  useEffect(() => {
+    if (visible.stat && !statCounted.current) {
+      statCounted.current = true;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / 1600, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setStatCount(Math.round(eased * 93));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }, [visible.stat]);
+
+  /* ── Scroll handler: nav, horizontal scroll, word reveal ── */
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        /* Nav background */
+        setNavScrolled(window.scrollY > 80);
+
+        /* Horizontal scroll transform */
+        const isMobile = window.innerWidth <= 768;
+        if (!isMobile && hscrollRef.current && trackRef.current) {
+          const rect = hscrollRef.current.getBoundingClientRect();
+          const scrollable =
+            hscrollRef.current.offsetHeight - window.innerHeight;
+          if (scrollable > 0) {
+            const p = Math.max(0, Math.min(1, -rect.top / scrollable));
+            setHProgress(p);
+            trackRef.current.style.transform = `translateX(-${p * 200}vw)`;
+          }
+        }
+
+        /* Word-by-word reveal */
+        if (questionRef.current) {
+          const rect = questionRef.current.getBoundingClientRect();
+          const sectionProgress = Math.max(
+            0,
+            Math.min(
+              1,
+              (window.innerHeight * 0.65 - rect.top) / (rect.height * 0.6),
+            ),
+          );
+          const words = questionRef.current.querySelectorAll(".hn-word");
+          const wordsToShow = Math.floor(
+            sectionProgress * words.length * 1.35,
+          );
+          words.forEach((w, i) => {
+            (w as HTMLElement).classList.toggle("visible", i < wordsToShow);
+          });
+          /* Show answer after all words revealed */
+          const answerEl = questionRef.current.querySelector(
+            ".hn-question-answer",
+          );
+          if (answerEl) {
+            answerEl.classList.toggle("visible", wordsToShow >= words.length);
+          }
+        }
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };
   }, []);
 
-  return (
-    <div
-      ref={ref}
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: 600,
-        height: 600,
-        borderRadius: "50%",
-        background:
-          "radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%)",
-        pointerEvents: "none",
-        zIndex: 1,
-        willChange: "transform",
-      }}
-    />
-  );
-}
-
-/* ── Scroll Progress Bar ── */
-function ScrollProgress() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onScroll = () => {
-      if (!ref.current) return;
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      const p = h > 0 ? window.scrollY / h : 0;
-      ref.current.style.transform = `scaleX(${p})`;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: 2,
-        zIndex: 100,
-        background: "rgba(255,255,255,0.05)",
-      }}
-    >
-      <div
-        ref={ref}
-        style={{
-          height: "100%",
-          background: "linear-gradient(90deg, #6366f1, #06b6d4)",
-          transformOrigin: "left",
-          transform: "scaleX(0)",
-          willChange: "transform",
-        }}
-      />
-    </div>
-  );
-}
-
-/* ── useInView hook ── */
-function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true);
-      },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-
-  return { ref, visible };
-}
-
-/* ── useParallax hook ── */
-function useParallax(speed = 0.3) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      const center = rect.top + rect.height / 2 - window.innerHeight / 2;
-      el.style.transform = `translateY(${center * speed * -1}px)`;
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [speed]);
-
-  return ref;
-}
-
-/* ── Magnetic Button ── */
-function MagneticButton({
-  children,
-  href,
-  style = {},
-}: {
-  children: React.ReactNode;
-  href: string;
-  style?: React.CSSProperties;
-}) {
-  const ref = useRef<HTMLAnchorElement>(null);
-
-  const onMove = useCallback((e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    ref.current.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-  }, []);
-
-  const onLeave = useCallback(() => {
-    if (ref.current) ref.current.style.transform = "translate(0,0)";
-  }, []);
-
-  return (
-    <a
-      ref={ref}
-      href={href}
-      style={{
-        ...style,
-        transition: "transform 0.3s cubic-bezier(0.23,1,0.32,1)",
-        willChange: "transform",
-      }}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-    >
-      {children}
-    </a>
-  );
-}
-
-/* ── Text Reveal (word-by-word on scroll) ── */
-function TextReveal({ text }: { text: string }) {
-  const { ref, visible } = useInView(0.2);
-  const words = text.split(" ");
-
-  return (
-    <div ref={ref}>
-      {words.map((word, i) => (
-        <span
-          key={i}
-          style={{
-            display: "inline-block",
-            marginRight: "0.35em",
-            fontSize: "clamp(1.3rem, 3.5vw, 2.2rem)",
-            fontWeight: 400,
-            lineHeight: 1.5,
-            color: "rgba(255,255,255,0.55)",
-            fontFamily: "ui-sans-serif, system-ui, sans-serif",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(40px)",
-            transition: `all 0.6s cubic-bezier(0.16,1,0.3,1) ${i * 0.04}s`,
-          }}
-        >
-          {word}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-/* ── Counter Animation ── */
-function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
-  const { ref, visible } = useInView(0.3);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!visible) return;
-    const duration = 2000;
-    const startTime = performance.now();
-
-    const tick = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      setCount(Math.round(eased * value));
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }, [visible, value]);
-
-  return (
-    <span ref={ref}>
-      {count}
-      {suffix}
-    </span>
-  );
-}
-
-/* ── Horizontal Scroll Services ── */
-const SERVICES = [
-  {
-    num: "01",
-    title: "Web\nDesign",
-    desc: "Websites that convert visitors into customers. Mobile-first, SEO-optimized, delivered in 14 days.",
-    price: "From $497",
-    href: "/web-design",
-    accent: "#6366f1",
-  },
-  {
-    num: "02",
-    title: "SEO\nDominance",
-    desc: "Get found. Stay found. Local SEO, keyword strategy, and monthly ranking reports that show real growth.",
-    price: "From $297/mo",
-    href: "/seo",
-    accent: "#06b6d4",
-  },
-  {
-    num: "03",
-    title: "Social\nMedia",
-    desc: "Content that builds community. 3 posts per week, custom graphics, strategy that actually engages.",
-    price: "From $199/mo",
-    href: "/social-media",
-    accent: "#10b981",
-  },
-  {
-    num: "04",
-    title: "AI\nAutomation",
-    desc: "Systems that work while you sleep. Lead capture, follow-ups, scheduling — all automated with AI.",
-    price: "Custom",
-    href: "/ai-integration",
-    accent: "#f59e0b",
-  },
-  {
-    num: "05",
-    title: "Lead\nGeneration",
-    desc: "Verified leads delivered to your inbox. No cold calling, no guessing — just qualified prospects.",
-    price: "From $397/mo",
-    href: "/leads",
-    accent: "#ef4444",
-  },
-];
-
-function HorizontalServices() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const onScroll = () => {
-      const rect = container.getBoundingClientRect();
-      const containerHeight = container.offsetHeight - window.innerHeight;
-      const scrolled = -rect.top;
-      const progress = Math.max(0, Math.min(1, scrolled / containerHeight));
-      setScrollProgress(progress);
-
-      if (trackRef.current) {
-        const totalWidth = trackRef.current.scrollWidth - window.innerWidth;
-        trackRef.current.style.transform = `translateX(${-progress * totalWidth}px)`;
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <div
-      ref={containerRef}
-      style={{ height: `${SERVICES.length * 100}vh`, position: "relative" }}
-    >
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {/* Section label */}
-        <div
-          style={{
-            position: "absolute",
-            top: 40,
-            left: "clamp(24px, 4vw, 48px)",
-            zIndex: 10,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "ui-monospace, monospace",
-              fontSize: "0.7rem",
-              color: "rgba(255,255,255,0.25)",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-            }}
-          >
-            What we do
-          </span>
-          <div
-            style={{
-              marginTop: 12,
-              width: 60,
-              height: 2,
-              background: "rgba(255,255,255,0.08)",
-              borderRadius: 1,
-            }}
-          >
-            <div
-              style={{
-                height: "100%",
-                width: `${scrollProgress * 100}%`,
-                background: "linear-gradient(90deg, #6366f1, #06b6d4)",
-                borderRadius: 1,
-                transition: "width 0.1s linear",
-              }}
-            />
-          </div>
-        </div>
-
-        <div
-          ref={trackRef}
-          style={{
-            display: "flex",
-            gap: 0,
-            willChange: "transform",
-          }}
-        >
-          {SERVICES.map((svc, i) => (
-            <a
-              key={i}
-              href={svc.href}
-              style={{
-                width: "100vw",
-                height: "100vh",
-                flexShrink: 0,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                padding: "0 clamp(24px, 8vw, 96px)",
-                textDecoration: "none",
-                color: "inherit",
-                position: "relative",
-                cursor: "pointer",
-              }}
-            >
-              {/* Giant number watermark */}
-              <span
-                style={{
-                  position: "absolute",
-                  right: "8vw",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  fontSize: "clamp(10rem, 28vw, 22rem)",
-                  fontWeight: 900,
-                  color: svc.accent,
-                  opacity: 0.04,
-                  lineHeight: 0.85,
-                  letterSpacing: "-0.05em",
-                  fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                  userSelect: "none",
-                  pointerEvents: "none",
-                }}
-              >
-                {svc.num}
-              </span>
-
-              {/* Number label */}
-              <span
-                style={{
-                  fontFamily: "ui-monospace, monospace",
-                  fontSize: "0.8rem",
-                  color: svc.accent,
-                  letterSpacing: "0.15em",
-                  marginBottom: 24,
-                  opacity: 0.7,
-                }}
-              >
-                {svc.num}
-              </span>
-
-              {/* Title */}
-              <h3
-                style={{
-                  fontSize: "clamp(3rem, 10vw, 8rem)",
-                  fontWeight: 900,
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.04em",
-                  color: "#fff",
-                  whiteSpace: "pre-line",
-                  marginBottom: 32,
-                  fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                  margin: 0,
-                  marginTop: 0,
-                  paddingBottom: 32,
-                }}
-              >
-                {svc.title}
-              </h3>
-
-              {/* Description */}
-              <p
-                style={{
-                  fontSize: "clamp(0.95rem, 1.8vw, 1.2rem)",
-                  color: "rgba(255,255,255,0.4)",
-                  maxWidth: 420,
-                  lineHeight: 1.7,
-                  marginBottom: 24,
-                  fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                }}
-              >
-                {svc.desc}
-              </p>
-
-              {/* Price */}
-              <span
-                style={{
-                  fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)",
-                  fontWeight: 700,
-                  color: svc.accent,
-                  letterSpacing: "-0.02em",
-                  fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                }}
-              >
-                {svc.price}
-              </span>
-
-              {/* Divider */}
-              {i < SERVICES.length - 1 && (
-                <div
-                  style={{
-                    position: "absolute",
-                    right: 0,
-                    top: "15%",
-                    bottom: "15%",
-                    width: 1,
-                    background: "rgba(255,255,255,0.06)",
-                  }}
-                />
-              )}
-            </a>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Marquee ── */
-function Marquee({ texts, speed = 30 }: { texts: string[]; speed?: number }) {
-  const content = texts.join(" \u00b7 ") + " \u00b7 ";
-  return (
-    <div style={{ overflow: "hidden", whiteSpace: "nowrap", padding: "2rem 0" }}>
-      <div
-        style={{
-          display: "inline-block",
-          animation: `marquee ${speed}s linear infinite`,
-          fontSize: "clamp(0.75rem, 1.3vw, 0.95rem)",
-          color: "rgba(255,255,255,0.1)",
-          fontWeight: 600,
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          fontFamily: "ui-monospace, monospace",
-        }}
-      >
-        {content}
-        {content}
-      </div>
-    </div>
-  );
-}
-
-/* ── Stat ── */
-function Stat({
-  value,
-  suffix,
-  label,
-  delay = 0,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-  delay?: number;
-}) {
-  const { ref, visible } = useInView(0.2);
-
-  return (
-    <div
-      ref={ref}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(60px)",
-        transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
-        textAlign: "center",
-        flex: "1 1 150px",
-      }}
-    >
-      <div
-        style={{
-          fontSize: "clamp(3rem, 9vw, 5.5rem)",
-          fontWeight: 900,
-          letterSpacing: "-0.04em",
-          lineHeight: 1,
-          background: "linear-gradient(135deg, #fff 30%, rgba(255,255,255,0.5))",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        }}
-      >
-        <AnimatedCounter value={value} suffix={suffix} />
-      </div>
-      <p
-        style={{
-          fontSize: "clamp(0.75rem, 1.3vw, 0.9rem)",
-          color: "rgba(255,255,255,0.3)",
-          marginTop: 8,
-          letterSpacing: "0.04em",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        }}
-      >
-        {label}
-      </p>
-    </div>
-  );
-}
-
-/* ── Differentiator Section ── */
-function Differentiator() {
-  const { ref, visible } = useInView(0.2);
-  return (
-    <div ref={ref} style={{ maxWidth: 800, margin: "0 auto", position: "relative", zIndex: 1 }}>
-      <span
-        style={{
-          fontFamily: "ui-monospace, monospace",
-          fontSize: "0.7rem",
-          color: "rgba(255,255,255,0.2)",
-          letterSpacing: "0.25em",
-          textTransform: "uppercase",
-          display: "block",
-          marginBottom: "2rem",
-          opacity: visible ? 1 : 0,
-          transition: "opacity 0.6s ease 0.1s",
-        }}
-      >
-        Why Bamberg Digital
-      </span>
-
-      <h2
-        style={{
-          fontSize: "clamp(2.2rem, 6vw, 4.5rem)",
-          fontWeight: 900,
-          lineHeight: 1.05,
-          letterSpacing: "-0.04em",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-          marginBottom: "2rem",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(30px)",
-          transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s",
-        }}
-      >
-        Powered by AI.
-        <br />
-        <span style={{ color: "rgba(255,255,255,0.4)" }}>
-          Run by a human
-        </span>
-        <br />
-        <span style={{ color: "rgba(255,255,255,0.4)" }}>
-          who picks up the phone.
-        </span>
-      </h2>
-
-      <p
-        style={{
-          fontSize: "clamp(1rem, 2vw, 1.2rem)",
-          color: "rgba(255,255,255,0.35)",
-          lineHeight: 1.75,
-          maxWidth: 560,
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(20px)",
-          transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        }}
-      >
-        We use AI to deliver agency-quality work at freelancer prices.
-        Every project is reviewed by Jason personally. You get enterprise
-        tools with a one-call relationship.
-      </p>
-
-      <div
-        style={{
-          display: "flex",
-          gap: "clamp(1.5rem, 4vw, 3rem)",
-          marginTop: "3.5rem",
-          flexWrap: "wrap",
-        }}
-      >
-        {[
-          { icon: "\u26A1", label: "AI Speed", sub: "10x faster delivery" },
-          { icon: "\uD83E\uDD1D", label: "Human Touch", sub: "Jason on every project" },
-          { icon: "\uD83D\uDCCD", label: "Sacramento", sub: "Local roots, national reach" },
-        ].map((item, idx) => (
-          <div
-            key={idx}
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(20px)",
-              transition: `all 0.7s cubic-bezier(0.16,1,0.3,1) ${0.4 + idx * 0.12}s`,
-            }}
-          >
-            <div style={{ fontSize: "1.5rem", marginBottom: 8 }}>
-              {item.icon}
-            </div>
-            <div
-              style={{
-                fontSize: "0.95rem",
-                fontWeight: 700,
-                color: "rgba(255,255,255,0.8)",
-                marginBottom: 4,
-                fontFamily: "ui-sans-serif, system-ui, sans-serif",
-              }}
-            >
-              {item.label}
-            </div>
-            <div
-              style={{
-                fontSize: "0.8rem",
-                color: "rgba(255,255,255,0.3)",
-                fontFamily: "ui-sans-serif, system-ui, sans-serif",
-              }}
-            >
-              {item.sub}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ── Testimonial ── */
-function Testimonial({ quote, author, role, index }: { quote: string; author: string; role: string; index: number }) {
-  const { ref, visible } = useInView(0.2);
-  return (
-    <div
-      ref={ref}
-      style={{
-        padding: "clamp(2rem, 5vh, 4rem) 0",
-        borderBottom: index === 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(40px)",
-        transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${index * 0.15}s`,
-      }}
-    >
-      <p
-        style={{
-          fontSize: "clamp(1.5rem, 3.5vw, 2.6rem)",
-          fontWeight: 300,
-          lineHeight: 1.35,
-          letterSpacing: "-0.02em",
-          color: "rgba(255,255,255,0.7)",
-          fontStyle: "italic",
-          maxWidth: 700,
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        }}
-      >
-        &ldquo;{quote}&rdquo;
-      </p>
-      <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 8 }}>
-        <div style={{ width: 24, height: 1, background: "rgba(99,102,241,0.5)" }} />
-        <span
-          style={{
-            fontSize: "0.85rem",
-            color: "#6366f1",
-            fontWeight: 600,
-            fontFamily: "ui-sans-serif, system-ui, sans-serif",
-          }}
-        >
-          {author}
-        </span>
-        <span
-          style={{
-            fontSize: "0.8rem",
-            color: "rgba(255,255,255,0.25)",
-            fontFamily: "ui-sans-serif, system-ui, sans-serif",
-          }}
-        >
-          {role}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-/* ── Problem Statement ── */
-function ProblemHit() {
-  const { ref, visible } = useInView(0.3);
-  return (
-    <p
-      ref={ref}
-      style={{
-        fontSize: "clamp(1.8rem, 5vw, 3.2rem)",
-        fontWeight: 900,
-        lineHeight: 1.15,
-        letterSpacing: "-0.03em",
-        fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        background: "linear-gradient(135deg, #6366f1, #06b6d4)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        backgroundClip: "text",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.97)",
-        transition: "all 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s",
-      }}
-    >
-      We fix that.
-    </p>
-  );
-}
-
-/* ── CTA Section ── */
-function CTASection() {
-  const { ref, visible } = useInView(0.2);
-  return (
-    <div ref={ref} style={{ position: "relative", zIndex: 1 }}>
-      <h2
-        style={{
-          fontSize: "clamp(2.5rem, 8vw, 6rem)",
-          fontWeight: 900,
-          lineHeight: 0.95,
-          letterSpacing: "-0.04em",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-          marginBottom: "1.5rem",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(40px)",
-          transition: "all 0.8s cubic-bezier(0.16,1,0.3,1)",
-        }}
-      >
-        Let&apos;s build
-        <br />
-        <span
-          style={{
-            background: "linear-gradient(135deg, #6366f1, #06b6d4)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          something.
-        </span>
-      </h2>
-
-      <p
-        style={{
-          fontSize: "clamp(1rem, 2vw, 1.2rem)",
-          color: "rgba(255,255,255,0.3)",
-          marginBottom: "2.5rem",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(20px)",
-          transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s",
-        }}
-      >
-        Free consultation. No pressure. Just results.
-      </p>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "1.5rem",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(20px)",
-          transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.3s",
-        }}
-      >
-        <MagneticButton
-          href="tel:9169077782"
-          style={{
-            fontSize: "clamp(1.8rem, 5vw, 3.2rem)",
-            fontWeight: 900,
-            color: "#fff",
-            textDecoration: "none",
-            letterSpacing: "-0.03em",
-            fontFamily: "ui-sans-serif, system-ui, sans-serif",
-            display: "inline-block",
-          }}
-        >
-          (916) 907-7782
-        </MagneticButton>
-
-        <a
-          href="mailto:hello@bambergdigital.com"
-          style={{
-            fontSize: "clamp(0.85rem, 1.5vw, 1rem)",
-            color: "rgba(255,255,255,0.3)",
-            textDecoration: "none",
-            fontFamily: "ui-sans-serif, system-ui, sans-serif",
-            borderBottom: "1px solid rgba(255,255,255,0.1)",
-            paddingBottom: 2,
-          }}
-        >
-          hello@bambergdigital.com
-        </a>
-
-        <MagneticButton
-          href="/pricing"
-          style={{
-            marginTop: "1rem",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            padding: "20px 48px",
-            background: "linear-gradient(135deg, #6366f1, #4f46e5)",
-            color: "#fff",
-            borderRadius: 60,
-            fontSize: "clamp(1rem, 1.8vw, 1.1rem)",
-            fontWeight: 700,
-            textDecoration: "none",
-            fontFamily: "ui-sans-serif, system-ui, sans-serif",
-            letterSpacing: "-0.01em",
-            boxShadow: "0 0 60px rgba(99,102,241,0.35), 0 10px 40px rgba(0,0,0,0.5)",
-          }}
-        >
-          Get Started Today
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </MagneticButton>
-      </div>
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════════
-   MAIN COMPONENT
-   ══════════════════════════════════════════════ */
-
-const INLINE_CSS = `
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  @keyframes grain {
-    0%, 100% { transform: translate(0, 0); }
-    10% { transform: translate(-5%, -10%); }
-    30% { transform: translate(3%, -15%); }
-    50% { transform: translate(-2%, 10%); }
-    70% { transform: translate(7%, 5%); }
-    90% { transform: translate(-1%, 8%); }
-  }
-  @keyframes float-slow {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    33% { transform: translate(30px, -40px) rotate(2deg); }
-    66% { transform: translate(-20px, 20px) rotate(-1deg); }
-  }
-
-  .bd-homepage {
-    background: #050507;
-    color: #fff;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  .bd-homepage * {
-    box-sizing: border-box;
-  }
-
-  .bd-grain {
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 2;
-    animation: grain 8s steps(10) infinite;
-    opacity: 0.4;
-  }
-
-  .bd-section {
-    position: relative;
-    z-index: 3;
-  }
-
-  html {
-    scroll-snap-type: none !important;
-  }
-
-  .bd-footer-wrap {
-    scroll-snap-align: none;
-  }
-`;
-
-export default function HomeNarrative() {
-  const [heroLoaded, setHeroLoaded] = useState(false);
-  const taglineRef = useParallax(0.15);
-  const orbRef = useParallax(-0.2);
-
-  useEffect(() => {
-    const t = setTimeout(() => setHeroLoaded(true), 100);
-    return () => clearTimeout(t);
-  }, []);
+  /* helpers */
+  const v = (id: string) => (visible[id] ? "visible" : "");
+  const activeDot = hProgress < 0.33 ? 0 : hProgress < 0.66 ? 1 : 2;
+  const questionWords = "What if nobody could find you?".split(" ");
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: INLINE_CSS }} />
+      {/* eslint-disable-next-line react/no-danger */}
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      <div className="bd-homepage">
-        <div className="bd-grain" />
-        <CursorGlow />
-        <ScrollProgress />
+      {/* Cursor glow (desktop only) */}
+      {hasMouse && <div ref={cursorRef} className="hn-cursor" />}
 
-        {/* ═══ HERO ═══ */}
-        <section
-          className="bd-section"
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "0 6vw",
-            position: "relative",
-            overflow: "hidden",
-          }}
+      {/* Film grain overlay */}
+      <svg className="hn-noise" xmlns="http://www.w3.org/2000/svg">
+        <filter id="hn-grain">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.65"
+            numOctaves="3"
+            stitchTiles="stitch"
+          />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#hn-grain)" />
+      </svg>
+
+      {/* ═══════ NAV ═══════ */}
+      <nav className={`hn-nav${navScrolled ? " scrolled" : ""}`}>
+        <a href="/" className="hn-nav-logo">
+          Bamberg <span>Digital</span>
+        </a>
+        <div className="hn-nav-links">
+          <a href="/portfolio" className="hn-nav-link">
+            Work
+          </a>
+          <a href="/pricing" className="hn-nav-link">
+            Pricing
+          </a>
+          <a href="/about" className="hn-nav-link">
+            About
+          </a>
+          <a href="mailto:hello@bambergdigital.com" className="hn-nav-cta">
+            Get in touch
+          </a>
+        </div>
+        <button
+          className="hn-hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
         >
-          {/* Floating orbs */}
-          <div
-            ref={orbRef}
-            style={{
-              position: "absolute",
-              top: "10%",
-              right: "15%",
-              width: "clamp(300px, 40vw, 600px)",
-              height: "clamp(300px, 40vw, 600px)",
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)",
-              filter: "blur(60px)",
-              animation: "float-slow 20s ease-in-out infinite",
-              pointerEvents: "none",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: "5%",
-              left: "10%",
-              width: "clamp(200px, 30vw, 450px)",
-              height: "clamp(200px, 30vw, 450px)",
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)",
-              filter: "blur(50px)",
-              animation: "float-slow 25s ease-in-out infinite reverse",
-              pointerEvents: "none",
-            }}
-          />
-
-          {/* Label */}
           <span
-            style={{
-              fontFamily: "ui-monospace, monospace",
-              fontSize: "clamp(0.6rem, 1vw, 0.75rem)",
-              color: "rgba(255,255,255,0.2)",
-              letterSpacing: "0.3em",
-              textTransform: "uppercase",
-              marginBottom: "2.5rem",
-              opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateY(0)" : "translateY(20px)",
-              transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s",
-            }}
-          >
-            Sacramento&apos;s AI-Powered Agency
-          </span>
+            style={
+              menuOpen
+                ? { transform: "rotate(45deg) translate(5px, 5px)" }
+                : {}
+            }
+          />
+          <span style={menuOpen ? { opacity: 0 } : {}} />
+          <span
+            style={
+              menuOpen
+                ? { transform: "rotate(-45deg) translate(5px, -5px)" }
+                : {}
+            }
+          />
+        </button>
+      </nav>
 
-          {/* Headline */}
-          <h1
-            style={{
-              fontSize: "clamp(3rem, 12vw, 10rem)",
-              fontWeight: 900,
-              lineHeight: 0.88,
-              letterSpacing: "-0.05em",
-              textAlign: "center",
-              fontFamily: "ui-sans-serif, system-ui, sans-serif",
-              margin: 0,
-            }}
-          >
-            {["We", "don\u2019t", "do"].map((word, wi) => (
-              <span key={wi} style={{ display: "inline-block", overflow: "hidden", marginRight: "0.25em" }}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    opacity: heroLoaded ? 1 : 0,
-                    transform: heroLoaded ? "translateY(0)" : "translateY(100%)",
-                    transition: `all 0.7s cubic-bezier(0.16,1,0.3,1) ${0.3 + wi * 0.08}s`,
-                    color: "rgba(255,255,255,0.9)",
-                  }}
-                >
-                  {word}
-                </span>
+      {/* Mobile overlay menu */}
+      <div className={`hn-menu-overlay${menuOpen ? " open" : ""}`}>
+        {[
+          { href: "/web-design", label: "Web Design" },
+          { href: "/seo", label: "SEO" },
+          { href: "/social-media", label: "Social Media" },
+          { href: "/pricing", label: "Pricing" },
+          { href: "/portfolio", label: "Portfolio" },
+          { href: "/about", label: "About" },
+        ].map((l) => (
+          <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>
+            {l.label}
+          </a>
+        ))}
+        <a
+          href="tel:9169077782"
+          onClick={() => setMenuOpen(false)}
+          style={{ color: "#00f0ff" }}
+        >
+          (916) 907-7782
+        </a>
+      </div>
+
+      {/* ═══════ HERO ═══════ */}
+      <section className="hn-section hn-hero">
+        <h1 className="hn-hero-title">BAMBERG</h1>
+        <p className="hn-hero-subtitle">DIGITAL</p>
+        <p className="hn-hero-tagline">Sacramento&apos;s unfair advantage</p>
+        <div className="hn-scroll-cue">
+          <span>Scroll</span>
+          <div className="hn-scroll-line" />
+        </div>
+      </section>
+
+      {/* ═══════ THE QUESTION ═══════ */}
+      <section
+        className="hn-section hn-question"
+        data-section="question"
+        ref={questionRef}
+      >
+        <div>
+          <p className="hn-question-text">
+            {questionWords.map((word, i) => (
+              <span key={i} className="hn-word">
+                {word}
               </span>
             ))}
-            <br />
-            <span style={{ display: "inline-block", overflow: "hidden" }}>
-              <span
-                style={{
-                  display: "inline-block",
-                  opacity: heroLoaded ? 1 : 0,
-                  transform: heroLoaded ? "translateY(0)" : "translateY(100%)",
-                  transition: "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.6s",
-                  background: "linear-gradient(135deg, #6366f1, #06b6d4, #10b981)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                ordinary.
-              </span>
-            </span>
-          </h1>
+          </p>
+          <p className="hn-question-answer">You probably are.</p>
+        </div>
+      </section>
 
-          {/* Tagline */}
-          <div ref={taglineRef}>
-            <p
-              style={{
-                fontSize: "clamp(1rem, 2.2vw, 1.4rem)",
-                color: "rgba(255,255,255,0.35)",
-                maxWidth: 520,
-                textAlign: "center",
-                lineHeight: 1.6,
-                marginTop: "2.5rem",
-                fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                opacity: heroLoaded ? 1 : 0,
-                transform: heroLoaded ? "translateY(0)" : "translateY(20px)",
-                transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.85s",
-              }}
-            >
-              Design. Code. Growth. AI.
-              <br />
-              One studio, everything your business needs.
+      {/* ═══════ THE STAT ═══════ */}
+      <section className="hn-section hn-stat" data-section="stat">
+        <div style={{ textAlign: "center" }}>
+          <div className="hn-stat-wrap">
+            <p className="hn-stat-number">
+              {statCount}
+              <span>%</span>
             </p>
+            <svg className="hn-stat-ring" viewBox="0 0 520 520">
+              <circle className="hn-ring-bg" cx="260" cy="260" r="250" />
+              <circle
+                className={`hn-ring-fill${visible.stat ? " animate" : ""}`}
+                cx="260"
+                cy="260"
+                r="250"
+              />
+            </svg>
           </div>
+          <p className="hn-stat-desc">
+            of people will never see your business online.
+          </p>
+          <p className={`hn-stat-punch ${v("stat")}`}>
+            If you&apos;re not there, you don&apos;t exist.
+          </p>
+        </div>
+      </section>
 
-          {/* CTA */}
-          <div
-            style={{
-              marginTop: "3rem",
-              opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateY(0) scale(1)" : "translateY(20px) scale(0.95)",
-              transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 1.1s",
-            }}
+      {/* ═══════ THE ANSWER ═══════ */}
+      <section className="hn-section hn-answer" data-section="answer">
+        <h2 className={`hn-answer-text ${v("answer")}`}>
+          We make you
+          <br />
+          <span className="hn-accent">impossible to ignore.</span>
+        </h2>
+      </section>
+
+      {/* ═══════ SERVICES — horizontal scroll ═══════ */}
+      <div ref={hscrollRef} className="hn-hscroll-outer">
+        <div className="hn-hscroll-sticky">
+          <div ref={trackRef} className="hn-hscroll-track">
+            {/* Panel 1 */}
+            <div className="hn-hscroll-panel">
+              <p className="hn-svc-label">01 — Web Design</p>
+              <h3 className="hn-svc-word" style={{ color: "#00f0ff" }}>
+                DESIGN
+              </h3>
+              <p className="hn-svc-desc">
+                Websites that make your competitors nervous. Mobile-first,
+                conversion-optimized, delivered in 2 weeks.
+              </p>
+              <a href="/web-design" className="hn-svc-link">
+                Explore web design
+              </a>
+            </div>
+            {/* Panel 2 */}
+            <div className="hn-hscroll-panel">
+              <p className="hn-svc-label">02 — AI &amp; Automation</p>
+              <h3 className="hn-svc-word" style={{ color: "#7c3aed" }}>
+                BUILD
+              </h3>
+              <p className="hn-svc-desc">
+                AI systems that work while you sleep. Chatbots, automation, lead
+                capture — all custom-built for your business.
+              </p>
+              <a href="/ai-integration" className="hn-svc-link">
+                Explore AI tools
+              </a>
+            </div>
+            {/* Panel 3 */}
+            <div className="hn-hscroll-panel">
+              <p className="hn-svc-label">03 — SEO &amp; Growth</p>
+              <h3 className="hn-svc-word" style={{ color: "#10b981" }}>
+                GROW
+              </h3>
+              <p className="hn-svc-desc">
+                SEO that compounds like interest. Social that builds authority.
+                Leads that actually convert.
+              </p>
+              <a href="/seo" className="hn-svc-link">
+                Explore SEO services
+              </a>
+            </div>
+          </div>
+          <div className="hn-hscroll-dots">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className={`hn-dot${activeDot === i ? " active" : ""}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ═══════ PRICE ═══════ */}
+      <section className="hn-section hn-price" data-section="price">
+        <div style={{ textAlign: "center" }}>
+          <p className={`hn-price-amount ${v("price")}`}>$497</p>
+          <p className={`hn-price-label ${v("price")}`}>
+            Your entire website.
+          </p>
+          <p className={`hn-price-detail ${v("price")}`}>
+            2 weeks. Flat rate. Zero surprises.
+          </p>
+          <p className={`hn-price-sub ${v("price")}`}>
+            Monthly growth plans from $199/mo
+          </p>
+        </div>
+      </section>
+
+      {/* ═══════ CTA ═══════ */}
+      <section className="hn-section hn-cta" data-section="cta">
+        <div className="hn-cta-glow" />
+        <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
+          <h2 className={`hn-cta-name ${v("cta")}`}>Jason Bamberg</h2>
+          <p className={`hn-cta-role ${v("cta")}`}>Founder, Bamberg Digital</p>
+          <p className={`hn-cta-tagline ${v("cta")}`}>
+            Sacramento small businesses deserve
+            <br />
+            enterprise-grade marketing — without
+            <br />
+            the enterprise price tag.
+          </p>
+          <a href="tel:9169077782" className={`hn-cta-phone ${v("cta")}`}>
+            (916) 907-7782
+          </a>
+          <p className={`hn-cta-pickup ${v("cta")}`}>I pick up.</p>
+          <a
+            href="mailto:hello@bambergdigital.com"
+            className={`hn-cta-email ${v("cta")}`}
           >
-            <MagneticButton
-              href="/pricing"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "18px 40px",
-                background: "linear-gradient(135deg, #6366f1, #4f46e5)",
-                color: "#fff",
-                borderRadius: 60,
-                fontSize: "clamp(0.9rem, 1.5vw, 1rem)",
-                fontWeight: 700,
-                textDecoration: "none",
-                fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                letterSpacing: "-0.01em",
-                boxShadow: "0 0 40px rgba(99,102,241,0.3), 0 8px 32px rgba(0,0,0,0.4)",
-              }}
-            >
-              Start a project
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </MagneticButton>
-          </div>
-
-          {/* Scroll indicator */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: 40,
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 8,
-              opacity: heroLoaded ? 0.3 : 0,
-              transition: "opacity 1.5s ease 1.8s",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "ui-monospace, monospace",
-                fontSize: "0.6rem",
-                color: "rgba(255,255,255,0.5)",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-              }}
-            >
-              Scroll
-            </span>
-            <div style={{ width: 1, height: 40, background: "linear-gradient(to bottom, rgba(255,255,255,0.3), transparent)" }} />
-          </div>
-        </section>
-
-        {/* ═══ MARQUEE ═══ */}
-        <div className="bd-section" style={{ borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-          <Marquee texts={["Web Design", "SEO", "Social Media", "AI Automation", "Lead Generation", "Branding", "Content Creation", "Custom Tools", "Digital Marketing", "Consulting"]} />
+            hello@bambergdigital.com
+          </a>
         </div>
+      </section>
 
-        {/* ═══ PROBLEM ═══ */}
-        <section className="bd-section" style={{ padding: "clamp(6rem, 18vh, 12rem) clamp(24px, 8vw, 96px)", maxWidth: 900, margin: "0 auto" }}>
-          <TextReveal text="Your competitors are ranking on Google. Getting the calls. Closing the deals. And you're wondering why your phone isn't ringing." />
-          <div style={{ marginTop: "3rem" }}>
-            <ProblemHit />
-          </div>
-        </section>
-
-        {/* ═══ STATS ═══ */}
-        <section className="bd-section" style={{ padding: "clamp(4rem, 12vh, 8rem) clamp(24px, 8vw, 96px)", display: "flex", justifyContent: "center", gap: "clamp(2rem, 6vw, 6rem)", flexWrap: "wrap" }}>
-          <Stat value={93} suffix="%" label="of searches stay on page 1" delay={0} />
-          <Stat value={14} suffix="" label="day website delivery" delay={0.15} />
-          <Stat value={47} suffix="+" label="businesses transformed" delay={0.3} />
-        </section>
-
-        {/* ═══ SERVICES — HORIZONTAL SCROLL ═══ */}
-        <HorizontalServices />
-
-        {/* ═══ DIFFERENTIATOR ═══ */}
-        <section className="bd-section" style={{ padding: "clamp(8rem, 20vh, 14rem) clamp(24px, 8vw, 96px)", position: "relative" }}>
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "60vw",
-              height: "60vh",
-              background: "radial-gradient(ellipse, rgba(99,102,241,0.06) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-          <Differentiator />
-        </section>
-
-        {/* ═══ TESTIMONIALS ═══ */}
-        <section className="bd-section" style={{ padding: "clamp(6rem, 16vh, 10rem) clamp(24px, 8vw, 96px)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-          <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-            <Testimonial quote="They built our site in 5 days and we got 3 leads in the first week." author="Maria T." role="Elk Grove Restaurant Owner" index={0} />
-            <Testimonial quote="Finally, someone who explains digital marketing in plain English." author="David R." role="Folsom Contractor" index={1} />
-          </div>
-        </section>
-
-        {/* ═══ CTA ═══ */}
-        <section className="bd-section" style={{ padding: "clamp(8rem, 22vh, 16rem) clamp(24px, 8vw, 96px)", textAlign: "center", position: "relative" }}>
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "clamp(300px, 50vw, 700px)",
-              height: "clamp(300px, 50vw, 700px)",
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(99,102,241,0.1) 0%, rgba(6,182,212,0.05) 40%, transparent 70%)",
-              filter: "blur(40px)",
-              pointerEvents: "none",
-            }}
-          />
-          <CTASection />
-        </section>
-
-        {/* ═══ BOTTOM MARQUEE ═══ */}
-        <div className="bd-section" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-          <Marquee texts={["Sacramento", "Elk Grove", "Folsom", "Roseville", "Rancho Cordova", "Davis", "Woodland", "Citrus Heights"]} speed={35} />
-        </div>
-
-        {/* SEO hidden content */}
-        <div
-          aria-hidden="true"
-          style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}
-        >
-          <h1>Bamberg Digital — Sacramento&apos;s AI-Powered Digital Agency</h1>
-          <p>We don&apos;t do ordinary. Sacramento&apos;s AI-powered digital agency. Web design from $497. SEO from $297/mo. Social media from $199/mo. AI automation, lead generation, branding, content creation.</p>
-          <p>Your competitors are ranking on Google, getting calls, closing deals. 93% of searches stay on page 1. 14-day website delivery.</p>
-          <p>Powered by AI, run by humans. Jason Bamberg, Founder. (916) 907-7782. hello@bambergdigital.com.</p>
-          <p>Serving Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova, Davis, Woodland, Citrus Heights.</p>
-        </div>
+      {/* Hidden SEO content */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        <h1>Bamberg Digital — Sacramento AI-Powered Digital Agency</h1>
+        <p>
+          What if nobody could find you online? You probably are invisible. 93%
+          of people will never see your business online. We make you impossible
+          to ignore.
+        </p>
+        <p>
+          We design, build, and grow. Websites from $497 in 2 weeks. SEO from
+          $297/mo. Social media from $199/mo. AI integration and automation.
+        </p>
+        <p>
+          Jason Bamberg, Founder. (916) 907-7782. hello@bambergdigital.com.
+          Sacramento, CA.
+        </p>
+        <p>
+          Serving Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova.
+        </p>
       </div>
     </>
   );

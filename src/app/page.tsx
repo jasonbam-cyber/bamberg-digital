@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import HomeNarrative from "@/components/HomeNarrative";
 
@@ -26,11 +25,8 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <SiteNav dark />
       <HomeNarrative />
-      <div className="bd-footer-wrap">
-        <SiteFooter />
-      </div>
+      <SiteFooter />
     </>
   );
 }
