@@ -809,6 +809,27 @@ const INLINE_CSS = `
     50% { opacity: 0.6; transform: scale(1.15); }
   }
 
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hero-word-reveal {
+    from { opacity: 0; transform: translateY(60%); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .bd-hero-eyebrow {
+    animation: hero-fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+  }
+  .bd-hero-word { animation: hero-word-reveal 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+  .bd-hero-word-0 { animation-delay: 0.15s; }
+  .bd-hero-word-1 { animation-delay: 0.22s; }
+  .bd-hero-word-2 { animation-delay: 0.29s; }
+  .bd-hero-word-3 { animation-delay: 0.4s; }
+  .bd-hero-subhead { animation: hero-fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s both; }
+  .bd-hero-ctas { animation: hero-fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.65s both; }
+  .bd-hero-scroll { animation: hero-fade-up 1s ease 1.2s both; }
+
   html {
     scroll-snap-type: none !important;
     scroll-padding-top: 0 !important;
@@ -827,15 +848,11 @@ const INLINE_CSS = `
 
   .bd-grain {
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 2;
-    animation: grain 8s steps(10) infinite;
-    opacity: 0.4;
+    opacity: 0.35;
   }
 
   /* Internal nav */
@@ -928,14 +945,8 @@ const INLINE_CSS = `
    ══════════════════════════════════════════════ */
 
 export default function HomeNarrative() {
-  const [heroLoaded, setHeroLoaded] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setHeroLoaded(true), 100);
-    return () => clearTimeout(t);
-  }, []);
 
   // Body color override
   useEffect(() => {
@@ -1073,6 +1084,7 @@ export default function HomeNarrative() {
 
           {/* Eyebrow pill */}
           <div
+            className="bd-hero-eyebrow"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -1082,9 +1094,6 @@ export default function HomeNarrative() {
               borderRadius: 999,
               background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.08)",
-              opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateY(0)" : "translateY(20px)",
-              transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s",
             }}
           >
             <span
@@ -1126,67 +1135,43 @@ export default function HomeNarrative() {
             {["Your", "phone", "should"].map((word, wi) => (
               <span
                 key={wi}
+                className={`bd-hero-word bd-hero-word-${wi}`}
                 style={{
                   display: "inline-block",
-                  overflow: "hidden",
                   marginRight: "0.22em",
                   paddingBottom: "0.18em",
                   paddingTop: "0.04em",
                   verticalAlign: "top",
                   lineHeight: 1,
+                  color: "rgba(255,255,255,0.92)",
                 }}
               >
-                <span
-                  style={{
-                    display: "inline-block",
-                    color: "rgba(255,255,255,0.92)",
-                    opacity: heroLoaded ? 1 : 0,
-                    transform: heroLoaded
-                      ? "translateY(0)"
-                      : "translateY(110%)",
-                    transition: `all 0.7s cubic-bezier(0.16,1,0.3,1) ${0.3 + wi * 0.07}s`,
-                    lineHeight: 1,
-                  }}
-                >
-                  {word}
-                </span>
+                {word}
               </span>
             ))}
             <br />
             <span
+              className="bd-hero-word bd-hero-word-3"
               style={{
                 display: "inline-block",
-                overflow: "hidden",
                 paddingBottom: "0.22em",
                 paddingTop: "0.04em",
                 verticalAlign: "top",
                 lineHeight: 1,
+                background:
+                  "linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #a855f7 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
               }}
             >
-              <span
-                style={{
-                  display: "inline-block",
-                  background:
-                    "linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #a855f7 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  opacity: heroLoaded ? 1 : 0,
-                  transform: heroLoaded
-                    ? "translateY(0)"
-                    : "translateY(110%)",
-                  transition:
-                    "all 0.7s cubic-bezier(0.16,1,0.3,1) 0.55s",
-                  lineHeight: 1,
-                }}
-              >
-                be ringing.
-              </span>
+              be ringing.
             </span>
           </h1>
 
           {/* Subhead */}
           <p
+            className="bd-hero-subhead"
             style={{
               fontSize: "clamp(1.05rem, 2.2vw, 1.45rem)",
               color: "rgba(255,255,255,0.55)",
@@ -1195,9 +1180,6 @@ export default function HomeNarrative() {
               lineHeight: 1.55,
               marginTop: "2.5rem",
               fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
-              opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateY(0)" : "translateY(20px)",
-              transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.85s",
             }}
           >
             I&apos;m Jason. I help Sacramento small businesses get found,
@@ -1206,15 +1188,13 @@ export default function HomeNarrative() {
 
           {/* CTAs */}
           <div
+            className="bd-hero-ctas"
             style={{
               marginTop: "2.5rem",
               display: "flex",
               gap: 14,
               flexWrap: "wrap",
               justifyContent: "center",
-              opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateY(0)" : "translateY(20px)",
-              transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 1.05s",
             }}
           >
             <MagneticButton
@@ -1281,6 +1261,7 @@ export default function HomeNarrative() {
 
           {/* Scroll indicator */}
           <div
+            className="bd-hero-scroll"
             style={{
               position: "absolute",
               bottom: 36,
@@ -1290,8 +1271,7 @@ export default function HomeNarrative() {
               flexDirection: "column",
               alignItems: "center",
               gap: 8,
-              opacity: heroLoaded ? 0.35 : 0,
-              transition: "opacity 1.5s ease 1.8s",
+              opacity: 0.35,
             }}
           >
             <span
