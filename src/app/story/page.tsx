@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import StoryClient from "./StoryClient";
 
 export const metadata: Metadata = {
-  title:
-    "Bamberg Digital — Sacramento's AI-Powered Digital Agency | The Experience",
+  title: "Our Story | Bamberg Digital",
   description:
     "See why Sacramento businesses choose Bamberg Digital. Web design from $497, social media from $199/mo, SEO from $297/mo.",
   alternates: { canonical: "https://bambergdigital.com/story" },

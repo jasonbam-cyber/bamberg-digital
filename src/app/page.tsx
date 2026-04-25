@@ -6,7 +6,7 @@ import ContactForm from "@/components/ContactForm";
 export const metadata: Metadata = {
   title: "Bamberg Digital | Sacramento's AI-Powered Digital Agency",
   description:
-    "Bamberg Digital uses AI to find the customers your competitors miss. Web design, SEO, social media, lead generation, branding, and AI automation for small businesses in Sacramento and nationwide.",
+    "Sacramento's AI-powered digital agency. Web design, SEO, social media & lead generation for small businesses. We find the customers your competitors miss.",
   alternates: { canonical: "https://bambergdigital.com" },
   openGraph: {
     title: "Bamberg Digital — Sacramento's AI-Powered Digital Agency",

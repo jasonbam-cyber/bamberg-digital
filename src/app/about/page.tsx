@@ -102,24 +102,12 @@ function Navbar() {
 }
 
 function JasonPhoto() {
-  const [errored, setErrored] = useState(false);
-  if (errored) {
-    return (
-      <div className="w-full h-80 lg:h-96 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center shadow-xl">
-        <span className="font-[family-name:var(--font-montserrat)] font-extrabold text-white text-6xl">
-          JB
-        </span>
-      </div>
-    );
-  }
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src="/images/jason-bamberg.jpeg"
-      alt="Jason Bamberg, Founder of Bamberg Digital"
-      className="w-full h-80 lg:h-96 object-cover object-top rounded-2xl shadow-xl"
-      onError={() => setErrored(true)}
-    />
+    <div className="w-full h-80 lg:h-96 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center shadow-xl">
+      <span className="font-[family-name:var(--font-montserrat)] font-extrabold text-white text-6xl">
+        JB
+      </span>
+    </div>
   );
 }
 
