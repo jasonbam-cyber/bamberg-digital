@@ -35,6 +35,7 @@ const CSS = `
 
   .bd-scene {
     scroll-snap-align: start;
+    min-height: 100vh;
     min-height: 100svh;
     display: flex;
     align-items: center;
@@ -450,6 +451,7 @@ const BG = ["#0a0a0f", "#0a0a0f", "#0c0c14", "#0a0a0f", "#080810"];
 export default function HomeNarrative() {
   const [active, setActive] = useState([true, false, false, false, false]);
   const [versions, setVersions] = useState([0, 0, 0, 0, 0]);
+  const [sceneH, setSceneH] = useState("100vh");
   const sectionRefs = useRef<(HTMLElement | null)[]>([
     null,
     null,
@@ -457,6 +459,15 @@ export default function HomeNarrative() {
     null,
     null,
   ]);
+
+  useEffect(() => {
+    const update = () => {
+      if (window.innerHeight > 0) setSceneH(`${window.innerHeight}px`);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -503,7 +514,7 @@ export default function HomeNarrative() {
           }}
           data-bd={String(i)}
           className="bd-scene"
-          style={{ background: BG[i] }}
+          style={{ background: BG[i], minHeight: sceneH }}
         >
           {i === 0 && <Scene1 active={active[0]} version={versions[0]} />}
           {i === 1 && <Scene2 active={active[1]} version={versions[1]} />}
