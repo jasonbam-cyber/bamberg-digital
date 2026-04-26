@@ -1,23 +1,17 @@
 /**
- * Bamberg Digital brandmark.
+ * Bamberg Digital brandmark — Sacramento Tower Bridge edition.
  *
- * Concept: an interlocking B+D monogram built from a single continuous
- * stroke that traces a bracket — left vertical, top arc forward, bottom
- * counter-arc back — symbolising the design loop (input → build → ship).
- * The terminal has a slight upward kick (an arrow tip) to suggest motion.
+ * The mark is a monoline silhouette of Sacramento's iconic Tower Bridge:
+ * two flanking pylons, a horizontal deck, and the cable suspension lines.
+ * Locally recognizable, nationally distinctive, and decisively NOT a
+ * letter-arrow stack.
  *
- * Two visual modes:
- *  - "dark"  → for dark backgrounds (default for homepage)
- *  - "light" → for light backgrounds (other pages)
- *
- * Two layout variants:
- *  - "mark"     → just the symbol
- *  - "wordmark" → symbol + "Bamberg Digital" lockup
+ * Wordmark uses Fraunces serif for the editorial, founder-led tone.
  */
 
 type LogoProps = {
   variant?: "mark" | "wordmark";
-  theme?: "dark" | "light";
+  theme?: "dark" | "light" | "cream";
   size?: number;
   href?: string | null;
   className?: string;
@@ -26,15 +20,18 @@ type LogoProps = {
 
 export default function Logo({
   variant = "wordmark",
-  theme = "dark",
+  theme = "cream",
   size = 36,
   href = "/",
   className,
   style,
 }: LogoProps) {
-  const fg = theme === "dark" ? "#fff" : "#0a0a0f";
-  const accent = theme === "dark" ? "#6366f1" : "#4f46e5";
-  const accent2 = "#06b6d4";
+  // Color tokens per theme
+  const tokens = {
+    dark: { ink: "#fff", accent: "#d8472f", muted: "rgba(255,255,255,0.45)" },
+    light: { ink: "#1a1410", accent: "#d8472f", muted: "#7a6f63" },
+    cream: { ink: "#1a1410", accent: "#d8472f", muted: "#7a6f63" },
+  }[theme];
 
   const Mark = (
     <svg
@@ -46,53 +43,115 @@ export default function Logo({
       aria-hidden="true"
       style={{ display: "block" }}
     >
-      <defs>
-        <linearGradient id="bd-grad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor={accent} />
-          <stop offset="100%" stopColor={accent2} />
-        </linearGradient>
-        <linearGradient id="bd-grad-soft" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor={accent} stopOpacity="0.15" />
-          <stop offset="100%" stopColor={accent2} stopOpacity="0.15" />
-        </linearGradient>
-      </defs>
+      {/* Tower Bridge silhouette
+          Two pylons (left at x=16, right at x=48) with crowns,
+          a deck running across at y=44, and three suspension cables
+          arcing down between them. */}
 
-      {/* Soft tile background */}
-      <rect x="0" y="0" width="64" height="64" rx="14" fill="url(#bd-grad-soft)" />
-
-      {/* B-stroke: vertical spine + two stacked counters that read as a B */}
-      <path
-        d="M 16 12 L 16 52"
-        stroke={fg}
-        strokeWidth="5"
+      {/* Bridge deck — horizontal road */}
+      <line
+        x1="6"
+        y1="44"
+        x2="58"
+        y2="44"
+        stroke={tokens.ink}
+        strokeWidth="2.5"
         strokeLinecap="round"
       />
-      <path
-        d="M 16 14 L 30 14 Q 40 14 40 22 Q 40 30 30 30 L 16 30"
-        stroke="url(#bd-grad)"
-        strokeWidth="5"
+
+      {/* Water hint — a single calm line below */}
+      <line
+        x1="10"
+        y1="52"
+        x2="54"
+        y2="52"
+        stroke={tokens.muted}
+        strokeWidth="1"
         strokeLinecap="round"
-        strokeLinejoin="round"
+        opacity="0.5"
+      />
+
+      {/* Left pylon */}
+      <line
+        x1="16"
+        y1="44"
+        x2="16"
+        y2="14"
+        stroke={tokens.ink}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      {/* Left pylon crossbar */}
+      <line
+        x1="11"
+        y1="22"
+        x2="21"
+        y2="22"
+        stroke={tokens.ink}
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      {/* Left pylon crown — small block */}
+      <rect
+        x="13.5"
+        y="10"
+        width="5"
+        height="5"
+        fill={tokens.ink}
+      />
+
+      {/* Right pylon */}
+      <line
+        x1="48"
+        y1="44"
+        x2="48"
+        y2="14"
+        stroke={tokens.ink}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      {/* Right pylon crossbar */}
+      <line
+        x1="43"
+        y1="22"
+        x2="53"
+        y2="22"
+        stroke={tokens.ink}
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      {/* Right pylon crown */}
+      <rect
+        x="45.5"
+        y="10"
+        width="5"
+        height="5"
+        fill={tokens.ink}
+      />
+
+      {/* Suspension cables — three arcs between the pylons */}
+      <path
+        d="M 16 18 Q 32 26 48 18"
+        stroke={tokens.accent}
+        strokeWidth="1.5"
+        strokeLinecap="round"
         fill="none"
       />
       <path
-        d="M 16 32 L 32 32 Q 44 32 44 42 Q 44 52 32 52 L 16 52"
-        stroke="url(#bd-grad)"
-        strokeWidth="5"
+        d="M 16 24 Q 32 32 48 24"
+        stroke={tokens.accent}
+        strokeWidth="1.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
         fill="none"
+        opacity="0.7"
       />
-
-      {/* D-arrow terminal: a forward-pointing arrowhead that doubles as the
-          stem of a D, anchored to the right of the B */}
       <path
-        d="M 50 22 L 56 32 L 50 42"
-        stroke="url(#bd-grad)"
-        strokeWidth="5"
+        d="M 16 30 Q 32 38 48 30"
+        stroke={tokens.accent}
+        strokeWidth="1.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
         fill="none"
+        opacity="0.45"
       />
     </svg>
   );
@@ -102,7 +161,7 @@ export default function Logo({
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 12,
+        gap: 14,
         textDecoration: "none",
         ...style,
       }}
@@ -120,12 +179,13 @@ export default function Logo({
           <span
             style={{
               fontFamily:
-                "var(--font-montserrat), ui-sans-serif, system-ui, sans-serif",
-              fontWeight: 800,
-              fontSize: "1.05rem",
-              color: fg,
-              letterSpacing: "-0.025em",
-              lineHeight: 1.1,
+                "var(--font-fraunces), Georgia, 'Times New Roman', serif",
+              fontWeight: 700,
+              fontSize: "1.15rem",
+              color: tokens.ink,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
+              fontStyle: "italic",
             }}
           >
             Bamberg
@@ -133,17 +193,17 @@ export default function Logo({
           <span
             style={{
               fontFamily:
-                "var(--font-montserrat), ui-sans-serif, system-ui, sans-serif",
+                "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
               fontWeight: 600,
-              fontSize: "0.7rem",
-              color: theme === "dark" ? "rgba(255,255,255,0.45)" : accent,
-              letterSpacing: "0.18em",
+              fontSize: "0.62rem",
+              color: tokens.muted,
+              letterSpacing: "0.22em",
               textTransform: "uppercase",
-              marginTop: 2,
+              marginTop: 3,
               lineHeight: 1,
             }}
           >
-            Digital
+            Digital · Sacramento
           </span>
         </span>
       )}
@@ -153,7 +213,11 @@ export default function Logo({
   if (href === null) return inner;
 
   return (
-    <a href={href} style={{ textDecoration: "none" }} aria-label="Bamberg Digital home">
+    <a
+      href={href}
+      style={{ textDecoration: "none" }}
+      aria-label="Bamberg Digital — Sacramento home"
+    >
       {inner}
     </a>
   );

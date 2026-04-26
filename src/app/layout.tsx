@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, Montserrat, Fraunces, Caveat } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,6 +12,21 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
+});
+
+// Editorial serif for warm, distinctive headlines
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+});
+
+// Handwritten script for Jason's signature
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -107,7 +122,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${montserrat.variable} antialiased bg-white text-gray-900`}
+        className={`${inter.variable} ${montserrat.variable} ${fraunces.variable} ${caveat.variable} antialiased bg-white text-gray-900`}
       >
         {children}
       </body>
