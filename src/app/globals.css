@@ -89,6 +89,139 @@ html {
   100% { background-position: 200px 200px, 200px 200px, 200px 200px, 200px 200px; }
 }
 
+/* Hero entrance — CSS-only staggered animation */
+.hero-anim {
+  animation: heroEntrance 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-d1 { animation-delay: 0.1s; }
+.hero-d2 { animation-delay: 0.2s; }
+.hero-d3 { animation-delay: 0.4s; }
+.hero-d4 { animation-delay: 0.6s; }
+@keyframes heroEntrance {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCROLL REVEAL SYSTEM
+   Content visible by default. JS adds .js-loaded to html,
+   then IntersectionObserver adds .revealed on scroll.
+   ═══════════════════════════════════════════════════════ */
+.reveal-on-scroll { opacity: 1; transform: none; }
+.js-loaded .reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.js-loaded .reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CUSTOM CURSOR
+   ═══════════════════════════════════════════════════════ */
+.bd-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(74, 158, 206, 0.45);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: difference;
+  transition: width 0.3s, height 0.3s;
+}
+@media (hover: none), (pointer: coarse) {
+  .bd-cursor { display: none !important; }
+  html { cursor: auto !important; }
+  body { cursor: auto !important; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MARQUEE
+   ═══════════════════════════════════════════════════════ */
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marqueeScrollRev {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.marquee-track {
+  animation: marqueeScroll 35s linear infinite;
+  will-change: transform;
+}
+.marquee-track-rev {
+  animation: marqueeScrollRev 40s linear infinite;
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CATALOG CARDS
+   ═══════════════════════════════════════════════════════ */
+@keyframes cardEnter {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.catalog-card {
+  animation: cardEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s, box-shadow 0.3s;
+}
+.catalog-card:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(74,158,206,0.15);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCROLL INDICATOR PULSE
+   ═══════════════════════════════════════════════════════ */
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.scroll-pulse {
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAV INTERACTIONS
+   ═══════════════════════════════════════════════════════ */
+.nav-link:hover { color: #4a9ece !important; }
+.nav-cta:hover {
+  background: #e8872b !important;
+  color: #fff !important;
+  border-color: #e8872b !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE GRID HELPERS
+   ═══════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  .md\:\!grid-cols-4 { grid-template-columns: repeat(4, 1fr) !important; }
+  .md\:\!grid-cols-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .md\:\!gap-16 { gap: 4rem !important; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   FILM GRAIN (subtle texture overlay)
+   ═══════════════════════════════════════════════════════ */
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
 /* ═══════════════════════════════════════════════════════
    LEGACY CLASSES (used by service pages, about, etc.)
    ═══════════════════════════════════════════════════════ */
