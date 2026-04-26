@@ -115,8 +115,9 @@ export default function PhonePickupSequence() {
       ref={containerRef}
       style={{
         position: "relative",
-        // 4 beats × ~95vh of scroll = a deliberate, breathable narrative
-        height: `${BEATS.length * 95}vh`,
+        // 4 beats × 55vh = ~220vh total. Each beat feels like a brisk
+        // half-screen scroll instead of dragging the user through dead air.
+        height: `${BEATS.length * 55}vh`,
       }}
     >
       <style
@@ -271,21 +272,43 @@ export default function PhonePickupSequence() {
             })}
           </div>
 
-          {/* Hint to keep scrolling — fades after beat 0 */}
+          {/* Persistent scroll cue on every beat except the last */}
           <div
             style={{
-              opacity: beat === 0 ? 0.4 : 0,
-              transition: "opacity 0.5s ease",
+              opacity: beat < BEATS.length - 1 ? 0.5 : 0,
+              transition: "opacity 0.4s ease",
               marginTop: "1rem",
               fontFamily: FONT_MONO,
               fontSize: "0.7rem",
               color: C.mute,
               letterSpacing: "0.2em",
               textTransform: "uppercase",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
             }}
           >
-            ↓ Keep scrolling
+            <span
+              style={{
+                display: "inline-block",
+                animation: "scroll-cue 1.6s ease-in-out infinite",
+              }}
+            >
+              ↓
+            </span>
+            Keep scrolling
           </div>
+
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+              @keyframes scroll-cue {
+                0%, 100% { transform: translateY(0); opacity: 0.6; }
+                50% { transform: translateY(4px); opacity: 1; }
+              }
+            `,
+            }}
+          />
         </div>
 
         {/* RIGHT — staged phone scene */}
