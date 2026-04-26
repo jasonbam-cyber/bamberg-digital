@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 import Logo from "./Logo";
+import PhonePickupSequence from "./PhonePickupSequence";
 
 /* ═════════════════════════════════════════════════════════════════
    BAMBERG DIGITAL — HOMEPAGE (cream / editorial / Sacramento)
@@ -1869,6 +1870,13 @@ export default function HomeNarrative() {
             </div>
           </div>
         </section>
+
+        {/* ═══════════════════════════════════════════
+            SCROLL-DRIVEN PHONE-PICKUP NARRATIVE
+            Pinned section, 4 beats: quiet morning →
+            ring → Jason picks up → handwritten thank-you note
+           ═══════════════════════════════════════════ */}
+        <PhonePickupSequence />
 
         {/* ═══════════════════════════════════════════
             VOICEMAILS — real social proof
