@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import SiteFooter from "@/components/SiteFooter";
 import HomeNarrative from "@/components/HomeNarrative";
 
 export const metadata: Metadata = {
   title: "Bamberg Digital | Sacramento Web Design, SEO & Marketing",
   description:
-    "Sacramento's founder-led digital agency. Web design, SEO, social media, lead generation, and branding for small businesses. Jason picks up the phone.",
+    "Sacramento's founder-led digital agency. Custom websites, SEO systems, and lead engines — engineered from blueprint to launch. Browse 50+ website builds by industry.",
   alternates: { canonical: "https://www.bambergdigital.com" },
   openGraph: {
-    title: "Bamberg Digital — Made in Sacramento. Personal service.",
+    title: "Bamberg Digital — Engineered to Perform.",
     description:
-      "Founder-led web design, SEO, social media, leads & branding for Sacramento small businesses. Tell me about your business — I'll pick up.",
+      "Custom websites, SEO, lead generation & AI automation for small businesses. Browse our project catalog — 50+ industries. Sacramento roots, national reach.",
     url: "https://www.bambergdigital.com",
     images: [
       {
@@ -23,12 +22,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return (
-    <>
-      <HomeNarrative />
-      <div className="bd-footer-wrap">
-        <SiteFooter />
-      </div>
-    </>
-  );
+  return <HomeNarrative />;
 }

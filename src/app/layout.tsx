@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat, Fraunces, Caveat } from "next/font/google";
+import { Inter, Montserrat, Fraunces, Caveat, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -25,6 +25,13 @@ const fraunces = Fraunces({
 // Handwritten script for Jason's signature
 const caveat = Caveat({
   variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+// Monospace for Builder Workshop labels and technical accents
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -122,7 +129,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${montserrat.variable} ${fraunces.variable} ${caveat.variable} antialiased bg-white text-gray-900`}
+        className={`${inter.variable} ${montserrat.variable} ${fraunces.variable} ${caveat.variable} ${jetbrainsMono.variable} antialiased bg-[#111114] text-[#e8e6e1]`}
       >
         {children}
       </body>
