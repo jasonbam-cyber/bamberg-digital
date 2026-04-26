@@ -45,13 +45,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       customer: {
-        id: customer.id,
         email: customer.emailAddress,
         name: customer.givenName
           ? `${customer.givenName} ${customer.familyName || ""}`
           : customer.companyName || "Customer",
-        company: customer.companyName,
-        created: customer.createdAt,
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       invoices: customerInvoices.map((inv: any) => ({

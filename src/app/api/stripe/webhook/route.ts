@@ -1,11 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 
 export const dynamic = "force-dynamic";
+
+function verifySquareSignature(rawBody: string, signature: string, sigKey: string, webhookUrl: string): boolean {
+  const hmac = crypto.createHmac("sha256", sigKey);
+  hmac.update(webhookUrl + rawBody);
+  const expected = hmac.digest("base64");
+  try {
+    return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
+  } catch {
+    return false;
+  }
+}
 
 // Square webhook handler — receives payment events
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const rawBody = await req.text();
+    const signature = req.headers.get("x-square-hmacsha256-signature") ?? "";
+    const sigKey = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY ?? "";
+    const webhookUrl = process.env.SQUARE_WEBHOOK_URL ?? "";
+
+    if (!sigKey || !verifySquareSignature(rawBody, signature, sigKey, webhookUrl)) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    }
+
+    const body = JSON.parse(rawBody);
     const eventType = body.type;
 
     switch (eventType) {
