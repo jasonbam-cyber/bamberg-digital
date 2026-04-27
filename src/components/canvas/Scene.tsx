@@ -15,7 +15,7 @@ export default function Scene(props: SceneProps) {
     <Canvas
       {...props}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      dpr={[1, 2]}
+      dpr={[1, 2.5]}
       camera={{ fov: 35, near: 0.1, far: 200, position: [0, 0, 8] }}
       style={{
         position: "fixed",

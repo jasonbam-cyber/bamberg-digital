@@ -1,9 +1,40 @@
 "use client";
 
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Edges, MeshDistortMaterial, Float } from "@react-three/drei";
+import { useEffect, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import {
+  Edges,
+  Environment,
+  Float,
+  MeshTransmissionMaterial,
+  Sparkles,
+} from "@react-three/drei";
 import type { Group } from "three";
+
+function ScrollCamera() {
+  const { camera } = useThree();
+  const scrollRef = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      scrollRef.current = Math.min(window.scrollY / Math.max(max, 1), 1);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useFrame(() => {
+    const p = scrollRef.current;
+    camera.position.x = Math.sin(p * Math.PI * 0.5) * 8;
+    camera.position.z = Math.cos(p * Math.PI * 0.5) * 8;
+    camera.position.y = p * 2 - 1;
+    camera.lookAt(0, 0, 0);
+  });
+
+  return null;
+}
 
 export default function BlueprintCube() {
   const outer = useRef<Group>(null);
@@ -27,13 +58,10 @@ export default function BlueprintCube() {
 
   return (
     <>
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[5, 5, 5]} intensity={0.8} color="#e8872b" />
-      <directionalLight
-        position={[-5, -5, 5]}
-        intensity={0.5}
-        color="#4a9ece"
-      />
+      <Environment preset="studio" background={false} />
+      <directionalLight position={[5, 5, 5]} intensity={0.3} color="#e8872b" />
+
+      <ScrollCamera />
 
       <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.4}>
         <group ref={outer}>
@@ -64,17 +92,33 @@ export default function BlueprintCube() {
 
         <group ref={inner}>
           <mesh>
-            <icosahedronGeometry args={[0.85, 0]} />
-            <MeshDistortMaterial
+            <icosahedronGeometry args={[0.85, 1]} />
+            <MeshTransmissionMaterial
+              backside
+              samples={8}
+              resolution={512}
+              transmission={1}
+              roughness={0.05}
+              thickness={0.3}
+              ior={1.5}
+              chromaticAberration={0.03}
+              distortion={0.1}
+              distortionScale={0.4}
+              temporalDistortion={0.1}
               color="#4a9ece"
-              metalness={0.8}
-              roughness={0.1}
-              distort={0.35}
-              speed={2}
             />
           </mesh>
         </group>
       </Float>
+
+      <Sparkles
+        count={60}
+        scale={6}
+        size={2}
+        speed={0.3}
+        opacity={0.5}
+        color="#e8872b"
+      />
     </>
   );
 }

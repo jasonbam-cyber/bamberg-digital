@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import CanvasHost from "@/components/canvas/CanvasHost";
+import RouteTransition from "@/components/RouteTransition";
 import "./globals.css";
 
 const inter = Inter({
@@ -141,7 +142,7 @@ export default function RootLayout({
       >
         <SmoothScroll />
         <CanvasHost />
-        {children}
+        <RouteTransition>{children}</RouteTransition>
       </body>
     </html>
   );
