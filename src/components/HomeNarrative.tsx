@@ -178,7 +178,7 @@ const LIVE_WORK = [
     label: "View blueprint →",
     metric: "Blueprint",
     external: false,
-    image: "/screenshots/blueprint-photography.jpg",
+    image: "/screenshots/blueprint-photographer.jpg",
   },
   {
     name: "Loft Salon Co.",
@@ -198,7 +198,7 @@ const LIVE_WORK = [
     label: "View blueprint →",
     metric: "Blueprint",
     external: false,
-    image: "/screenshots/blueprint-realestate.jpg",
+    image: "/screenshots/blueprint-realtor.jpg",
   },
   {
     name: "Northwall Brewing Co.",
