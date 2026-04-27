@@ -882,6 +882,7 @@ const LIVE_WORK = [
     label: "layerui.io ↗",
     metric: "$40 MRR",
     external: true,
+    image: "/screenshots/layerui.jpg",
   },
   {
     name: "Recovery Gear",
@@ -891,6 +892,7 @@ const LIVE_WORK = [
     label: "recoverygear.us ↗",
     metric: "Live Store",
     external: true,
+    image: "/screenshots/recovery-gear.jpg",
   },
   {
     name: "Bamberg Digital",
@@ -900,6 +902,7 @@ const LIVE_WORK = [
     label: "This site ↑",
     metric: "Page 1",
     external: false,
+    image: "/screenshots/bambergdigital.jpg",
   },
   {
     name: "NodPod",
@@ -909,6 +912,7 @@ const LIVE_WORK = [
     label: "View sample →",
     metric: "Sample",
     external: false,
+    image: "/screenshots/nodpod.jpg",
   },
   {
     name: "NodPod Luxury",
@@ -918,6 +922,7 @@ const LIVE_WORK = [
     label: "View sample →",
     metric: "Sample",
     external: false,
+    image: "/screenshots/nodpod-luxury.jpg",
   },
   {
     name: "Bright Smiles",
@@ -927,6 +932,7 @@ const LIVE_WORK = [
     label: "View sample →",
     metric: "Sample",
     external: false,
+    image: "/screenshots/dental.jpg",
   },
 ];
 
@@ -971,8 +977,22 @@ function Wireframe({
         <div style={nav} />
         <div style={{ flex: 1, display: "flex", gap: 3 }}>
           <div style={{ width: "28%", ...blk(0.5) }} />
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
-            <div style={{ height: 6, background: accent, opacity: 0.25, borderRadius: 1 }} />
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+            }}
+          >
+            <div
+              style={{
+                height: 6,
+                background: accent,
+                opacity: 0.25,
+                borderRadius: 1,
+              }}
+            />
             <div style={{ flex: 1, ...blk(0.35) }} />
           </div>
         </div>
@@ -983,8 +1003,22 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div style={{ height: 5, background: accent, opacity: 0.2, borderRadius: 1 }} />
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 3 }}>
+        <div
+          style={{
+            height: 5,
+            background: accent,
+            opacity: 0.2,
+            borderRadius: 1,
+          }}
+        />
+        <div
+          style={{
+            flex: 1,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: 3,
+          }}
+        >
           {[0.4, 0.3, 0.35, 0.3, 0.4, 0.3].map((op, i) => (
             <div key={i} style={blk(op)} />
           ))}
@@ -996,8 +1030,23 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", gap: 3 }}>
-          <div style={{ gridRow: "1/3", background: accent, opacity: 0.15, borderRadius: 1 }} />
+        <div
+          style={{
+            flex: 1,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gridTemplateRows: "1fr 1fr",
+            gap: 3,
+          }}
+        >
+          <div
+            style={{
+              gridRow: "1/3",
+              background: accent,
+              opacity: 0.15,
+              borderRadius: 1,
+            }}
+          />
           <div style={blk(0.35)} />
           <div style={blk(0.25)} />
         </div>
@@ -1009,11 +1058,33 @@ function Wireframe({
       <div style={box}>
         <div style={nav} />
         <div style={{ flex: 1, display: "flex", gap: 3 }}>
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
-            <div style={{ height: 8, background: accent, opacity: 0.22, borderRadius: 1 }} />
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+            }}
+          >
+            <div
+              style={{
+                height: 8,
+                background: accent,
+                opacity: 0.22,
+                borderRadius: 1,
+              }}
+            />
             <div style={{ flex: 1, ...blk(0.3) }} />
           </div>
-          <div style={{ width: "35%", background: accent, opacity: 0.1, borderRadius: 1, border: `1px solid ${accent}30` }} />
+          <div
+            style={{
+              width: "35%",
+              background: accent,
+              opacity: 0.1,
+              borderRadius: 1,
+              border: `1px solid ${accent}30`,
+            }}
+          />
         </div>
       </div>
     );
@@ -1022,10 +1093,26 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div style={{ height: 5, background: accent, opacity: 0.18, borderRadius: 1 }} />
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
+        <div
+          style={{
+            height: 5,
+            background: accent,
+            opacity: 0.18,
+            borderRadius: 1,
+          }}
+        />
+        <div
+          style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}
+        >
           {[0.45, 0.35, 0.3, 0.25].map((op, i) => (
-            <div key={i} style={{ height: 5, borderLeft: `2px solid ${accent}`, ...blk(op) }} />
+            <div
+              key={i}
+              style={{
+                height: 5,
+                borderLeft: `2px solid ${accent}`,
+                ...blk(op),
+              }}
+            />
           ))}
         </div>
       </div>
@@ -1035,12 +1122,36 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div style={{ height: 5, background: accent, opacity: 0.15, borderRadius: 1 }} />
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 3 }}>
+        <div
+          style={{
+            height: 5,
+            background: accent,
+            opacity: 0.15,
+            borderRadius: 1,
+          }}
+        />
+        <div
+          style={{
+            flex: 1,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: 3,
+          }}
+        >
           {[0, 1, 2].map((i) => (
-            <div key={i} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <div
+              key={i}
+              style={{ display: "flex", flexDirection: "column", gap: 2 }}
+            >
               <div style={{ flex: 1, ...blk(0.35) }} />
-              <div style={{ height: 3, background: accent, opacity: 0.28, borderRadius: 1 }} />
+              <div
+                style={{
+                  height: 3,
+                  background: accent,
+                  opacity: 0.28,
+                  borderRadius: 1,
+                }}
+              />
             </div>
           ))}
         </div>
@@ -1050,7 +1161,9 @@ function Wireframe({
   return (
     <div style={box}>
       <div style={nav} />
-      <div style={{ flex: 1, background: accent, opacity: 0.12, borderRadius: 2 }} />
+      <div
+        style={{ flex: 1, background: accent, opacity: 0.12, borderRadius: 2 }}
+      />
       <div style={{ display: "flex", gap: 3, height: 8 }}>
         <div style={{ flex: 1, ...blk(0.4) }} />
         <div style={{ flex: 1, ...blk(0.3) }} />
@@ -1114,8 +1227,12 @@ function WorkTrack() {
       startX = e.pageX - track.offsetLeft;
       scrollLeft = track.scrollLeft;
     };
-    const onLeave = () => { isDown = false; };
-    const onUp = () => { isDown = false; };
+    const onLeave = () => {
+      isDown = false;
+    };
+    const onUp = () => {
+      isDown = false;
+    };
     const onMove = (e: MouseEvent) => {
       if (!isDown) return;
       e.preventDefault();
@@ -1143,7 +1260,8 @@ function WorkTrack() {
         gap: "1.5rem",
         overflowX: "scroll",
         scrollSnapType: "x mandatory",
-        WebkitOverflowScrolling: "touch" as React.CSSProperties["WebkitOverflowScrolling"],
+        WebkitOverflowScrolling:
+          "touch" as React.CSSProperties["WebkitOverflowScrolling"],
         paddingBottom: "1rem",
         cursor: "grab",
         userSelect: "none",
@@ -1162,53 +1280,159 @@ function WorkTrack() {
             WebkitBackdropFilter: "blur(20px)",
             border: `1px solid ${C.iceLine}`,
             borderTop: `3px solid ${C.accent}`,
-            padding: "1.75rem",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            minHeight: 260,
-            transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+            minHeight: 480,
+            overflow: "hidden",
+            transition:
+              "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-4px)";
             e.currentTarget.style.borderTopColor = C.accent;
+            const img = e.currentTarget.querySelector(
+              ".work-card-img",
+            ) as HTMLImageElement | null;
+            if (img) img.style.transform = "scale(1.04)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
+            const img = e.currentTarget.querySelector(
+              ".work-card-img",
+            ) as HTMLImageElement | null;
+            if (img) img.style.transform = "scale(1)";
           }}
         >
-          <div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-              <span style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.18em", color: C.whiteMute, textTransform: "uppercase", padding: "0.2rem 0.6rem", border: `1px solid ${C.iceLine}` }}>
+          {/* Screenshot preview */}
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: 220,
+              overflow: "hidden",
+              background: "#1a1f2e",
+              borderBottom: `1px solid ${C.iceLine}`,
+            }}
+          >
+            <img
+              className="work-card-img"
+              src={w.image}
+              alt={`${w.name} preview`}
+              loading="lazy"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "top center",
+                transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)",
+                display: "block",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.35) 100%)",
+                pointerEvents: "none",
+              }}
+            />
+          </div>
+          <div style={{ padding: "1.5rem 1.75rem 0" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "0.75rem",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.5rem",
+                  letterSpacing: "0.18em",
+                  color: C.whiteMute,
+                  textTransform: "uppercase",
+                  padding: "0.2rem 0.6rem",
+                  border: `1px solid ${C.iceLine}`,
+                }}
+              >
                 {w.category}
               </span>
-              <span style={{ fontFamily: MONO, fontSize: "0.6rem", fontWeight: 700, color: C.accent, letterSpacing: "0.06em" }}>
+              <span
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.6rem",
+                  fontWeight: 700,
+                  color: C.accent,
+                  letterSpacing: "0.06em",
+                }}
+              >
                 {w.metric}
               </span>
             </div>
-            <h3 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: "1.5rem", color: C.white, letterSpacing: "-0.01em", margin: "0.5rem 0 0.5rem", fontStyle: "italic" }}>
+            <h3
+              style={{
+                fontFamily: SERIF,
+                fontWeight: 600,
+                fontSize: "1.5rem",
+                color: C.white,
+                letterSpacing: "-0.01em",
+                margin: "0.5rem 0 0.5rem",
+                fontStyle: "italic",
+              }}
+            >
               {w.name}
             </h3>
-            <p style={{ fontSize: "0.85rem", color: C.whiteSoft, lineHeight: 1.65, margin: 0 }}>
+            <p
+              style={{
+                fontSize: "0.85rem",
+                color: C.whiteSoft,
+                lineHeight: 1.65,
+                margin: 0,
+              }}
+            >
               {w.desc}
             </p>
           </div>
-          <div style={{ marginTop: "1.25rem" }}>
+          <div style={{ padding: "1.25rem 1.75rem 1.5rem" }}>
             {w.external ? (
               <a
                 href={w.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.14em", color: C.whiteMute, textDecoration: "none", textTransform: "uppercase", transition: "color 0.2s" }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.14em",
+                  color: C.whiteMute,
+                  textDecoration: "none",
+                  textTransform: "uppercase",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = C.white;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = C.whiteMute;
+                }}
               >
                 {w.label}
               </a>
             ) : (
               <Link
                 href={w.url}
-                style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.14em", color: C.whiteMute, textDecoration: "none", textTransform: "uppercase", transition: "color 0.2s" }}
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.14em",
+                  color: C.whiteMute,
+                  textDecoration: "none",
+                  textTransform: "uppercase",
+                  transition: "color 0.2s",
+                }}
               >
                 {w.label}
               </Link>
@@ -1227,7 +1451,10 @@ function BlueprintSVG() {
       viewBox="0 0 500 500"
       width="100%"
       height="100%"
-      style={{ maxWidth: 520, filter: "drop-shadow(0 0 40px rgba(255,255,255,0.08))" }}
+      style={{
+        maxWidth: 520,
+        filter: "drop-shadow(0 0 40px rgba(255,255,255,0.08))",
+      }}
       aria-hidden="true"
     >
       <defs>
@@ -1245,8 +1472,22 @@ function BlueprintSVG() {
       {/* Coordinate grid marks */}
       {[100, 150, 200, 250, 300, 350, 400].map((v) => (
         <g key={`h${v}`}>
-          <line x1={v - 4} y1="250" x2={v + 4} y2="250" stroke="rgba(255,255,255,0.12)" strokeWidth="0.75" />
-          <line x1="250" y1={v - 4} x2="250" y2={v + 4} stroke="rgba(255,255,255,0.12)" strokeWidth="0.75" />
+          <line
+            x1={v - 4}
+            y1="250"
+            x2={v + 4}
+            y2="250"
+            stroke="rgba(255,255,255,0.12)"
+            strokeWidth="0.75"
+          />
+          <line
+            x1="250"
+            y1={v - 4}
+            x2="250"
+            y2={v + 4}
+            stroke="rgba(255,255,255,0.12)"
+            strokeWidth="0.75"
+          />
         </g>
       ))}
 
@@ -1285,8 +1526,22 @@ function BlueprintSVG() {
         <circle cx="345" cy="345" r="2" fill="rgba(255,255,255,0.25)" />
         <circle cx="155" cy="345" r="2" fill="rgba(255,255,255,0.25)" />
         {/* Cross diagonals */}
-        <line x1="155" y1="155" x2="345" y2="345" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" />
-        <line x1="345" y1="155" x2="155" y2="345" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" />
+        <line
+          x1="155"
+          y1="155"
+          x2="345"
+          y2="345"
+          stroke="rgba(255,255,255,0.06)"
+          strokeWidth="0.5"
+        />
+        <line
+          x1="345"
+          y1="155"
+          x2="155"
+          y2="345"
+          stroke="rgba(255,255,255,0.06)"
+          strokeWidth="0.5"
+        />
       </g>
 
       {/* Core isometric cube — fast */}
@@ -1316,9 +1571,33 @@ function BlueprintSVG() {
           strokeLinejoin="round"
         />
         {/* Vertical edge lines */}
-        <line x1="250" y1="160" x2="250" y2="230" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" strokeDasharray="3 3" />
-        <line x1="190" y1="195" x2="190" y2="265" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" strokeDasharray="3 3" />
-        <line x1="310" y1="195" x2="310" y2="265" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" strokeDasharray="3 3" />
+        <line
+          x1="250"
+          y1="160"
+          x2="250"
+          y2="230"
+          stroke="rgba(255,255,255,0.2)"
+          strokeWidth="0.5"
+          strokeDasharray="3 3"
+        />
+        <line
+          x1="190"
+          y1="195"
+          x2="190"
+          y2="265"
+          stroke="rgba(255,255,255,0.2)"
+          strokeWidth="0.5"
+          strokeDasharray="3 3"
+        />
+        <line
+          x1="310"
+          y1="195"
+          x2="310"
+          y2="265"
+          stroke="rgba(255,255,255,0.2)"
+          strokeWidth="0.5"
+          strokeDasharray="3 3"
+        />
         {/* Corner dots */}
         <circle cx="250" cy="160" r="2" fill="rgba(255,255,255,0.7)" />
         <circle cx="310" cy="195" r="2" fill="rgba(255,255,255,0.6)" />
@@ -1327,19 +1606,85 @@ function BlueprintSVG() {
       </g>
 
       {/* Center crosshair — static */}
-      <line x1="242" y1="250" x2="258" y2="250" stroke="rgba(255,255,255,0.35)" strokeWidth="0.75" />
-      <line x1="250" y1="242" x2="250" y2="258" stroke="rgba(255,255,255,0.35)" strokeWidth="0.75" />
+      <line
+        x1="242"
+        y1="250"
+        x2="258"
+        y2="250"
+        stroke="rgba(255,255,255,0.35)"
+        strokeWidth="0.75"
+      />
+      <line
+        x1="250"
+        y1="242"
+        x2="250"
+        y2="258"
+        stroke="rgba(255,255,255,0.35)"
+        strokeWidth="0.75"
+      />
       <circle cx="250" cy="250" r="1.5" fill="rgba(255,255,255,0.55)" />
 
       {/* Dimension annotation lines */}
-      <line x1="80" y1="460" x2="420" y2="460" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
-      <line x1="80" y1="456" x2="80" y2="464" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
-      <line x1="420" y1="456" x2="420" y2="464" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
-      <text x="250" y="473" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="8" fontFamily="monospace" letterSpacing="3">BD · SAC · 2024</text>
+      <line
+        x1="80"
+        y1="460"
+        x2="420"
+        y2="460"
+        stroke="rgba(255,255,255,0.1)"
+        strokeWidth="0.5"
+      />
+      <line
+        x1="80"
+        y1="456"
+        x2="80"
+        y2="464"
+        stroke="rgba(255,255,255,0.15)"
+        strokeWidth="0.75"
+      />
+      <line
+        x1="420"
+        y1="456"
+        x2="420"
+        y2="464"
+        stroke="rgba(255,255,255,0.15)"
+        strokeWidth="0.75"
+      />
+      <text
+        x="250"
+        y="473"
+        textAnchor="middle"
+        fill="rgba(255,255,255,0.2)"
+        fontSize="8"
+        fontFamily="monospace"
+        letterSpacing="3"
+      >
+        BD · SAC · 2024
+      </text>
 
-      <line x1="40" y1="80" x2="40" y2="420" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
-      <line x1="36" y1="80" x2="44" y2="80" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
-      <line x1="36" y1="420" x2="44" y2="420" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
+      <line
+        x1="40"
+        y1="80"
+        x2="40"
+        y2="420"
+        stroke="rgba(255,255,255,0.1)"
+        strokeWidth="0.5"
+      />
+      <line
+        x1="36"
+        y1="80"
+        x2="44"
+        y2="80"
+        stroke="rgba(255,255,255,0.15)"
+        strokeWidth="0.75"
+      />
+      <line
+        x1="36"
+        y1="420"
+        x2="44"
+        y2="420"
+        stroke="rgba(255,255,255,0.15)"
+        strokeWidth="0.75"
+      />
     </svg>
   );
 }
@@ -1382,7 +1727,10 @@ export default function HomeNarrative() {
   const [activeCat, setActiveCat] = useState("all");
 
   const filtered = useMemo(
-    () => activeCat === "all" ? CATALOG : CATALOG.filter((c) => c.cat === activeCat),
+    () =>
+      activeCat === "all"
+        ? CATALOG
+        : CATALOG.filter((c) => c.cat === activeCat),
     [activeCat],
   );
 
@@ -1421,7 +1769,8 @@ export default function HomeNarrative() {
   return (
     <div
       style={{
-        background: "linear-gradient(180deg, #B4BCC8 0%, #9BA5B6 35%, #8B95A6 100%)",
+        background:
+          "linear-gradient(180deg, #B4BCC8 0%, #9BA5B6 35%, #8B95A6 100%)",
         backgroundAttachment: "fixed",
         color: C.white,
         fontFamily: "var(--font-inter, Inter), system-ui, sans-serif",
@@ -1445,25 +1794,45 @@ export default function HomeNarrative() {
           right: 0,
           zIndex: 1000,
           padding: scrolled ? "0.6rem 2rem" : "1.25rem 2rem",
-          background: scrolled
-            ? "rgba(139,149,166,0.82)"
-            : "transparent",
+          background: scrolled ? "rgba(139,149,166,0.82)" : "transparent",
           backdropFilter: scrolled ? "blur(24px) saturate(160%)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(24px) saturate(160%)" : "none",
-          borderBottom: scrolled ? `1px solid ${C.iceLine}` : "1px solid transparent",
+          borderBottom: scrolled
+            ? `1px solid ${C.iceLine}`
+            : "1px solid transparent",
           transition: "all 0.5s cubic-bezier(0.16,1,0.3,1)",
         }}
       >
-        <div style={{ maxWidth: 1360, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div
+          style={{
+            maxWidth: 1360,
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
-            <span style={{ fontFamily: SERIF, fontWeight: 500, fontStyle: "italic", fontSize: "1.2rem", color: C.white, letterSpacing: "0.01em" }}>
+            <span
+              style={{
+                fontFamily: SERIF,
+                fontWeight: 500,
+                fontStyle: "italic",
+                fontSize: "1.2rem",
+                color: C.white,
+                letterSpacing: "0.01em",
+              }}
+            >
               BambergDigital
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex" style={{ alignItems: "center", gap: "2rem" }}>
+          <div
+            className="hidden md:flex"
+            style={{ alignItems: "center", gap: "2rem" }}
+          >
             {[
               { label: "WORK", target: "live-work" },
               { label: "BLUEPRINTS", target: "blueprints" },
@@ -1483,8 +1852,12 @@ export default function HomeNarrative() {
                   transition: "color 0.25s",
                   padding: "0.25rem 0",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteSoft; }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = C.white;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = C.whiteSoft;
+                }}
               >
                 {l.label}
               </button>
@@ -1521,9 +1894,23 @@ export default function HomeNarrative() {
             className="md:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
-            style={{ background: "none", border: "none", color: C.white, cursor: "pointer", padding: "0.5rem" }}
+            style={{
+              background: "none",
+              border: "none",
+              color: C.white,
+              cursor: "pointer",
+              padding: "0.5rem",
+            }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            >
               {menuOpen ? (
                 <path d="M6 6l12 12M6 18L18 6" />
               ) : (
@@ -1559,7 +1946,17 @@ export default function HomeNarrative() {
               <button
                 key={l.label}
                 onClick={() => scrollTo(l.target)}
-                style={{ fontFamily: MONO, fontSize: "0.7rem", letterSpacing: "0.15em", color: C.whiteSoft, textTransform: "uppercase", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.15em",
+                  color: C.whiteSoft,
+                  textTransform: "uppercase",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  textAlign: "left",
+                }}
               >
                 {l.label}
               </button>
@@ -1588,12 +1985,23 @@ export default function HomeNarrative() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "radial-gradient(ellipse 60% 55% at 55% 45%, rgba(255,255,255,0.08) 0%, transparent 70%)",
+            background:
+              "radial-gradient(ellipse 60% 55% at 55% 45%, rgba(255,255,255,0.08) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
         />
 
-        <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "minmax(0,2fr) minmax(0,3fr)", gap: "4rem", alignItems: "center" }}>
+        <div
+          style={{
+            maxWidth: 1360,
+            margin: "0 auto",
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: "minmax(0,2fr) minmax(0,3fr)",
+            gap: "4rem",
+            alignItems: "center",
+          }}
+        >
           {/* Left column */}
           <div>
             <div
@@ -1625,7 +2033,9 @@ export default function HomeNarrative() {
             >
               Where digital
               <br />
-              <em style={{ fontStyle: "italic", color: C.cream }}>becomes durable.</em>
+              <em style={{ fontStyle: "italic", color: C.cream }}>
+                becomes durable.
+              </em>
             </h1>
 
             <p
@@ -1640,10 +2050,14 @@ export default function HomeNarrative() {
                 maxWidth: 380,
               }}
             >
-              We don&apos;t build pages — we engineer systems. Every site is a blueprint, built to rank, convert, and outlast the competition.
+              We don&apos;t build pages — we engineer systems. Every site is a
+              blueprint, built to rank, convert, and outlast the competition.
             </p>
 
-            <div className="igloo-reveal" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <div
+              className="igloo-reveal"
+              style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
+            >
               <button
                 onClick={() => scrollTo("blueprints")}
                 style={{
@@ -1704,7 +2118,11 @@ export default function HomeNarrative() {
           {/* Right column — SVG centerpiece */}
           <div
             className="hidden md:flex"
-            style={{ alignItems: "center", justifyContent: "center", height: 480 }}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              height: 480,
+            }}
           >
             <BlueprintSVG />
           </div>
@@ -1742,7 +2160,14 @@ export default function HomeNarrative() {
           position: "relative",
         }}
       >
-        <div style={{ maxWidth: 1000, margin: "0 auto", width: "100%", textAlign: "center" }}>
+        <div
+          style={{
+            maxWidth: 1000,
+            margin: "0 auto",
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
           <IcyTag>The Method</IcyTag>
           <h2
             className="igloo-reveal"
@@ -1795,7 +2220,8 @@ export default function HomeNarrative() {
                   border: `1px solid ${C.iceLine}`,
                   padding: "2rem",
                   textAlign: "left",
-                  transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+                  transition:
+                    "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-4px)";
@@ -1806,13 +2232,38 @@ export default function HomeNarrative() {
                   e.currentTarget.style.borderColor = C.iceLine;
                 }}
               >
-                <span style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.2em", color: C.whiteMute, display: "block", marginBottom: "0.75rem" }}>
+                <span
+                  style={{
+                    fontFamily: MONO,
+                    fontSize: "0.55rem",
+                    letterSpacing: "0.2em",
+                    color: C.whiteMute,
+                    display: "block",
+                    marginBottom: "0.75rem",
+                  }}
+                >
                   {card.num}
                 </span>
-                <h3 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: "1.25rem", color: C.white, fontStyle: "italic", marginBottom: "0.75rem" }}>
+                <h3
+                  style={{
+                    fontFamily: SERIF,
+                    fontWeight: 600,
+                    fontSize: "1.25rem",
+                    color: C.white,
+                    fontStyle: "italic",
+                    marginBottom: "0.75rem",
+                  }}
+                >
                   {card.title}
                 </h3>
-                <p style={{ fontSize: "0.875rem", color: C.whiteSoft, lineHeight: 1.7, margin: 0 }}>
+                <p
+                  style={{
+                    fontSize: "0.875rem",
+                    color: C.whiteSoft,
+                    lineHeight: 1.7,
+                    margin: 0,
+                  }}
+                >
                   {card.body}
                 </p>
               </div>
@@ -1847,7 +2298,8 @@ export default function HomeNarrative() {
               marginBottom: "3rem",
             }}
           >
-            Six disciplines. <em style={{ fontStyle: "italic" }}>One discipline.</em>
+            Six disciplines.{" "}
+            <em style={{ fontStyle: "italic" }}>One discipline.</em>
           </h2>
 
           <div
@@ -1867,12 +2319,14 @@ export default function HomeNarrative() {
                   WebkitBackdropFilter: "blur(20px)",
                   border: `1px solid ${C.iceLine}`,
                   padding: "1.75rem 2rem",
-                  transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, box-shadow 0.4s",
+                  transition:
+                    "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, box-shadow 0.4s",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-4px)";
                   e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
-                  e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,0,0,0.12)";
+                  e.currentTarget.style.boxShadow =
+                    "0 20px 60px rgba(0,0,0,0.12)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
@@ -1880,17 +2334,67 @@ export default function HomeNarrative() {
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
-                  <span style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.18em", color: C.whiteMute }}>{s.num}</span>
-                  <span style={{ fontFamily: MONO, fontSize: "0.6rem", letterSpacing: "0.04em", color: C.accent, fontWeight: 600 }}>{s.price}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: MONO,
+                      fontSize: "0.55rem",
+                      letterSpacing: "0.18em",
+                      color: C.whiteMute,
+                    }}
+                  >
+                    {s.num}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: MONO,
+                      fontSize: "0.6rem",
+                      letterSpacing: "0.04em",
+                      color: C.accent,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {s.price}
+                  </span>
                 </div>
-                <h3 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: "1.2rem", fontStyle: "italic", color: C.white, marginBottom: "0.5rem" }}>
+                <h3
+                  style={{
+                    fontFamily: SERIF,
+                    fontWeight: 600,
+                    fontSize: "1.2rem",
+                    fontStyle: "italic",
+                    color: C.white,
+                    marginBottom: "0.5rem",
+                  }}
+                >
                   {s.title}
                 </h3>
-                <p style={{ fontFamily: MONO, fontSize: "0.6rem", letterSpacing: "0.06em", color: C.whiteMute, marginBottom: "0.75rem" }}>
+                <p
+                  style={{
+                    fontFamily: MONO,
+                    fontSize: "0.6rem",
+                    letterSpacing: "0.06em",
+                    color: C.whiteMute,
+                    marginBottom: "0.75rem",
+                  }}
+                >
                   {s.desc}
                 </p>
-                <p style={{ fontSize: "0.8rem", color: C.whiteSoft, lineHeight: 1.65, margin: 0 }}>
+                <p
+                  style={{
+                    fontSize: "0.8rem",
+                    color: C.whiteSoft,
+                    lineHeight: 1.65,
+                    margin: 0,
+                  }}
+                >
                   {s.full}
                 </p>
               </div>
@@ -1970,7 +2474,8 @@ export default function HomeNarrative() {
               marginBottom: "2rem",
             }}
           >
-            Fifty industries. <em style={{ fontStyle: "italic" }}>One method.</em>
+            Fifty industries.{" "}
+            <em style={{ fontStyle: "italic" }}>One method.</em>
           </h2>
 
           {/* Filter pills */}
@@ -1994,7 +2499,10 @@ export default function HomeNarrative() {
                   textTransform: "uppercase",
                   padding: "0.4rem 0.9rem",
                   border: `1px solid ${activeCat === cat.id ? "rgba(255,255,255,0.5)" : C.iceLine}`,
-                  background: activeCat === cat.id ? "rgba(255,255,255,0.12)" : "transparent",
+                  background:
+                    activeCat === cat.id
+                      ? "rgba(255,255,255,0.12)"
+                      : "transparent",
                   color: activeCat === cat.id ? C.white : C.whiteMute,
                   cursor: "pointer",
                   transition: "all 0.25s",
@@ -2034,9 +2542,11 @@ export default function HomeNarrative() {
                   WebkitBackdropFilter: "blur(20px)",
                   border: `1px solid ${C.iceLine}`,
                   padding: "1.25rem",
-                  animation: "igloo-fade-up 0.45s cubic-bezier(0.16,1,0.3,1) both",
+                  animation:
+                    "igloo-fade-up 0.45s cubic-bezier(0.16,1,0.3,1) both",
                   animationDelay: `${Math.min(i * 0.025, 0.4)}s`,
-                  transition: "transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+                  transition:
+                    "transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-3px)";
@@ -2049,15 +2559,46 @@ export default function HomeNarrative() {
               >
                 <Wireframe layout={item.layout} accent={item.accent} />
                 <div style={{ marginTop: "0.75rem" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.3rem" }}>
-                    <span style={{ fontFamily: HEAD, fontWeight: 700, fontSize: "0.85rem", color: C.white }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "0.3rem",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: HEAD,
+                        fontWeight: 700,
+                        fontSize: "0.85rem",
+                        color: C.white,
+                      }}
+                    >
                       {item.name}
                     </span>
-                    <span style={{ fontFamily: MONO, fontSize: "0.45rem", letterSpacing: "0.12em", color: C.whiteMute, textTransform: "uppercase" }}>
+                    <span
+                      style={{
+                        fontFamily: MONO,
+                        fontSize: "0.45rem",
+                        letterSpacing: "0.12em",
+                        color: C.whiteMute,
+                        textTransform: "uppercase",
+                      }}
+                    >
                       {item.vibe.split(" & ")[0]}
                     </span>
                   </div>
-                  <p style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.05em", color: C.whiteMute, margin: 0, lineHeight: 1.6 }}>
+                  <p
+                    style={{
+                      fontFamily: MONO,
+                      fontSize: "0.5rem",
+                      letterSpacing: "0.05em",
+                      color: C.whiteMute,
+                      margin: 0,
+                      lineHeight: 1.6,
+                    }}
+                  >
                     {item.tag}
                   </p>
                 </div>
@@ -2150,14 +2691,30 @@ export default function HomeNarrative() {
               paddingLeft: "2rem",
             }}
           >
-            &ldquo;I build every site like my name is on the door — because it is.&rdquo;
+            &ldquo;I build every site like my name is on the door — because it
+            is.&rdquo;
           </blockquote>
 
           <div className="igloo-reveal">
-            <p style={{ fontSize: "0.9rem", color: C.whiteSoft, lineHeight: 1.8, marginBottom: "1.5rem" }}>
-              Jason Bamberg, founder. Sacramento-based. I run every project personally — no account managers, no offshore hand-offs. You get direct access to the builder.
+            <p
+              style={{
+                fontSize: "0.9rem",
+                color: C.whiteSoft,
+                lineHeight: 1.8,
+                marginBottom: "1.5rem",
+              }}
+            >
+              Jason Bamberg, founder. Sacramento-based. I run every project
+              personally — no account managers, no offshore hand-offs. You get
+              direct access to the builder.
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
               <a
                 href="mailto:hello@bambergdigital.com"
                 style={{
@@ -2168,8 +2725,12 @@ export default function HomeNarrative() {
                   textDecoration: "none",
                   transition: "color 0.2s",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteSoft; }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = C.white;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = C.whiteSoft;
+                }}
               >
                 hello@bambergdigital.com
               </a>
@@ -2183,8 +2744,12 @@ export default function HomeNarrative() {
                   textDecoration: "none",
                   transition: "color 0.2s",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteSoft; }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = C.white;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = C.whiteSoft;
+                }}
               >
                 (916) 907-7782
               </a>
@@ -2214,7 +2779,8 @@ export default function HomeNarrative() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "radial-gradient(ellipse 50% 60% at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 70%)",
+            background:
+              "radial-gradient(ellipse 50% 60% at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
         />
@@ -2235,7 +2801,16 @@ export default function HomeNarrative() {
           Let&apos;s build something that lasts.
         </h2>
 
-        <div className="igloo-reveal" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "2rem" }}>
+        <div
+          className="igloo-reveal"
+          style={{
+            display: "flex",
+            gap: "1rem",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            marginBottom: "2rem",
+          }}
+        >
           <a
             href="tel:+19169077782"
             style={{
@@ -2252,7 +2827,8 @@ export default function HomeNarrative() {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 12px 40px rgba(232,135,43,0.35)";
+              e.currentTarget.style.boxShadow =
+                "0 12px 40px rgba(232,135,43,0.35)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
@@ -2263,20 +2839,50 @@ export default function HomeNarrative() {
           </a>
         </div>
 
-        <div className="igloo-reveal" style={{ display: "flex", gap: "2rem", flexWrap: "wrap", justifyContent: "center" }}>
+        <div
+          className="igloo-reveal"
+          style={{
+            display: "flex",
+            gap: "2rem",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
           <a
             href="mailto:hello@bambergdigital.com"
-            style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.12em", color: C.whiteMute, textDecoration: "none", transition: "color 0.2s" }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
+            style={{
+              fontFamily: MONO,
+              fontSize: "0.55rem",
+              letterSpacing: "0.12em",
+              color: C.whiteMute,
+              textDecoration: "none",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = C.white;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = C.whiteMute;
+            }}
           >
             hello@bambergdigital.com
           </a>
           <a
             href="tel:+19169077782"
-            style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.12em", color: C.whiteMute, textDecoration: "none", transition: "color 0.2s" }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
+            style={{
+              fontFamily: MONO,
+              fontSize: "0.55rem",
+              letterSpacing: "0.12em",
+              color: C.whiteMute,
+              textDecoration: "none",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = C.white;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = C.whiteMute;
+            }}
           >
             (916) 907-7782
           </a>
@@ -2304,22 +2910,63 @@ export default function HomeNarrative() {
             gap: "1rem",
           }}
         >
-          <span style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: "1rem", color: C.whiteSoft }}>
+          <span
+            style={{
+              fontFamily: SERIF,
+              fontStyle: "italic",
+              fontSize: "1rem",
+              color: C.whiteSoft,
+            }}
+          >
             BambergDigital
           </span>
-          <span style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.12em", color: C.whiteMute, textTransform: "uppercase" }}>
+          <span
+            style={{
+              fontFamily: MONO,
+              fontSize: "0.5rem",
+              letterSpacing: "0.12em",
+              color: C.whiteMute,
+              textTransform: "uppercase",
+            }}
+          >
             © {new Date().getFullYear()} · Sacramento, CA
           </span>
           <div style={{ display: "flex", gap: "1.5rem" }}>
-            <a href="mailto:hello@bambergdigital.com" style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.1em", color: C.whiteMute, textDecoration: "none", transition: "color 0.2s" }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
+            <a
+              href="mailto:hello@bambergdigital.com"
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.5rem",
+                letterSpacing: "0.1em",
+                color: C.whiteMute,
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = C.white;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = C.whiteMute;
+              }}
             >
               hello@bambergdigital.com
             </a>
-            <a href="tel:+19169077782" style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.1em", color: C.whiteMute, textDecoration: "none", transition: "color 0.2s" }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
+            <a
+              href="tel:+19169077782"
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.5rem",
+                letterSpacing: "0.1em",
+                color: C.whiteMute,
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = C.white;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = C.whiteMute;
+              }}
             >
               (916) 907-7782
             </a>
