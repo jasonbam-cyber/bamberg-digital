@@ -2,6 +2,12 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function SmoothScroll() {
   useEffect(() => {
@@ -12,15 +18,16 @@ export default function SmoothScroll() {
       touchMultiplier: 2,
     });
 
-    let rafId = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-    rafId = requestAnimationFrame(raf);
+    const onScroll = () => ScrollTrigger.update();
+    lenis.on("scroll", onScroll);
+
+    const tickerCb = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tickerCb);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      gsap.ticker.remove(tickerCb);
+      lenis.off("scroll", onScroll);
       lenis.destroy();
     };
   }, []);
