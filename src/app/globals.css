@@ -975,3 +975,17 @@ html::after {
     transform: translateY(0);
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   SECTION VISUAL SEPARATION
+   Content sections get frosted glass + top rule so the
+   3D world bleeds through subtly but text stays legible.
+   Hero and trust ribbon excluded (they have their own treatment).
+   ═══════════════════════════════════════════════════════ */
+section:not(.hero-section):not(.trust-ribbon) {
+  background: rgba(8, 12, 20, 0.74);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  position: relative;
+}
