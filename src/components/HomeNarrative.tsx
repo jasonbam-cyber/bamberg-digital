@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Cursor from "./Cursor";
@@ -16,10 +15,8 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const BlueprintCube = dynamic(() => import("./canvas/BlueprintCube"), {
-  ssr: false,
-});
-const View = dynamic(() => import("./canvas/View"), { ssr: false });
+/* The 3D world is now persistent in the root canvas (WorldScene).
+   Sections sit above it with semi-transparent backgrounds. */
 
 /* ═══════════════════════════════════════════════════════════════════
    IGLOO.INC-INSPIRED HOMEPAGE — Bamberg Digital
@@ -1104,7 +1101,7 @@ export default function HomeNarrative() {
     <div
       style={{
         background:
-          "linear-gradient(180deg, #1f2532 0%, #141822 35%, #0a0e16 100%)",
+          "linear-gradient(180deg, rgba(31,37,50,0.55) 0%, rgba(20,24,34,0.55) 35%, rgba(10,14,22,0.55) 100%)",
         backgroundAttachment: "fixed",
         color: C.white,
         fontFamily: "var(--font-inter, Inter), system-ui, sans-serif",
@@ -1470,20 +1467,31 @@ export default function HomeNarrative() {
             </div>
           </div>
 
-          {/* Right column — WebGL centerpiece (View portal into root canvas).
-              Mobile keeps the SVG fallback; canvas host is hidden < 768px. */}
+          {/* Right column — the 3D centerpiece is now part of the persistent
+              WorldScene canvas (fixed beneath all sections). On desktop, this
+              column stays empty so the cube + spine show through. Mobile gets
+              the SVG fallback because the canvas is gated off below 768px. */}
           <div
             className="hidden md:flex"
             style={{
-              alignItems: "center",
+              alignItems: "flex-end",
               justifyContent: "center",
               height: 480,
               position: "relative",
             }}
           >
-            <View style={{ width: "100%", height: "100%", minHeight: 480 }}>
-              <BlueprintCube />
-            </View>
+            <span
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.5rem",
+                letterSpacing: "0.25em",
+                color: C.whiteMute,
+                textTransform: "uppercase",
+                animation: "igloo-pulse 2.5s ease-in-out infinite",
+              }}
+            >
+              ↓ scroll to enter the world
+            </span>
           </div>
           <div
             className="md:hidden"
