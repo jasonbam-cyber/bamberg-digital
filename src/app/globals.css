@@ -67,15 +67,11 @@ body {
 @keyframes laptop-open {
   0% {
     opacity: 0;
-    transform: translateY(40px) scale(0.92) rotateX(-22deg);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(0) scale(1) rotateX(2deg);
+    transform: translateY(40px) scale(0.94);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1) rotateX(0deg);
+    transform: translateY(0) scale(1);
   }
 }
 @keyframes laptop-float {
