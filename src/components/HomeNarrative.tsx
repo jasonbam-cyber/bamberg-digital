@@ -3,10 +3,18 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import Cursor from "./Cursor";
 import IglooLoader from "./IglooLoader";
 import AudioToggle from "./AudioToggle";
+import SplitReveal from "./motion/SplitReveal";
+import MagneticButton from "./motion/MagneticButton";
 import { CATALOG, CATEGORIES, type CatItem } from "@/data/catalog";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const BlueprintCube = dynamic(() => import("./canvas/BlueprintCube"), {
   ssr: false,
@@ -1043,6 +1051,49 @@ export default function HomeNarrative() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  /* GSAP — hero scrub fade/scale on scroll-out */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const ctx = gsap.context(() => {
+      const heroSection = document.querySelector(".hero-section");
+      const heroContent = document.querySelector(".hero-content");
+      if (!heroSection || !heroContent) return;
+
+      gsap.to(heroContent, {
+        scale: 1.15,
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroSection,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    });
+    return () => ctx.revert();
+  }, []);
+
+  /* GSAP — catalog grid stagger reveal */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const ctx = gsap.context(() => {
+      gsap.from(".catalog-card", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: { amount: 1.2, from: "start" },
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".catalog-grid",
+          start: "top 75%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    });
+    return () => ctx.revert();
+  }, [filtered]);
+
   const scrollTo = useCallback((id: string) => {
     setMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -1254,6 +1305,7 @@ export default function HomeNarrative() {
       {/* ══════════ HERO ══════════ */}
       <section
         id="hero"
+        className="hero-section"
         style={{
           minHeight: "100svh",
           scrollSnapAlign: "start",
@@ -1278,6 +1330,7 @@ export default function HomeNarrative() {
         />
 
         <div
+          className="hero-content"
           style={{
             maxWidth: 1360,
             margin: "0 auto",
@@ -1290,9 +1343,12 @@ export default function HomeNarrative() {
         >
           {/* Left column */}
           <div>
-            <div
+            <SplitReveal
+              by="word"
+              stagger={0.04}
               className="igloo-reveal"
               style={{
+                display: "block",
                 fontFamily: MONO,
                 fontSize: "0.55rem",
                 letterSpacing: "0.25em",
@@ -1303,10 +1359,9 @@ export default function HomeNarrative() {
               }}
             >
               Sacramento · Civic Engineers of the Web · Est. 2024
-            </div>
+            </SplitReveal>
 
             <h1
-              className="igloo-reveal"
               style={{
                 fontFamily: SERIF,
                 fontWeight: 700,
@@ -1317,11 +1372,25 @@ export default function HomeNarrative() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Where digital
-              <br />
-              <em style={{ fontStyle: "italic", color: C.cream }}>
+              <SplitReveal
+                by="char"
+                stagger={0.025}
+                style={{ display: "block" }}
+              >
+                Where digital
+              </SplitReveal>
+              <SplitReveal
+                by="char"
+                stagger={0.025}
+                delay={0.15}
+                style={{
+                  display: "block",
+                  fontStyle: "italic",
+                  color: C.cream,
+                }}
+              >
                 becomes durable.
-              </em>
+              </SplitReveal>
             </h1>
 
             <p
@@ -1344,60 +1413,60 @@ export default function HomeNarrative() {
               className="igloo-reveal"
               style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
             >
-              <button
-                onClick={() => scrollTo("blueprints")}
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.12em",
-                  color: C.ink,
-                  background: C.cream,
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "0.75rem 1.5rem",
-                  textTransform: "uppercase",
-                  transition: "background 0.3s, transform 0.3s",
-                  whiteSpace: "nowrap",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = C.accent;
-                  e.currentTarget.style.color = C.white;
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = C.cream;
-                  e.currentTarget.style.color = C.ink;
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-              >
-                ENTER CATALOG ↓
-              </button>
-              <button
-                onClick={() => scrollTo("contact")}
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.12em",
-                  color: C.white,
-                  background: "transparent",
-                  border: `1px solid ${C.iceLine}`,
-                  cursor: "pointer",
-                  padding: "0.75rem 1.5rem",
-                  textTransform: "uppercase",
-                  transition: "border-color 0.3s, transform 0.3s",
-                  whiteSpace: "nowrap",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = C.iceLine;
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-              >
-                Free consultation →
-              </button>
+              <MagneticButton strength={0.35}>
+                <button
+                  onClick={() => scrollTo("blueprints")}
+                  style={{
+                    fontFamily: MONO,
+                    fontSize: "0.6rem",
+                    letterSpacing: "0.12em",
+                    color: C.ink,
+                    background: C.cream,
+                    border: "none",
+                    cursor: "pointer",
+                    padding: "0.75rem 1.5rem",
+                    textTransform: "uppercase",
+                    transition: "background 0.3s, color 0.3s",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = C.accent;
+                    e.currentTarget.style.color = C.white;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = C.cream;
+                    e.currentTarget.style.color = C.ink;
+                  }}
+                >
+                  ENTER CATALOG ↓
+                </button>
+              </MagneticButton>
+              <MagneticButton strength={0.35}>
+                <button
+                  onClick={() => scrollTo("contact")}
+                  style={{
+                    fontFamily: MONO,
+                    fontSize: "0.6rem",
+                    letterSpacing: "0.12em",
+                    color: C.white,
+                    background: "transparent",
+                    border: `1px solid ${C.iceLine}`,
+                    cursor: "pointer",
+                    padding: "0.75rem 1.5rem",
+                    textTransform: "uppercase",
+                    transition: "border-color 0.3s",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = C.iceLine;
+                  }}
+                >
+                  Free consultation →
+                </button>
+              </MagneticButton>
             </div>
           </div>
 
@@ -1471,7 +1540,6 @@ export default function HomeNarrative() {
         >
           <IcyTag>The Method</IcyTag>
           <h2
-            className="igloo-reveal"
             style={{
               fontFamily: SERIF,
               fontWeight: 700,
@@ -1482,9 +1550,16 @@ export default function HomeNarrative() {
               marginBottom: "3.5rem",
             }}
           >
-            Most agencies build pages.
-            <br />
-            <em style={{ fontStyle: "italic" }}>We engineer systems.</em>
+            <SplitReveal by="char" style={{ display: "block" }}>
+              Most agencies build pages.
+            </SplitReveal>
+            <SplitReveal
+              by="char"
+              delay={0.2}
+              style={{ display: "block", fontStyle: "italic" }}
+            >
+              We engineer systems.
+            </SplitReveal>
           </h2>
 
           <div
@@ -1589,7 +1664,6 @@ export default function HomeNarrative() {
         <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
           <IcyTag>What We Build</IcyTag>
           <h2
-            className="igloo-reveal"
             style={{
               fontFamily: SERIF,
               fontWeight: 700,
@@ -1599,8 +1673,16 @@ export default function HomeNarrative() {
               marginBottom: "3rem",
             }}
           >
-            Six disciplines.{" "}
-            <em style={{ fontStyle: "italic" }}>One discipline.</em>
+            <SplitReveal by="char" style={{ display: "inline-block" }}>
+              {"Six disciplines. "}
+            </SplitReveal>
+            <SplitReveal
+              by="char"
+              delay={0.18}
+              style={{ display: "inline-block", fontStyle: "italic" }}
+            >
+              One discipline.
+            </SplitReveal>
           </h2>
 
           <div
@@ -1719,7 +1801,6 @@ export default function HomeNarrative() {
         <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
           <IcyTag>Recent Expeditions</IcyTag>
           <h2
-            className="igloo-reveal"
             style={{
               fontFamily: SERIF,
               fontWeight: 700,
@@ -1729,7 +1810,16 @@ export default function HomeNarrative() {
               marginBottom: "2.5rem",
             }}
           >
-            Live sites. <em style={{ fontStyle: "italic" }}>Real customers.</em>
+            <SplitReveal by="char" style={{ display: "inline-block" }}>
+              {"Live sites. "}
+            </SplitReveal>
+            <SplitReveal
+              by="char"
+              delay={0.15}
+              style={{ display: "inline-block", fontStyle: "italic" }}
+            >
+              Real customers.
+            </SplitReveal>
           </h2>
 
           <div className="igloo-reveal">
@@ -1765,7 +1855,6 @@ export default function HomeNarrative() {
         <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
           <IcyTag>Industry Blueprints</IcyTag>
           <h2
-            className="igloo-reveal"
             style={{
               fontFamily: SERIF,
               fontWeight: 700,
@@ -1775,8 +1864,16 @@ export default function HomeNarrative() {
               marginBottom: "2rem",
             }}
           >
-            Fifty industries.{" "}
-            <em style={{ fontStyle: "italic" }}>One method.</em>
+            <SplitReveal by="char" style={{ display: "inline-block" }}>
+              {"Fifty industries. "}
+            </SplitReveal>
+            <SplitReveal
+              by="char"
+              delay={0.18}
+              style={{ display: "inline-block", fontStyle: "italic" }}
+            >
+              One method.
+            </SplitReveal>
           </h2>
 
           {/* Filter pills */}
@@ -1828,25 +1925,24 @@ export default function HomeNarrative() {
 
           {/* Catalog grid */}
           <div
+            className="catalog-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
               gap: "1rem",
             }}
           >
-            {filtered.map((item, i) => (
+            {filtered.map((item) => (
               <Link
                 key={item.id}
                 href={`/blueprints/${item.id}`}
+                className="catalog-card"
                 style={{
                   background: C.iceDeep,
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
                   border: `1px solid ${C.iceLine}`,
                   padding: "1.25rem",
-                  animation:
-                    "igloo-fade-up 0.45s cubic-bezier(0.16,1,0.3,1) both",
-                  animationDelay: `${Math.min(i * 0.025, 0.4)}s`,
                   transition:
                     "transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
                   display: "block",
@@ -2176,7 +2272,6 @@ export default function HomeNarrative() {
           }}
         />
         <h2
-          className="igloo-reveal"
           style={{
             fontFamily: SERIF,
             fontWeight: 700,
@@ -2189,7 +2284,9 @@ export default function HomeNarrative() {
             maxWidth: 700,
           }}
         >
-          Let&apos;s build something that lasts.
+          <SplitReveal by="char" style={{ display: "inline-block" }}>
+            Let&apos;s build something that lasts.
+          </SplitReveal>
         </h2>
 
         <div
@@ -2202,32 +2299,32 @@ export default function HomeNarrative() {
             marginBottom: "2rem",
           }}
         >
-          <a
-            href="tel:+19169077782"
-            style={{
-              fontFamily: MONO,
-              fontSize: "0.65rem",
-              letterSpacing: "0.12em",
-              color: C.white,
-              background: C.accent,
-              textDecoration: "none",
-              padding: "0.85rem 2rem",
-              textTransform: "uppercase",
-              transition: "transform 0.3s, box-shadow 0.3s",
-              display: "inline-block",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow =
-                "0 12px 40px rgba(232,135,43,0.35)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-          >
-            BEGIN PROJECT →
-          </a>
+          <MagneticButton strength={0.4}>
+            <a
+              href="tel:+19169077782"
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.65rem",
+                letterSpacing: "0.12em",
+                color: C.white,
+                background: C.accent,
+                textDecoration: "none",
+                padding: "0.85rem 2rem",
+                textTransform: "uppercase",
+                transition: "box-shadow 0.3s",
+                display: "inline-block",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow =
+                  "0 12px 40px rgba(232,135,43,0.35)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              BEGIN PROJECT →
+            </a>
+          </MagneticButton>
         </div>
 
         <div
