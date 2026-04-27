@@ -732,8 +732,9 @@ function WorkTrack() {
   );
 }
 
-/* Isometric architectural blueprint SVG centerpiece */
-function BlueprintSVG() {
+/* Isometric architectural blueprint SVG centerpiece (legacy mobile fallback;
+   kept for reference in case the hero needs a static fallback again). */
+function _BlueprintSVG() {
   return (
     <svg
       viewBox="0 0 500 500"
@@ -1048,25 +1049,27 @@ export default function HomeNarrative() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  /* GSAP — hero scrub fade/scale on scroll-out */
+  /* GSAP — hero scrub: message dissolves into the 3D world */
   useEffect(() => {
     if (typeof window === "undefined") return;
     const ctx = gsap.context(() => {
       const heroSection = document.querySelector(".hero-section");
-      const heroContent = document.querySelector(".hero-content");
-      if (!heroSection || !heroContent) return;
+      if (!heroSection) return;
 
-      gsap.to(heroContent, {
-        scale: 1.15,
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroSection,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: heroSection,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        })
+        .to(".hero-h1", { y: -40, opacity: 0.4, ease: "none" }, 0)
+        .to(".hero-sub", { y: -60, opacity: 0, ease: "none" }, 0)
+        .to(".hero-ctas", { y: -80, opacity: 0, ease: "none" }, 0)
+        .to(".hero-eyebrow", { y: -20, opacity: 0, ease: "none" }, 0)
+        .to(".hero-scroll-indicator", { opacity: 0, ease: "none" }, 0);
     });
     return () => ctx.revert();
   }, []);
@@ -1312,19 +1315,49 @@ export default function HomeNarrative() {
           padding: "7rem 2rem 4rem",
           position: "relative",
           overflow: "hidden",
+          background: "transparent",
         }}
       >
-        {/* Radial light at center */}
+        {/* Soft vignette to lift text against 3D world */}
         <div
           aria-hidden="true"
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse 60% 55% at 55% 45%, rgba(255,255,255,0.08) 0%, transparent 70%)",
+              "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)",
             pointerEvents: "none",
           }}
         />
+
+        {/* Architect's left rule — vertical line + dot */}
+        <div
+          aria-hidden="true"
+          className="hidden md:block"
+          style={{
+            position: "absolute",
+            left: "2.5rem",
+            top: "8rem",
+            bottom: "5rem",
+            width: 1,
+            background:
+              "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.18) 20%, rgba(255,255,255,0.18) 80%, transparent 100%)",
+            pointerEvents: "none",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "30%",
+              left: -3,
+              width: 7,
+              height: 7,
+              borderRadius: "50%",
+              background: C.accent,
+              boxShadow: "0 0 12px rgba(232,135,43,0.6)",
+            }}
+          />
+        </div>
 
         <div
           className="hero-content"
@@ -1332,197 +1365,315 @@ export default function HomeNarrative() {
             maxWidth: 1360,
             margin: "0 auto",
             width: "100%",
-            display: "grid",
-            gridTemplateColumns: "minmax(0,2fr) minmax(0,3fr)",
-            gap: "4rem",
+            display: "flex",
+            flexDirection: "column",
             alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            position: "relative",
+            zIndex: 2,
           }}
         >
-          {/* Left column */}
-          <div>
+          {/* Eyebrow */}
+          <SplitReveal
+            by="word"
+            stagger={0.04}
+            className="hero-eyebrow"
+            style={{
+              display: "block",
+              fontFamily: MONO,
+              fontSize: "clamp(0.55rem, 0.85vw, 0.7rem)",
+              letterSpacing: "0.32em",
+              color: C.whiteSoft,
+              textTransform: "uppercase",
+              marginBottom: "2rem",
+              lineHeight: 1.8,
+              textShadow: "0 2px 16px rgba(0,0,0,0.7)",
+            }}
+          >
+            Sacramento · Hand-Crafted Websites · Est. 2024
+          </SplitReveal>
+
+          {/* The H1 — dominant, mixed Fraunces italic + Montserrat extra-bold */}
+          <h1
+            className="hero-h1"
+            style={{
+              margin: "0 0 2rem",
+              padding: 0,
+              lineHeight: 0.95,
+              letterSpacing: "-0.025em",
+              color: C.white,
+              fontSize: "clamp(2.75rem, 8vw, 8rem)",
+              maxWidth: "16ch",
+              textShadow: "0 2px 24px rgba(0,0,0,0.6)",
+            }}
+          >
             <SplitReveal
-              by="word"
-              stagger={0.04}
-              className="igloo-reveal"
+              by="char"
+              stagger={0.022}
               style={{
                 display: "block",
-                fontFamily: MONO,
-                fontSize: "0.55rem",
-                letterSpacing: "0.25em",
-                color: C.whiteMute,
-                textTransform: "uppercase",
-                marginBottom: "1.5rem",
-                lineHeight: 1.8,
+                fontFamily: HEAD,
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
               }}
             >
-              Sacramento · Civic Engineers of the Web · Est. 2024
+              Your website
             </SplitReveal>
-
-            <h1
+            <SplitReveal
+              by="char"
+              stagger={0.022}
+              delay={0.18}
               style={{
+                display: "block",
                 fontFamily: SERIF,
-                fontWeight: 700,
-                fontSize: "clamp(2.75rem, 5.5vw, 5.5rem)",
-                lineHeight: 1.08,
-                color: C.white,
-                margin: "0 0 1.5rem",
-                letterSpacing: "-0.02em",
+                fontStyle: "italic",
+                fontWeight: 500,
+                color: C.cream,
               }}
             >
+              is your handshake.
+            </SplitReveal>
+            <span style={{ display: "block" }}>
               <SplitReveal
                 by="char"
-                stagger={0.025}
-                style={{ display: "block" }}
-              >
-                Where digital
-              </SplitReveal>
-              <SplitReveal
-                by="char"
-                stagger={0.025}
-                delay={0.15}
+                stagger={0.022}
+                delay={0.36}
+                as="span"
                 style={{
-                  display: "block",
-                  fontStyle: "italic",
-                  color: C.cream,
+                  display: "inline-block",
+                  fontFamily: HEAD,
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
                 }}
               >
-                becomes durable.
+                {"Make it "}
               </SplitReveal>
-            </h1>
+              <SplitReveal
+                by="char"
+                stagger={0.022}
+                delay={0.5}
+                as="span"
+                style={{
+                  display: "inline-block",
+                  fontFamily: SERIF,
+                  fontStyle: "italic",
+                  fontWeight: 600,
+                  color: C.accent,
+                }}
+              >
+                unforgettable.
+              </SplitReveal>
+            </span>
+          </h1>
 
-            <p
-              className="igloo-reveal"
-              style={{
-                fontFamily: SERIF,
-                fontWeight: 400,
-                fontSize: "1.05rem",
-                color: C.whiteSoft,
-                lineHeight: 1.75,
-                marginBottom: "2.5rem",
-                maxWidth: 380,
-              }}
-            >
-              We don&apos;t build pages — we engineer systems. Every site is a
-              blueprint, built to rank, convert, and outlast the competition.
-            </p>
-
-            <div
-              className="igloo-reveal"
-              style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
-            >
-              <MagneticButton strength={0.35}>
-                <button
-                  onClick={() => scrollTo("blueprints")}
-                  style={{
-                    fontFamily: MONO,
-                    fontSize: "0.6rem",
-                    letterSpacing: "0.12em",
-                    color: C.ink,
-                    background: C.cream,
-                    border: "none",
-                    cursor: "pointer",
-                    padding: "0.75rem 1.5rem",
-                    textTransform: "uppercase",
-                    transition: "background 0.3s, color 0.3s",
-                    whiteSpace: "nowrap",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = C.accent;
-                    e.currentTarget.style.color = C.white;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = C.cream;
-                    e.currentTarget.style.color = C.ink;
-                  }}
-                >
-                  ENTER CATALOG ↓
-                </button>
-              </MagneticButton>
-              <MagneticButton strength={0.35}>
-                <button
-                  onClick={() => scrollTo("contact")}
-                  style={{
-                    fontFamily: MONO,
-                    fontSize: "0.6rem",
-                    letterSpacing: "0.12em",
-                    color: C.white,
-                    background: "transparent",
-                    border: `1px solid ${C.iceLine}`,
-                    cursor: "pointer",
-                    padding: "0.75rem 1.5rem",
-                    textTransform: "uppercase",
-                    transition: "border-color 0.3s",
-                    whiteSpace: "nowrap",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = C.iceLine;
-                  }}
-                >
-                  Free consultation →
-                </button>
-              </MagneticButton>
-            </div>
-          </div>
-
-          {/* Right column — the 3D centerpiece is now part of the persistent
-              WorldScene canvas (fixed beneath all sections). On desktop, this
-              column stays empty so the cube + spine show through. Mobile gets
-              the SVG fallback because the canvas is gated off below 768px. */}
-          <div
-            className="hidden md:flex"
+          {/* Sub-line */}
+          <p
+            className="hero-sub"
             style={{
-              alignItems: "flex-end",
-              justifyContent: "center",
-              height: 480,
-              position: "relative",
+              fontFamily: SERIF,
+              fontWeight: 400,
+              fontSize: "clamp(1rem, 1.4vw, 1.25rem)",
+              color: C.white,
+              lineHeight: 1.6,
+              margin: "0 auto 2.75rem",
+              maxWidth: "44ch",
+              textShadow: "0 2px 18px rgba(0,0,0,0.7)",
+              opacity: 0.92,
             }}
           >
-            <span
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.5rem",
-                letterSpacing: "0.25em",
-                color: C.whiteMute,
-                textTransform: "uppercase",
-                animation: "igloo-pulse 2.5s ease-in-out infinite",
-              }}
-            >
-              ↓ scroll to enter the world
-            </span>
-          </div>
+            I build custom websites that earn attention, rank on Google, and
+            convert visitors into customers. One founder. No templates. No
+            runaround.
+          </p>
+
+          {/* CTAs */}
           <div
-            className="md:hidden"
+            className="hero-ctas"
             style={{
               display: "flex",
-              alignItems: "center",
+              gap: "1rem",
+              flexWrap: "wrap",
               justifyContent: "center",
-              height: 360,
+              marginBottom: "1rem",
             }}
           >
-            <BlueprintSVG />
+            <MagneticButton strength={0.35}>
+              <button
+                onClick={() => scrollTo("work")}
+                style={{
+                  fontFamily: HEAD,
+                  fontWeight: 700,
+                  fontSize: "0.78rem",
+                  letterSpacing: "0.06em",
+                  color: C.ink,
+                  background: C.white,
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "1rem 2rem",
+                  borderRadius: 999,
+                  textTransform: "uppercase",
+                  transition: "transform 0.3s, background 0.3s, color 0.3s",
+                  whiteSpace: "nowrap",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = C.accent;
+                  e.currentTarget.style.color = C.white;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = C.white;
+                  e.currentTarget.style.color = C.ink;
+                }}
+              >
+                See the work →
+              </button>
+            </MagneticButton>
+            <MagneticButton strength={0.35}>
+              <button
+                onClick={() => scrollTo("contact")}
+                style={{
+                  fontFamily: HEAD,
+                  fontWeight: 600,
+                  fontSize: "0.78rem",
+                  letterSpacing: "0.06em",
+                  color: C.white,
+                  background: "rgba(255,255,255,0.06)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255,255,255,0.35)",
+                  cursor: "pointer",
+                  padding: "1rem 2rem",
+                  borderRadius: 999,
+                  textTransform: "uppercase",
+                  transition: "border-color 0.3s, background 0.3s",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.7)";
+                  e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)";
+                  e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                }}
+              >
+                Free 30-min consultation
+              </button>
+            </MagneticButton>
           </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* ENTER THE WORLD scroll indicator */}
         <div
-          className="igloo-reveal"
+          className="hero-scroll-indicator"
+          aria-hidden="true"
           style={{
             position: "absolute",
-            bottom: "2.5rem",
+            bottom: "2rem",
             left: "50%",
             transform: "translateX(-50%)",
-            fontFamily: MONO,
-            fontSize: "0.5rem",
-            letterSpacing: "0.25em",
-            color: C.whiteMute,
-            textTransform: "uppercase",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.4rem",
+            zIndex: 3,
             animation: "igloo-pulse 2.5s ease-in-out infinite",
           }}
         >
-          ↓ SCROLL TO BEGIN
+          <div
+            style={{
+              fontFamily: MONO,
+              fontSize: "0.6rem",
+              letterSpacing: "0.32em",
+              color: C.white,
+              textTransform: "uppercase",
+              textShadow: "0 2px 12px rgba(0,0,0,0.7)",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.6rem",
+            }}
+          >
+            <span>↓</span>
+            <span>Enter the World</span>
+            <span>↓</span>
+          </div>
+          <div
+            style={{
+              fontFamily: MONO,
+              fontSize: "0.5rem",
+              letterSpacing: "0.25em",
+              color: C.whiteMute,
+              textTransform: "uppercase",
+              textShadow: "0 2px 12px rgba(0,0,0,0.7)",
+            }}
+          >
+            scroll to begin
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ TRUST RIBBON ══════════ */}
+      <section
+        aria-label="Credentials"
+        className="trust-ribbon"
+        style={{
+          padding: "1rem 0",
+          background: "rgba(0,0,0,0.55)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          borderTop: `1px solid ${C.iceLine}`,
+          borderBottom: `1px solid ${C.iceLine}`,
+          overflow: "hidden",
+          position: "relative",
+          zIndex: 3,
+        }}
+      >
+        <div
+          className="marquee-track"
+          style={{
+            display: "flex",
+            whiteSpace: "nowrap",
+            width: "max-content",
+          }}
+        >
+          {Array.from({ length: 2 }).map((_, dupIdx) => (
+            <div
+              key={dupIdx}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2.5rem",
+                paddingRight: "2.5rem",
+                fontFamily: MONO,
+                fontSize: "0.65rem",
+                letterSpacing: "0.3em",
+                color: C.white,
+                textTransform: "uppercase",
+              }}
+            >
+              {[
+                "Sacramento",
+                "47+ Projects Shipped",
+                "Hand-Coded",
+                "Google Page 1",
+                "$40 MRR Live",
+                "Engineered for Performance",
+              ].map((t, i) => (
+                <span
+                  key={`${dupIdx}-${i}`}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "2.5rem",
+                  }}
+                >
+                  <span>{t}</span>
+                  <span style={{ opacity: 0.4 }}>·</span>
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -1918,24 +2069,48 @@ export default function HomeNarrative() {
             alignItems: "center",
           }}
         >
-          <blockquote
-            className="igloo-reveal"
+          <div
             style={{
-              fontFamily: SERIF,
-              fontWeight: 600,
-              fontStyle: "italic",
-              fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
-              color: C.white,
-              lineHeight: 1.3,
-              letterSpacing: "-0.01em",
-              margin: 0,
               borderLeft: `2px solid ${C.iceLine}`,
               paddingLeft: "2rem",
             }}
           >
-            &ldquo;I build every site like my name is on the door — because it
-            is.&rdquo;
-          </blockquote>
+            <blockquote
+              className="igloo-reveal"
+              style={{
+                fontFamily: SERIF,
+                fontWeight: 600,
+                fontStyle: "italic",
+                fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
+                color: C.white,
+                lineHeight: 1.3,
+                letterSpacing: "-0.01em",
+                margin: 0,
+              }}
+            >
+              &ldquo;I build every site like my name is on the door — because it
+              is.&rdquo;
+            </blockquote>
+            <div
+              className="igloo-reveal"
+              aria-hidden="true"
+              style={{
+                marginTop: "1.75rem",
+                fontFamily:
+                  "var(--font-caveat, 'Caveat', 'Comic Neue', cursive)",
+                fontSize: "clamp(2.25rem, 4.5vw, 3.75rem)",
+                color: C.accent,
+                fontStyle: "italic",
+                lineHeight: 1,
+                transform: "rotate(-4deg)",
+                transformOrigin: "left center",
+                display: "inline-block",
+                letterSpacing: "0.01em",
+              }}
+            >
+              — Jason
+            </div>
+          </div>
 
           <div className="igloo-reveal">
             <p
