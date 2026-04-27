@@ -5,7 +5,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Environment, Sparkles } from "@react-three/drei";
 import Spine from "./Spine";
 import BlueprintPlanes from "./BlueprintPlanes";
-import WebsiteWireframe from "./WebsiteWireframe";
+import Laptop3D from "./Laptop3D";
 import FloatingText from "./FloatingText";
 
 function ScrollCamera() {
@@ -24,9 +24,11 @@ function ScrollCamera() {
 
   useFrame(() => {
     const p = scrollRef.current;
-    const targetY = -p * 48;
-    const targetX = Math.sin(p * Math.PI * 1.5) * 2;
-    const targetZ = 6.5 + Math.sin(p * Math.PI * 2) * 1.2;
+    // Easing: stay still for the first 5% of scroll, then ease out
+    const eased = p < 0.05 ? 0 : (p - 0.05) / 0.95;
+    const targetY = -eased * 48;
+    const targetX = Math.sin(eased * Math.PI * 1.5) * 2;
+    const targetZ = 6.5 + Math.sin(eased * Math.PI * 2) * 1.2;
     camera.position.x += (targetX - camera.position.x) * 0.05;
     camera.position.y += (targetY - camera.position.y) * 0.05;
     camera.position.z += (targetZ - camera.position.z) * 0.05;
@@ -42,7 +44,11 @@ export default function WorldScene() {
       <Environment preset="studio" background={false} />
       <directionalLight position={[5, 5, 5]} intensity={0.3} color="#e8872b" />
       <ScrollCamera />
-      <WebsiteWireframe />
+      <group position={[0, -0.3, 1.5]}>
+        <Suspense fallback={null}>
+          <Laptop3D />
+        </Suspense>
+      </group>
       <Spine />
       <FloatingText />
       <Suspense fallback={null}>
