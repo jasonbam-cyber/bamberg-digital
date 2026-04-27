@@ -3,36 +3,35 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import Cursor from "./Cursor";
+import IglooLoader from "./IglooLoader";
 
 /* ═══════════════════════════════════════════════════════════════════
-   AWWWARDS-LEVEL HOMEPAGE — Bamberg Digital
-   Zero external animation libs. Pure CSS + IntersectionObserver + rAF.
+   IGLOO.INC-INSPIRED HOMEPAGE — Bamberg Digital
+   Icy slate palette · Fraunces serif · Frosted glass · Pure CSS anim
    ═══════════════════════════════════════════════════════════════════ */
 
 const C = {
-  bg: "#111114",
-  bgLight: "#18181c",
-  card: "#1c1c22",
-  cardHover: "#24242b",
-  steel: "#2a2a31",
-  steelLight: "#38383f",
-  blue: "#4a9ece",
-  blueGlow: "#62b4e0",
-  blueDim: "rgba(74,158,206,0.12)",
-  orange: "#e8872b",
-  orangeDim: "rgba(232,135,43,0.15)",
-  text: "#e8e6e1",
-  textSoft: "#a8a59e",
-  textMute: "#6a6760",
-  border: "rgba(74,158,206,0.10)",
-  borderHover: "rgba(74,158,206,0.30)",
+  bg: "#8B95A6",
+  bgMid: "#9BA5B6",
+  bgLight: "#B4BCC8",
+  ink: "#1a1f2e",
+  inkSoft: "#3a4050",
+  cream: "#F5F2EB",
+  creamSoft: "#E8E2D5",
+  accent: "#e8872b",
+  ice: "rgba(255,255,255,0.6)",
+  iceLine: "rgba(255,255,255,0.18)",
+  iceDeep: "rgba(255,255,255,0.08)",
+  white: "#ffffff",
+  whiteSoft: "rgba(255,255,255,0.75)",
+  whiteMute: "rgba(255,255,255,0.45)",
 };
 
-const MONO = "var(--font-mono, 'JetBrains Mono'), monospace";
+const SERIF = "var(--font-fraunces, 'Fraunces', 'Cormorant Garamond', serif)";
 const HEAD = "var(--font-montserrat, 'Montserrat'), sans-serif";
-const SERIF = "var(--font-fraunces, 'Fraunces'), serif";
+const MONO = "var(--font-mono, 'JetBrains Mono'), monospace";
 
-/* ─── Catalog Types ──────────────────────────────────────────────── */
+/* ─── Types ──────────────────────────────────────────────────────── */
 type CatItem = {
   id: string;
   name: string;
@@ -878,61 +877,55 @@ const LIVE_WORK = [
   {
     name: "Layer UI",
     category: "SaaS Platform",
-    desc: "Remote work OS. Chat, tasks, files, CRM. Launched zero to live in 90 days.",
+    desc: "Remote work OS — chat, tasks, files, CRM, AI. Zero to live in 90 days.",
     url: "https://layerui.io",
-    label: "layerui.io",
-    accent: "#4a9ece",
+    label: "layerui.io ↗",
     metric: "$40 MRR",
     external: true,
   },
   {
     name: "Recovery Gear",
     category: "E-Commerce",
-    desc: "Shopify store for health & recovery. Zendrop fulfillment from day one.",
+    desc: "Shopify store for recovery products. Zendrop fulfillment from day one.",
     url: "https://recoverygear.us",
-    label: "recoverygear.us",
-    accent: "#27AE60",
+    label: "recoverygear.us ↗",
     metric: "Live Store",
     external: true,
   },
   {
     name: "Bamberg Digital",
-    category: "Agency Website",
-    desc: "This site. Next.js, 12 service pages, JSON-LD schema, Page 1 Sacramento.",
+    category: "Agency Site",
+    desc: "This site. Next.js, JSON-LD schema, Page 1 Sacramento keywords.",
     url: "https://bambergdigital.com",
     label: "This site ↑",
-    accent: "#e8872b",
     metric: "Page 1",
     external: false,
   },
   {
     name: "NodPod",
-    category: "E-Commerce — Sample",
-    desc: "Wellness product store. Hero lifestyle photography, shipping bar, conversion-optimized.",
+    category: "Wellness — Sample",
+    desc: "Hero lifestyle photography, conversion-optimized e-commerce.",
     url: "/demo/nodpod",
-    label: "View Demo →",
-    accent: "#8B6914",
-    metric: "Sample Build",
+    label: "View sample →",
+    metric: "Sample",
     external: false,
   },
   {
     name: "NodPod Luxury",
     category: "Luxury — Sample",
-    desc: "Dark editorial hospitality redesign. Cormorant Garamond, gold accents, deep immersion.",
+    desc: "Dark editorial hospitality redesign. Cormorant Garamond, gold.",
     url: "/demo/nodpod-luxury",
-    label: "View Demo →",
-    accent: "#AD8B73",
-    metric: "Sample Build",
+    label: "View sample →",
+    metric: "Sample",
     external: false,
   },
   {
     name: "Bright Smiles",
     category: "Healthcare — Sample",
-    desc: "Dental practice site. Trust-focused, appointment booking, family positioning.",
+    desc: "Trust-focused dental practice site, family positioning.",
     url: "/demo/dental",
-    label: "View Demo →",
-    accent: "#4ECDC4",
-    metric: "Sample Build",
+    label: "View sample →",
+    metric: "Sample",
     external: false,
   },
 ];
@@ -941,6 +934,7 @@ const LIVE_WORK = [
    SUB-COMPONENTS
    ═══════════════════════════════════════════════════════════════════ */
 
+/* Frosted glass Wireframe previews — adapted to icy palette */
 function Wireframe({
   layout,
   accent,
@@ -951,22 +945,22 @@ function Wireframe({
   const box: React.CSSProperties = {
     width: "100%",
     aspectRatio: "16/10",
-    background: C.bgLight,
-    borderRadius: 3,
-    padding: 4,
+    background: "rgba(255,255,255,0.06)",
+    borderRadius: 4,
+    padding: 5,
     display: "flex",
     flexDirection: "column",
-    gap: 2,
+    gap: 3,
     overflow: "hidden",
-    border: `1px solid ${C.border}`,
+    border: "1px solid rgba(255,255,255,0.12)",
   };
   const nav: React.CSSProperties = {
     height: 3,
-    background: C.steel,
+    background: "rgba(255,255,255,0.2)",
     borderRadius: 1,
   };
   const blk = (op: number): React.CSSProperties => ({
-    background: C.steel,
+    background: "rgba(255,255,255,0.15)",
     borderRadius: 1,
     opacity: op,
   });
@@ -975,25 +969,11 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div style={{ flex: 1, display: "flex", gap: 2 }}>
-          <div style={{ width: "28%", ...blk(0.4) }} />
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
-          >
-            <div
-              style={{
-                height: 6,
-                background: accent,
-                opacity: 0.18,
-                borderRadius: 1,
-              }}
-            />
-            <div style={{ flex: 1, ...blk(0.3) }} />
+        <div style={{ flex: 1, display: "flex", gap: 3 }}>
+          <div style={{ width: "28%", ...blk(0.5) }} />
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
+            <div style={{ height: 6, background: accent, opacity: 0.25, borderRadius: 1 }} />
+            <div style={{ flex: 1, ...blk(0.35) }} />
           </div>
         </div>
       </div>
@@ -1003,22 +983,8 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div
-          style={{
-            height: 5,
-            background: accent,
-            opacity: 0.15,
-            borderRadius: 1,
-          }}
-        />
-        <div
-          style={{
-            flex: 1,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 2,
-          }}
-        >
+        <div style={{ height: 5, background: accent, opacity: 0.2, borderRadius: 1 }} />
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 3 }}>
           {[0.4, 0.3, 0.35, 0.3, 0.4, 0.3].map((op, i) => (
             <div key={i} style={blk(op)} />
           ))}
@@ -1030,23 +996,8 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div
-          style={{
-            flex: 1,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gridTemplateRows: "1fr 1fr",
-            gap: 2,
-          }}
-        >
-          <div
-            style={{
-              gridRow: "1/3",
-              background: accent,
-              opacity: 0.12,
-              borderRadius: 1,
-            }}
-          />
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", gap: 3 }}>
+          <div style={{ gridRow: "1/3", background: accent, opacity: 0.15, borderRadius: 1 }} />
           <div style={blk(0.35)} />
           <div style={blk(0.25)} />
         </div>
@@ -1057,34 +1008,12 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div style={{ flex: 1, display: "flex", gap: 2 }}>
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
-          >
-            <div
-              style={{
-                height: 8,
-                background: accent,
-                opacity: 0.18,
-                borderRadius: 1,
-              }}
-            />
+        <div style={{ flex: 1, display: "flex", gap: 3 }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
+            <div style={{ height: 8, background: accent, opacity: 0.22, borderRadius: 1 }} />
             <div style={{ flex: 1, ...blk(0.3) }} />
           </div>
-          <div
-            style={{
-              width: "35%",
-              background: accent,
-              opacity: 0.08,
-              borderRadius: 1,
-              border: `1px solid ${accent}30`,
-            }}
-          />
+          <div style={{ width: "35%", background: accent, opacity: 0.1, borderRadius: 1, border: `1px solid ${accent}30` }} />
         </div>
       </div>
     );
@@ -1093,26 +1022,10 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div
-          style={{
-            height: 5,
-            background: accent,
-            opacity: 0.15,
-            borderRadius: 1,
-          }}
-        />
-        <div
-          style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}
-        >
+        <div style={{ height: 5, background: accent, opacity: 0.18, borderRadius: 1 }} />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
           {[0.45, 0.35, 0.3, 0.25].map((op, i) => (
-            <div
-              key={i}
-              style={{
-                height: 5,
-                borderLeft: `2px solid ${accent}`,
-                ...blk(op),
-              }}
-            />
+            <div key={i} style={{ height: 5, borderLeft: `2px solid ${accent}`, ...blk(op) }} />
           ))}
         </div>
       </div>
@@ -1122,36 +1035,12 @@ function Wireframe({
     return (
       <div style={box}>
         <div style={nav} />
-        <div
-          style={{
-            height: 5,
-            background: accent,
-            opacity: 0.12,
-            borderRadius: 1,
-          }}
-        />
-        <div
-          style={{
-            flex: 1,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 2,
-          }}
-        >
+        <div style={{ height: 5, background: accent, opacity: 0.15, borderRadius: 1 }} />
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 3 }}>
           {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              style={{ display: "flex", flexDirection: "column", gap: 1 }}
-            >
+            <div key={i} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <div style={{ flex: 1, ...blk(0.35) }} />
-              <div
-                style={{
-                  height: 3,
-                  background: accent,
-                  opacity: 0.25,
-                  borderRadius: 1,
-                }}
-              />
+              <div style={{ height: 3, background: accent, opacity: 0.28, borderRadius: 1 }} />
             </div>
           ))}
         </div>
@@ -1161,10 +1050,8 @@ function Wireframe({
   return (
     <div style={box}>
       <div style={nav} />
-      <div
-        style={{ flex: 1, background: accent, opacity: 0.15, borderRadius: 2 }}
-      />
-      <div style={{ display: "flex", gap: 2, height: 8 }}>
+      <div style={{ flex: 1, background: accent, opacity: 0.12, borderRadius: 2 }} />
+      <div style={{ display: "flex", gap: 3, height: 8 }}>
         <div style={{ flex: 1, ...blk(0.4) }} />
         <div style={{ flex: 1, ...blk(0.3) }} />
         <div style={{ flex: 1, ...blk(0.2) }} />
@@ -1173,10 +1060,12 @@ function Wireframe({
   );
 }
 
+/* Animated counter */
 function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [n, setN] = useState(target);
   const done = useRef(false);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -1200,6 +1089,7 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
     obs.observe(el);
     return () => obs.disconnect();
   }, [target]);
+
   return (
     <span ref={ref}>
       {n}
@@ -1208,62 +1098,7 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   );
 }
 
-function SectionTag({ children, id }: { children: string; id?: string }) {
-  return (
-    <div
-      id={id}
-      className="reveal-on-scroll"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "0.75rem",
-        marginBottom: "1rem",
-        scrollMarginTop: 100,
-      }}
-    >
-      <span
-        style={{ width: 28, height: 1, background: C.blue, opacity: 0.5 }}
-      />
-      <span
-        style={{
-          fontFamily: MONO,
-          fontSize: "0.6rem",
-          letterSpacing: "0.2em",
-          color: C.blue,
-          textTransform: "uppercase",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {children}
-      </span>
-      <span style={{ flex: 1, height: 1, background: C.blue, opacity: 0.1 }} />
-    </div>
-  );
-}
-
-/* Scroll-progress indicator */
-function ScrollProgress() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const dot = dotRef.current;
-    if (!dot) return;
-    const onScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? window.scrollY / max : 0;
-      dot.style.top = `${pct * 100}%`;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return (
-    <div id="scroll-progress-track" aria-hidden="true">
-      <div id="scroll-progress-dot" ref={dotRef} />
-    </div>
-  );
-}
-
-/* Horizontal work track with drag support */
+/* Horizontal draggable work track */
 function WorkTrack() {
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -1279,12 +1114,8 @@ function WorkTrack() {
       startX = e.pageX - track.offsetLeft;
       scrollLeft = track.scrollLeft;
     };
-    const onLeave = () => {
-      isDown = false;
-    };
-    const onUp = () => {
-      isDown = false;
-    };
+    const onLeave = () => { isDown = false; };
+    const onUp = () => { isDown = false; };
     const onMove = (e: MouseEvent) => {
       if (!isDown) return;
       e.preventDefault();
@@ -1305,139 +1136,239 @@ function WorkTrack() {
   }, []);
 
   return (
-    <div id="work-track" ref={trackRef}>
+    <div
+      ref={trackRef}
+      style={{
+        display: "flex",
+        gap: "1.5rem",
+        overflowX: "scroll",
+        scrollSnapType: "x mandatory",
+        WebkitOverflowScrolling: "touch" as React.CSSProperties["WebkitOverflowScrolling"],
+        paddingBottom: "1rem",
+        cursor: "grab",
+        userSelect: "none",
+        scrollbarWidth: "none",
+      }}
+    >
       {LIVE_WORK.map((w) => (
         <div
           key={w.name}
-          data-cursor-card
           style={{
             minWidth: 380,
-            height: 280,
-            background: C.card,
-            borderTop: `3px solid ${w.accent}`,
-            borderLeft: `1px solid ${C.border}`,
-            borderRight: `1px solid ${C.border}`,
-            borderBottom: `1px solid ${C.border}`,
+            flexShrink: 0,
+            scrollSnapAlign: "start",
+            background: C.iceDeep,
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            border: `1px solid ${C.iceLine}`,
+            borderTop: `3px solid ${C.accent}`,
             padding: "1.75rem",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            scrollSnapAlign: "start",
-            flexShrink: 0,
-            transition:
-              "border-color 0.3s, transform 0.4s cubic-bezier(0.16,1,0.3,1)",
-            position: "relative",
+            minHeight: 260,
+            transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-4px)";
+            e.currentTarget.style.borderTopColor = C.accent;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
           }}
         >
           <div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: "0.5rem",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.5rem",
-                  letterSpacing: "0.18em",
-                  color: w.accent,
-                  textTransform: "uppercase",
-                  padding: "0.25rem 0.6rem",
-                  border: `1px solid ${w.accent}40`,
-                  background: `${w.accent}10`,
-                }}
-              >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+              <span style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.18em", color: C.whiteMute, textTransform: "uppercase", padding: "0.2rem 0.6rem", border: `1px solid ${C.iceLine}` }}>
                 {w.category}
               </span>
-              <span
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  color: w.accent,
-                  letterSpacing: "0.05em",
-                }}
-              >
+              <span style={{ fontFamily: MONO, fontSize: "0.6rem", fontWeight: 700, color: C.accent, letterSpacing: "0.06em" }}>
                 {w.metric}
               </span>
             </div>
-            <h3
-              style={{
-                fontFamily: HEAD,
-                fontWeight: 800,
-                fontSize: "1.6rem",
-                color: C.text,
-                letterSpacing: "-0.025em",
-                margin: "0.75rem 0 0.5rem",
-              }}
-            >
+            <h3 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: "1.5rem", color: C.white, letterSpacing: "-0.01em", margin: "0.5rem 0 0.5rem", fontStyle: "italic" }}>
               {w.name}
             </h3>
-            <p
-              style={{
-                fontFamily: "inherit",
-                fontSize: "0.85rem",
-                color: C.textSoft,
-                lineHeight: 1.65,
-                margin: 0,
-              }}
-            >
+            <p style={{ fontSize: "0.85rem", color: C.whiteSoft, lineHeight: 1.65, margin: 0 }}>
               {w.desc}
             </p>
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+          <div style={{ marginTop: "1.25rem" }}>
             {w.external ? (
               <a
                 href={w.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.14em",
-                  color: w.accent,
-                  textDecoration: "none",
-                  textTransform: "uppercase",
-                }}
+                style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.14em", color: C.whiteMute, textDecoration: "none", textTransform: "uppercase", transition: "color 0.2s" }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
               >
-                {w.label} ↗
+                {w.label}
               </a>
             ) : (
               <Link
                 href={w.url}
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.14em",
-                  color: w.accent,
-                  textDecoration: "none",
-                  textTransform: "uppercase",
-                }}
+                style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.14em", color: C.whiteMute, textDecoration: "none", textTransform: "uppercase", transition: "color 0.2s" }}
               >
                 {w.label}
               </Link>
             )}
-            <span
-              style={{
-                width: 24,
-                height: 1,
-                background: w.accent,
-                opacity: 0.35,
-                display: "block",
-              }}
-            />
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+/* Isometric architectural blueprint SVG centerpiece */
+function BlueprintSVG() {
+  return (
+    <svg
+      viewBox="0 0 500 500"
+      width="100%"
+      height="100%"
+      style={{ maxWidth: 520, filter: "drop-shadow(0 0 40px rgba(255,255,255,0.08))" }}
+      aria-hidden="true"
+    >
+      <defs>
+        <style>{`
+          .bp-slow { animation: bp-rotate-slow 80s linear infinite; transform-origin: 250px 250px; }
+          .bp-mid  { animation: bp-rotate-slow 55s linear infinite reverse; transform-origin: 250px 250px; }
+          .bp-fast { animation: bp-rotate-slow 35s linear infinite; transform-origin: 250px 250px; }
+          @keyframes bp-rotate-slow {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+          }
+        `}</style>
+      </defs>
+
+      {/* Coordinate grid marks */}
+      {[100, 150, 200, 250, 300, 350, 400].map((v) => (
+        <g key={`h${v}`}>
+          <line x1={v - 4} y1="250" x2={v + 4} y2="250" stroke="rgba(255,255,255,0.12)" strokeWidth="0.75" />
+          <line x1="250" y1={v - 4} x2="250" y2={v + 4} stroke="rgba(255,255,255,0.12)" strokeWidth="0.75" />
+        </g>
+      ))}
+
+      {/* Outer ring — slow */}
+      <g className="bp-slow">
+        <polygon
+          points="250,80 420,170 420,330 250,420 80,330 80,170"
+          fill="none"
+          stroke="rgba(255,255,255,0.14)"
+          strokeWidth="0.75"
+          strokeDasharray="6 4"
+        />
+        <circle cx="250" cy="80" r="2.5" fill="rgba(255,255,255,0.3)" />
+        <circle cx="420" cy="170" r="2.5" fill="rgba(255,255,255,0.3)" />
+        <circle cx="420" cy="330" r="2.5" fill="rgba(255,255,255,0.3)" />
+        <circle cx="250" cy="420" r="2.5" fill="rgba(255,255,255,0.3)" />
+        <circle cx="80" cy="330" r="2.5" fill="rgba(255,255,255,0.3)" />
+        <circle cx="80" cy="170" r="2.5" fill="rgba(255,255,255,0.3)" />
+      </g>
+
+      {/* Mid ring — reverse */}
+      <g className="bp-mid">
+        <rect
+          x="155"
+          y="155"
+          width="190"
+          height="190"
+          rx="2"
+          fill="none"
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="0.75"
+          strokeDasharray="4 6"
+        />
+        <circle cx="155" cy="155" r="2" fill="rgba(255,255,255,0.25)" />
+        <circle cx="345" cy="155" r="2" fill="rgba(255,255,255,0.25)" />
+        <circle cx="345" cy="345" r="2" fill="rgba(255,255,255,0.25)" />
+        <circle cx="155" cy="345" r="2" fill="rgba(255,255,255,0.25)" />
+        {/* Cross diagonals */}
+        <line x1="155" y1="155" x2="345" y2="345" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" />
+        <line x1="345" y1="155" x2="155" y2="345" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" />
+      </g>
+
+      {/* Core isometric cube — fast */}
+      <g className="bp-fast">
+        {/* Top face */}
+        <polygon
+          points="250,160 310,195 250,230 190,195"
+          fill="rgba(255,255,255,0.04)"
+          stroke="rgba(255,255,255,0.55)"
+          strokeWidth="1"
+          strokeLinejoin="round"
+        />
+        {/* Left face */}
+        <polygon
+          points="190,195 250,230 250,300 190,265"
+          fill="rgba(255,255,255,0.02)"
+          stroke="rgba(255,255,255,0.35)"
+          strokeWidth="1"
+          strokeLinejoin="round"
+        />
+        {/* Right face */}
+        <polygon
+          points="250,230 310,195 310,265 250,300"
+          fill="rgba(255,255,255,0.05)"
+          stroke="rgba(255,255,255,0.45)"
+          strokeWidth="1"
+          strokeLinejoin="round"
+        />
+        {/* Vertical edge lines */}
+        <line x1="250" y1="160" x2="250" y2="230" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" strokeDasharray="3 3" />
+        <line x1="190" y1="195" x2="190" y2="265" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" strokeDasharray="3 3" />
+        <line x1="310" y1="195" x2="310" y2="265" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" strokeDasharray="3 3" />
+        {/* Corner dots */}
+        <circle cx="250" cy="160" r="2" fill="rgba(255,255,255,0.7)" />
+        <circle cx="310" cy="195" r="2" fill="rgba(255,255,255,0.6)" />
+        <circle cx="190" cy="195" r="2" fill="rgba(255,255,255,0.6)" />
+        <circle cx="250" cy="300" r="2" fill="rgba(255,255,255,0.5)" />
+      </g>
+
+      {/* Center crosshair — static */}
+      <line x1="242" y1="250" x2="258" y2="250" stroke="rgba(255,255,255,0.35)" strokeWidth="0.75" />
+      <line x1="250" y1="242" x2="250" y2="258" stroke="rgba(255,255,255,0.35)" strokeWidth="0.75" />
+      <circle cx="250" cy="250" r="1.5" fill="rgba(255,255,255,0.55)" />
+
+      {/* Dimension annotation lines */}
+      <line x1="80" y1="460" x2="420" y2="460" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
+      <line x1="80" y1="456" x2="80" y2="464" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
+      <line x1="420" y1="456" x2="420" y2="464" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
+      <text x="250" y="473" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="8" fontFamily="monospace" letterSpacing="3">BD · SAC · 2024</text>
+
+      <line x1="40" y1="80" x2="40" y2="420" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
+      <line x1="36" y1="80" x2="44" y2="80" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
+      <line x1="36" y1="420" x2="44" y2="420" stroke="rgba(255,255,255,0.15)" strokeWidth="0.75" />
+    </svg>
+  );
+}
+
+/* Frosted section tag */
+function IcyTag({ children }: { children: string }) {
+  return (
+    <div
+      className="igloo-reveal"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "0.75rem",
+        marginBottom: "1rem",
+      }}
+    >
+      <span style={{ width: 24, height: 1, background: C.iceLine }} />
+      <span
+        style={{
+          fontFamily: MONO,
+          fontSize: "0.58rem",
+          letterSpacing: "0.22em",
+          color: C.whiteMute,
+          textTransform: "uppercase",
+        }}
+      >
+        {children}
+      </span>
+      <span style={{ flex: 1, height: 1, background: C.iceLine }} />
     </div>
   );
 }
@@ -1449,89 +1380,36 @@ export default function HomeNarrative() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCat, setActiveCat] = useState("all");
-  const [heroReady, setHeroReady] = useState(false);
-  const ctaBuildRef = useRef<HTMLSpanElement>(null);
 
   const filtered = useMemo(
-    () =>
-      activeCat === "all"
-        ? CATALOG
-        : CATALOG.filter((c) => c.cat === activeCat),
+    () => activeCat === "all" ? CATALOG : CATALOG.filter((c) => c.cat === activeCat),
     [activeCat],
   );
 
-  /* Hero animate-in after mount */
-  useEffect(() => {
-    const id = setTimeout(() => setHeroReady(true), 100);
-    return () => clearTimeout(id);
-  }, []);
-
-  /* Scroll reveals */
+  /* Scroll reveals via IntersectionObserver */
   useEffect(() => {
     document.documentElement.classList.add("js-loaded");
-    const observer = new IntersectionObserver(
+    const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
+            entry.target.classList.add("igloo-revealed");
+            obs.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.06, rootMargin: "0px 0px -30px 0px" },
     );
-    document
-      .querySelectorAll(".reveal-on-scroll")
-      .forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  /* CTA underline trigger */
-  useEffect(() => {
-    const el = ctaBuildRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          el.classList.add("triggered");
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.5 },
-    );
-    obs.observe(el);
+    document.querySelectorAll(".igloo-reveal").forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 
   /* Nav scroll state */
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 50);
+    const fn = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", fn, { passive: true });
     fn();
     return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  /* 3D tilt */
-  const handleTilt = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    e.currentTarget.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale(1.02)`;
-    e.currentTarget.style.borderColor = C.borderHover;
-  }, []);
-  const handleTiltReset = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.transform =
-      "perspective(600px) rotateY(0) rotateX(0) scale(1)";
-    e.currentTarget.style.borderColor = C.border;
-  }, []);
-
-  /* Magnetic button */
-  const handleMag = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.2}px,${(e.clientY - r.top - r.height / 2) * 0.2}px)`;
-  }, []);
-  const handleMagReset = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    e.currentTarget.style.transform = "translate(0,0)";
   }, []);
 
   const scrollTo = useCallback((id: string) => {
@@ -1543,140 +1421,109 @@ export default function HomeNarrative() {
   return (
     <div
       style={{
-        background: C.bg,
-        color: C.text,
+        background: "linear-gradient(180deg, #B4BCC8 0%, #9BA5B6 35%, #8B95A6 100%)",
+        backgroundAttachment: "fixed",
+        color: C.white,
         fontFamily: "var(--font-inter, Inter), system-ui, sans-serif",
         overflowX: "hidden",
+        minHeight: "100vh",
+        scrollSnapType: "y proximity",
       }}
     >
-      {/* Grain overlay */}
-      <div className="grain-overlay" aria-hidden="true" />
+      {/* Loader */}
+      <IglooLoader />
 
-      {/* Custom cursor */}
+      {/* Cursor */}
       <Cursor />
-
-      {/* Scroll progress */}
-      <ScrollProgress />
 
       {/* ══════════ NAV ══════════ */}
       <nav
-        className="fixed top-0 left-0 right-0 z-50"
         style={{
-          padding: scrolled ? "0.6rem 1.5rem" : "1.15rem 1.5rem",
-          background: scrolled ? "rgba(17,17,20,0.92)" : "transparent",
-          backdropFilter: scrolled ? "blur(24px) saturate(180%)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(24px) saturate(180%)" : "none",
-          borderBottom: scrolled
-            ? `1px solid ${C.border}`
-            : "1px solid transparent",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          padding: scrolled ? "0.6rem 2rem" : "1.25rem 2rem",
+          background: scrolled
+            ? "rgba(139,149,166,0.82)"
+            : "transparent",
+          backdropFilter: scrolled ? "blur(24px) saturate(160%)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(24px) saturate(160%)" : "none",
+          borderBottom: scrolled ? `1px solid ${C.iceLine}` : "1px solid transparent",
           transition: "all 0.5s cubic-bezier(0.16,1,0.3,1)",
         }}
       >
-        <div
-          style={{
-            maxWidth: 1440,
-            margin: "0 auto",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
+        <div style={{ maxWidth: 1360, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          {/* Logo */}
           <Link href="/" style={{ textDecoration: "none" }}>
-            <span
-              style={{
-                fontFamily: HEAD,
-                fontWeight: 800,
-                fontSize: "1.15rem",
-                color: C.text,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Bamberg<span style={{ color: C.blue }}>Digital</span>
+            <span style={{ fontFamily: SERIF, fontWeight: 500, fontStyle: "italic", fontSize: "1.2rem", color: C.white, letterSpacing: "0.01em" }}>
+              BambergDigital
             </span>
           </Link>
 
-          <div
-            className="hidden md:flex"
-            style={{ alignItems: "center", gap: "2rem" }}
-          >
+          {/* Desktop nav */}
+          <div className="hidden md:flex" style={{ alignItems: "center", gap: "2rem" }}>
             {[
-              { label: "Services", target: "services" },
-              { label: "Work", target: "live-work" },
-              { label: "Blueprints", target: "blueprints" },
-              { label: "About", target: "about" },
+              { label: "WORK", target: "live-work" },
+              { label: "BLUEPRINTS", target: "blueprints" },
+              { label: "CONTACT", target: "contact" },
             ].map((l) => (
               <button
                 key={l.label}
                 onClick={() => scrollTo(l.target)}
-                className="nav-link"
                 style={{
                   fontFamily: MONO,
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.15em",
-                  color: C.textSoft,
-                  textTransform: "uppercase",
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.2em",
+                  color: C.whiteSoft,
                   background: "none",
                   border: "none",
                   cursor: "pointer",
                   transition: "color 0.25s",
                   padding: "0.25rem 0",
                 }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteSoft; }}
               >
                 {l.label}
               </button>
             ))}
-            <a
-              href="tel:+19169077782"
+            <button
+              onClick={() => scrollTo("contact")}
               style={{
                 fontFamily: MONO,
-                fontSize: "0.58rem",
-                letterSpacing: "0.06em",
-                color: C.textMute,
-                textDecoration: "none",
-              }}
-            >
-              (916) 907-7782
-            </a>
-            <a
-              href="tel:+19169077782"
-              className="nav-cta"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.58rem",
-                letterSpacing: "0.08em",
-                padding: "0.5rem 1.1rem",
-                border: `1px solid ${C.orange}`,
-                color: C.orange,
-                textDecoration: "none",
+                fontSize: "0.55rem",
+                letterSpacing: "0.12em",
+                color: C.ink,
+                background: C.cream,
+                border: "none",
+                cursor: "pointer",
+                padding: "0.45rem 1rem",
                 textTransform: "uppercase",
-                transition: "all 0.3s",
+                transition: "background 0.25s, color 0.25s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = C.accent;
+                e.currentTarget.style.color = C.white;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = C.cream;
+                e.currentTarget.style.color = C.ink;
               }}
             >
-              FREE AUDIT →
-            </a>
+              FREE AUDIT
+            </button>
           </div>
 
+          {/* Mobile hamburger */}
           <button
             className="md:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
-            style={{
-              background: "none",
-              border: "none",
-              color: C.text,
-              cursor: "pointer",
-              padding: "0.5rem",
-            }}
+            style={{ background: "none", border: "none", color: C.white, cursor: "pointer", padding: "0.5rem" }}
           >
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
               {menuOpen ? (
                 <path d="M6 6l12 12M6 18L18 6" />
               ) : (
@@ -1690,33 +1537,31 @@ export default function HomeNarrative() {
           </button>
         </div>
 
+        {/* Mobile menu */}
         {menuOpen && (
           <div
             className="md:hidden"
             style={{
-              padding: "1.5rem 0 0.5rem",
+              padding: "1.5rem 2rem 1rem",
               display: "flex",
               flexDirection: "column",
               gap: "1.25rem",
+              background: "rgba(139,149,166,0.92)",
+              backdropFilter: "blur(20px)",
+              borderTop: `1px solid ${C.iceLine}`,
             }}
           >
-            {["services", "live-work", "blueprints", "about"].map((id) => (
+            {[
+              { label: "Work", target: "live-work" },
+              { label: "Blueprints", target: "blueprints" },
+              { label: "Contact", target: "contact" },
+            ].map((l) => (
               <button
-                key={id}
-                onClick={() => scrollTo(id)}
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.7rem",
-                  letterSpacing: "0.12em",
-                  color: C.textSoft,
-                  textTransform: "uppercase",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  textAlign: "left",
-                }}
+                key={l.label}
+                onClick={() => scrollTo(l.target)}
+                style={{ fontFamily: MONO, fontSize: "0.7rem", letterSpacing: "0.15em", color: C.whiteSoft, textTransform: "uppercase", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
               >
-                {id.replace("-", " ")}
+                {l.label}
               </button>
             ))}
           </div>
@@ -1725,481 +1570,417 @@ export default function HomeNarrative() {
 
       {/* ══════════ HERO ══════════ */}
       <section
+        id="hero"
         style={{
           minHeight: "100svh",
+          scrollSnapAlign: "start",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          padding: "8rem 1.5rem 4rem",
+          padding: "7rem 2rem 4rem",
           position: "relative",
           overflow: "hidden",
-          background: C.bg,
-          backgroundImage: `
-            linear-gradient(rgba(74,158,206,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(74,158,206,0.03) 1px, transparent 1px),
-            radial-gradient(ellipse at 30% 50%, rgba(74,158,206,0.06) 0%, transparent 55%),
-            radial-gradient(ellipse at 75% 80%, rgba(232,135,43,0.04) 0%, transparent 50%)
-          `,
-          backgroundSize: "80px 80px, 80px 80px, 100% 100%, 100% 100%",
         }}
       >
+        {/* Radial light at center */}
         <div
+          aria-hidden="true"
           style={{
-            maxWidth: 1440,
-            margin: "0 auto",
-            width: "100%",
-            position: "relative",
-            zIndex: 2,
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(ellipse 60% 55% at 55% 45%, rgba(255,255,255,0.08) 0%, transparent 70%)",
+            pointerEvents: "none",
           }}
-        >
-          {/* Eyebrow */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              marginBottom: "2rem",
-              opacity: heroReady ? 1 : 0,
-              transform: heroReady ? "translateY(0)" : "translateY(16px)",
-              transition:
-                "opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s",
-            }}
-          >
-            <span
-              style={{ width: 32, height: 1, background: C.blue, opacity: 0.5 }}
-            />
-            <span
+        />
+
+        <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "minmax(0,2fr) minmax(0,3fr)", gap: "4rem", alignItems: "center" }}>
+          {/* Left column */}
+          <div>
+            <div
+              className="igloo-reveal"
               style={{
                 fontFamily: MONO,
-                fontSize: "0.5rem",
-                letterSpacing: "0.22em",
-                color: C.blue,
+                fontSize: "0.55rem",
+                letterSpacing: "0.25em",
+                color: C.whiteMute,
                 textTransform: "uppercase",
+                marginBottom: "1.5rem",
+                lineHeight: 1.8,
               }}
             >
-              SACRAMENTO&nbsp;&nbsp;›&nbsp;&nbsp;DIGITAL
-              AGENCY&nbsp;&nbsp;›&nbsp;&nbsp;EST. 2024
-            </span>
+              Sacramento · Civic Engineers of the Web · Est. 2024
+            </div>
+
+            <h1
+              className="igloo-reveal"
+              style={{
+                fontFamily: SERIF,
+                fontWeight: 700,
+                fontSize: "clamp(2.75rem, 5.5vw, 5.5rem)",
+                lineHeight: 1.08,
+                color: C.white,
+                margin: "0 0 1.5rem",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Where digital
+              <br />
+              <em style={{ fontStyle: "italic", color: C.cream }}>becomes durable.</em>
+            </h1>
+
+            <p
+              className="igloo-reveal"
+              style={{
+                fontFamily: SERIF,
+                fontWeight: 400,
+                fontSize: "1.05rem",
+                color: C.whiteSoft,
+                lineHeight: 1.75,
+                marginBottom: "2.5rem",
+                maxWidth: 380,
+              }}
+            >
+              We don&apos;t build pages — we engineer systems. Every site is a blueprint, built to rank, convert, and outlast the competition.
+            </p>
+
+            <div className="igloo-reveal" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <button
+                onClick={() => scrollTo("blueprints")}
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.12em",
+                  color: C.ink,
+                  background: C.cream,
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "0.75rem 1.5rem",
+                  textTransform: "uppercase",
+                  transition: "background 0.3s, transform 0.3s",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = C.accent;
+                  e.currentTarget.style.color = C.white;
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = C.cream;
+                  e.currentTarget.style.color = C.ink;
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                ENTER CATALOG ↓
+              </button>
+              <button
+                onClick={() => scrollTo("contact")}
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.12em",
+                  color: C.white,
+                  background: "transparent",
+                  border: `1px solid ${C.iceLine}`,
+                  cursor: "pointer",
+                  padding: "0.75rem 1.5rem",
+                  textTransform: "uppercase",
+                  transition: "border-color 0.3s, transform 0.3s",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = C.iceLine;
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                Free consultation →
+              </button>
+            </div>
           </div>
 
-          {/* H1 — kinetic staggered lines */}
-          <h1
-            style={{
-              fontFamily: HEAD,
-              fontWeight: 900,
-              letterSpacing: "-0.045em",
-              lineHeight: 0.88,
-              margin: "0 0 0.1em",
-            }}
-          >
-            {/* Line 1 */}
-            <div
-              style={{
-                overflow: "hidden",
-                display: "block",
-                fontSize: "clamp(3.5rem, 12vw, 10rem)",
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  color: C.text,
-                  opacity: heroReady ? 1 : 0,
-                  transform: heroReady ? "translateY(0)" : "translateY(105%)",
-                  transition:
-                    "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.4s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.4s",
-                }}
-              >
-                ENGINEERED
-              </span>
-            </div>
-            {/* Line 2 */}
-            <div
-              style={{
-                overflow: "hidden",
-                display: "block",
-                fontSize: "clamp(3.5rem, 12vw, 10rem)",
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  opacity: heroReady ? 1 : 0,
-                  transform: heroReady ? "translateY(0)" : "translateY(105%)",
-                  transition:
-                    "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.55s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.55s",
-                }}
-              >
-                <span style={{ color: C.orange }}>TO&nbsp;</span>
-                <span style={{ color: C.text }}>PERFORM</span>
-              </span>
-            </div>
-            {/* Giant period */}
-            <div
-              style={{ overflow: "hidden", display: "block", lineHeight: 1 }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  fontSize: "clamp(6rem, 18vw, 16rem)",
-                  color: C.orange,
-                  lineHeight: 0.75,
-                  opacity: heroReady ? 1 : 0,
-                  transform: heroReady
-                    ? "translateY(0) scale(1)"
-                    : "translateY(60%) scale(0.8)",
-                  transition:
-                    "opacity 1s cubic-bezier(0.16,1,0.3,1) 0.75s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.75s",
-                  animation: heroReady
-                    ? "float-subtle 6s ease-in-out 1.5s infinite"
-                    : "none",
-                }}
-              >
-                .
-              </span>
-            </div>
-          </h1>
-
-          {/* Subtext */}
-          <p
-            style={{
-              fontSize: "clamp(0.95rem, 1.5vw, 1.1rem)",
-              color: C.textSoft,
-              maxWidth: 560,
-              margin: "2rem 0 2.5rem",
-              lineHeight: 1.75,
-              fontWeight: 300,
-              opacity: heroReady ? 1 : 0,
-              transform: heroReady ? "translateY(0)" : "translateY(20px)",
-              transition:
-                "opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.95s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.95s",
-            }}
-          >
-            One founder. No templates. Custom websites, SEO systems, and AI
-            automation — built from blueprint to launch.
-          </p>
-
-          {/* CTAs */}
+          {/* Right column — SVG centerpiece */}
           <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              opacity: heroReady ? 1 : 0,
-              transform: heroReady ? "translateY(0)" : "translateY(20px)",
-              transition:
-                "opacity 0.8s cubic-bezier(0.16,1,0.3,1) 1.1s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 1.1s",
-            }}
+            className="hidden md:flex"
+            style={{ alignItems: "center", justifyContent: "center", height: 480 }}
           >
-            <button
-              onClick={() => scrollTo("blueprints")}
-              className="ws-cta-pulse"
-              onMouseMove={handleMag}
-              onMouseLeave={handleMagReset}
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.65rem",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                padding: "0.85rem 1.8rem",
-                background: C.orange,
-                color: "#fff",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              BROWSE 50+ BLUEPRINTS ↓
-            </button>
-            <a
-              href="tel:+19169077782"
-              className="nav-cta"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.65rem",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                padding: "0.85rem 1.8rem",
-                border: `1px solid ${C.blue}`,
-                color: C.blue,
-                textDecoration: "none",
-                transition: "all 0.3s",
-                background: "transparent",
-              }}
-            >
-              FREE CONSULTATION →
-            </a>
+            <BlueprintSVG />
           </div>
         </div>
 
         {/* Scroll indicator */}
         <div
+          className="igloo-reveal"
           style={{
             position: "absolute",
-            bottom: "2rem",
+            bottom: "2.5rem",
             left: "50%",
             transform: "translateX(-50%)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "0.5rem",
-            opacity: heroReady ? 1 : 0,
-            transition: "opacity 1s 1.4s",
+            fontFamily: MONO,
+            fontSize: "0.5rem",
+            letterSpacing: "0.25em",
+            color: C.whiteMute,
+            textTransform: "uppercase",
+            animation: "igloo-pulse 2.5s ease-in-out infinite",
           }}
         >
-          <span
-            style={{
-              fontFamily: MONO,
-              fontSize: "0.48rem",
-              letterSpacing: "0.3em",
-              color: C.textMute,
-              textTransform: "uppercase",
-            }}
-          >
-            Scroll
-          </span>
-          <div
-            className="scroll-pulse"
-            style={{
-              width: 1,
-              height: 40,
-              background: `linear-gradient(to bottom, ${C.blue}, transparent)`,
-            }}
-          />
+          ↓ SCROLL TO BEGIN
         </div>
       </section>
 
-      {/* ══════════ MARQUEE ══════════ */}
-      <div
+      {/* ══════════ WHY ══════════ */}
+      <section
         style={{
-          overflow: "hidden",
-          padding: "0.85rem 0",
-          background: C.bgLight,
-          borderTop: `1px solid rgba(74,158,206,0.08)`,
-          borderBottom: `1px solid rgba(74,158,206,0.08)`,
+          minHeight: "100vh",
+          scrollSnapAlign: "start",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "5rem 2rem",
+          position: "relative",
         }}
       >
-        <div
-          className="marquee-track"
-          style={{ display: "flex", whiteSpace: "nowrap" }}
-        >
-          {[0, 1].map((i) => (
-            <span
-              key={i}
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.6rem",
-                letterSpacing: "0.3em",
-                color: C.blue,
-                textTransform: "uppercase",
-              }}
-            >
-              {
-                "WEB DESIGN ✦ SEO ✦ AI AUTOMATION ✦ LEAD GENERATION ✦ BRANDING ✦ CONTENT ✦ "
-              }
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* ══════════ SERVICES ══════════ */}
-      <section
-        style={{ padding: "7rem 1.5rem 8rem", background: C.bgLight }}
-        id="services"
-      >
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <SectionTag>What We Build</SectionTag>
+        <div style={{ maxWidth: 1000, margin: "0 auto", width: "100%", textAlign: "center" }}>
+          <IcyTag>The Method</IcyTag>
           <h2
-            className="reveal-on-scroll"
+            className="igloo-reveal"
             style={{
-              fontFamily: HEAD,
-              fontSize: "clamp(2rem, 5vw, 3.25rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
-              color: C.text,
-              margin: "0 0 3.5rem",
-              lineHeight: 1.1,
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(2rem, 4vw, 3.5rem)",
+              color: C.white,
+              lineHeight: 1.15,
+              letterSpacing: "-0.015em",
+              marginBottom: "3.5rem",
             }}
           >
-            Six disciplines.
+            Most agencies build pages.
             <br />
-            <span style={{ color: C.textMute }}>One obsession.</span>
+            <em style={{ fontStyle: "italic" }}>We engineer systems.</em>
           </h2>
 
           <div
+            className="igloo-reveal"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
               gap: "1.5rem",
             }}
           >
-            {SERVICES.map((s, i) => (
+            {[
+              {
+                num: "01",
+                title: "Foundation",
+                body: "Strategy and architecture before pixels. We map every page to a goal before we write a line of code.",
+              },
+              {
+                num: "02",
+                title: "Construction",
+                body: "Hand-coded, no templates, no shortcuts. Every build is engineered for your specific audience and intent.",
+              },
+              {
+                num: "03",
+                title: "Reinforcement",
+                body: "SEO, AI, automation — built in, not bolted on. Your site compounds over time while you run your business.",
+              },
+            ].map((card) => (
               <div
-                key={s.num}
-                className="reveal-on-scroll service-card"
-                data-cursor-card
+                key={card.num}
                 style={{
-                  background: C.card,
-                  border: `1px solid ${C.border}`,
+                  background: C.iceDeep,
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: `1px solid ${C.iceLine}`,
                   padding: "2rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.75rem",
-                  transitionDelay: `${i * 60}ms`,
-                  cursor: "default",
+                  textAlign: "left",
+                  transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = C.iceLine;
                 }}
               >
-                <span
-                  className="service-num"
-                  style={{
-                    fontFamily: HEAD,
-                    fontSize: "2.5rem",
-                    fontWeight: 900,
-                    color: C.blueDim,
-                    lineHeight: 1,
-                    transition: "color 0.3s, text-shadow 0.3s",
-                  }}
-                >
-                  {s.num}
+                <span style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.2em", color: C.whiteMute, display: "block", marginBottom: "0.75rem" }}>
+                  {card.num}
                 </span>
-                <h3
-                  style={{
-                    fontFamily: HEAD,
-                    fontSize: "1.05rem",
-                    fontWeight: 700,
-                    color: C.text,
-                    margin: 0,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {s.title}
+                <h3 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: "1.25rem", color: C.white, fontStyle: "italic", marginBottom: "0.75rem" }}>
+                  {card.title}
                 </h3>
-                <p
-                  style={{
-                    fontFamily: MONO,
-                    fontSize: "0.6rem",
-                    letterSpacing: "0.1em",
-                    color: C.orange,
-                    margin: 0,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {s.price} — {s.desc}
+                <p style={{ fontSize: "0.875rem", color: C.whiteSoft, lineHeight: 1.7, margin: 0 }}>
+                  {card.body}
                 </p>
-                <p
-                  style={{
-                    fontSize: "0.85rem",
-                    color: C.textSoft,
-                    margin: 0,
-                    lineHeight: 1.65,
-                  }}
-                >
-                  {s.full}
-                </p>
-                <div style={{ marginTop: "auto", paddingTop: "1rem" }}>
-                  <button
-                    onClick={() => scrollTo("contact")}
-                    style={{
-                      fontFamily: MONO,
-                      fontSize: "0.55rem",
-                      letterSpacing: "0.14em",
-                      color: C.blue,
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      padding: 0,
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    EXPLORE →
-                  </button>
-                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══════════ LIVE WORK — HORIZONTAL SCROLL ══════════ */}
-      <section style={{ padding: "7rem 0 5rem" }} id="live-work">
-        <div style={{ maxWidth: 1440, margin: "0 auto", padding: "0 1.5rem" }}>
-          <SectionTag>Portfolio</SectionTag>
-          <div className="reveal-on-scroll" style={{ marginBottom: "0.75rem" }}>
-            <h2
-              style={{
-                fontFamily: HEAD,
-                fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
-                fontWeight: 900,
-                letterSpacing: "-0.035em",
-                color: C.text,
-                margin: 0,
-                textTransform: "uppercase",
-              }}
-            >
-              REAL WORK. LIVE RIGHT NOW.
-            </h2>
-          </div>
-          <p
-            className="reveal-on-scroll"
+      {/* ══════════ SERVICES ══════════ */}
+      <section
+        id="services"
+        style={{
+          minHeight: "100vh",
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          background: "rgba(0,0,0,0.04)",
+        }}
+      >
+        <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
+          <IcyTag>What We Build</IcyTag>
+          <h2
+            className="igloo-reveal"
             style={{
-              fontSize: "0.85rem",
-              color: C.textMute,
-              marginBottom: "2.5rem",
-              fontFamily: MONO,
-              letterSpacing: "0.05em",
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(2rem, 4vw, 3.25rem)",
+              color: C.white,
+              letterSpacing: "-0.015em",
+              marginBottom: "3rem",
             }}
           >
-            Click to visit — every site built by Bamberg Digital.
-          </p>
-        </div>
-        <div style={{ paddingLeft: "1.5rem" }}>
-          <WorkTrack />
+            Six disciplines. <em style={{ fontStyle: "italic" }}>One discipline.</em>
+          </h2>
+
+          <div
+            className="igloo-reveal"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "1.25rem",
+            }}
+          >
+            {SERVICES.map((s) => (
+              <div
+                key={s.num}
+                style={{
+                  background: C.iceDeep,
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: `1px solid ${C.iceLine}`,
+                  padding: "1.75rem 2rem",
+                  transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, box-shadow 0.4s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
+                  e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,0,0,0.12)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = C.iceLine;
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
+                  <span style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.18em", color: C.whiteMute }}>{s.num}</span>
+                  <span style={{ fontFamily: MONO, fontSize: "0.6rem", letterSpacing: "0.04em", color: C.accent, fontWeight: 600 }}>{s.price}</span>
+                </div>
+                <h3 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: "1.2rem", fontStyle: "italic", color: C.white, marginBottom: "0.5rem" }}>
+                  {s.title}
+                </h3>
+                <p style={{ fontFamily: MONO, fontSize: "0.6rem", letterSpacing: "0.06em", color: C.whiteMute, marginBottom: "0.75rem" }}>
+                  {s.desc}
+                </p>
+                <p style={{ fontSize: "0.8rem", color: C.whiteSoft, lineHeight: 1.65, margin: 0 }}>
+                  {s.full}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ══════════ INDUSTRY CATALOG ══════════ */}
+      {/* ══════════ LIVE WORK ══════════ */}
       <section
-        style={{ padding: "7rem 1.5rem 8rem", background: C.bgLight }}
-        id="blueprints"
+        id="live-work"
+        style={{
+          minHeight: "100vh",
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
       >
-        <div style={{ maxWidth: 1300, margin: "0 auto" }}>
-          <SectionTag>Industry Blueprints</SectionTag>
+        <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
+          <IcyTag>Recent Expeditions</IcyTag>
           <h2
-            className="reveal-on-scroll"
+            className="igloo-reveal"
             style={{
-              fontFamily: HEAD,
-              fontSize: "clamp(2rem, 5vw, 3.25rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
-              color: C.text,
-              margin: "0 0 0.75rem",
-            }}
-          >
-            50+ industries.
-            <br />
-            <span style={{ color: C.textMute }}>One builder.</span>
-          </h2>
-          <p
-            className="reveal-on-scroll"
-            style={{
-              color: C.textSoft,
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(2rem, 4vw, 3.25rem)",
+              color: C.white,
+              letterSpacing: "-0.015em",
               marginBottom: "2.5rem",
-              maxWidth: 500,
-              lineHeight: 1.7,
-              fontSize: "0.9rem",
             }}
           >
-            Browse our full catalog of industry-specific website blueprints.
-            Each one is a battle-tested design system ready to build from.
-          </p>
+            Live sites. <em style={{ fontStyle: "italic" }}>Real customers.</em>
+          </h2>
 
-          {/* Category pills */}
+          <div className="igloo-reveal">
+            <WorkTrack />
+          </div>
+
+          <p
+            className="igloo-reveal"
+            style={{
+              fontFamily: MONO,
+              fontSize: "0.5rem",
+              letterSpacing: "0.18em",
+              color: C.whiteMute,
+              textTransform: "uppercase",
+              marginTop: "1.25rem",
+            }}
+          >
+            ← Drag to explore
+          </p>
+        </div>
+      </section>
+
+      {/* ══════════ BLUEPRINTS CATALOG ══════════ */}
+      <section
+        id="blueprints"
+        style={{
+          minHeight: "100vh",
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+          background: "rgba(0,0,0,0.05)",
+        }}
+      >
+        <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
+          <IcyTag>Industry Blueprints</IcyTag>
+          <h2
+            className="igloo-reveal"
+            style={{
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(2rem, 4vw, 3.25rem)",
+              color: C.white,
+              letterSpacing: "-0.015em",
+              marginBottom: "2rem",
+            }}
+          >
+            Fifty industries. <em style={{ fontStyle: "italic" }}>One method.</em>
+          </h2>
+
+          {/* Filter pills */}
           <div
-            className="reveal-on-scroll"
+            className="igloo-reveal"
             style={{
               display: "flex",
-              flexWrap: "wrap",
               gap: "0.5rem",
-              marginBottom: "3rem",
+              flexWrap: "wrap",
+              marginBottom: "2.5rem",
             }}
           >
             {CATEGORIES.map((cat) => (
@@ -2211,12 +1992,24 @@ export default function HomeNarrative() {
                   fontSize: "0.55rem",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  padding: "0.45rem 0.9rem",
-                  background: activeCat === cat.id ? C.blue : "transparent",
-                  color: activeCat === cat.id ? "#fff" : C.textSoft,
-                  border: `1px solid ${activeCat === cat.id ? C.blue : C.border}`,
+                  padding: "0.4rem 0.9rem",
+                  border: `1px solid ${activeCat === cat.id ? "rgba(255,255,255,0.5)" : C.iceLine}`,
+                  background: activeCat === cat.id ? "rgba(255,255,255,0.12)" : "transparent",
+                  color: activeCat === cat.id ? C.white : C.whiteMute,
                   cursor: "pointer",
                   transition: "all 0.25s",
+                }}
+                onMouseEnter={(e) => {
+                  if (activeCat !== cat.id) {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
+                    e.currentTarget.style.color = C.whiteSoft;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeCat !== cat.id) {
+                    e.currentTarget.style.borderColor = C.iceLine;
+                    e.currentTarget.style.color = C.whiteMute;
+                  }
                 }}
               >
                 {cat.label}
@@ -2224,526 +2017,313 @@ export default function HomeNarrative() {
             ))}
           </div>
 
-          {/* Blueprint cards grid */}
+          {/* Catalog grid */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
               gap: "1rem",
             }}
           >
             {filtered.map((item, i) => (
               <div
                 key={item.id}
-                className="catalog-card"
-                data-cursor-card
-                onMouseMove={handleTilt}
-                onMouseLeave={handleTiltReset}
                 style={{
-                  background: C.card,
-                  border: `1px solid ${C.border}`,
+                  background: C.iceDeep,
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: `1px solid ${C.iceLine}`,
                   padding: "1.25rem",
-                  animationDelay: `${(i % 12) * 40}ms`,
-                  cursor: "default",
-                  transition:
-                    "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+                  animation: "igloo-fade-up 0.45s cubic-bezier(0.16,1,0.3,1) both",
+                  animationDelay: `${Math.min(i * 0.025, 0.4)}s`,
+                  transition: "transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = C.iceLine;
                 }}
               >
                 <Wireframe layout={item.layout} accent={item.accent} />
-                <div style={{ paddingTop: "0.85rem" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginBottom: "0.4rem",
-                    }}
-                  >
-                    <h3
-                      style={{
-                        fontFamily: HEAD,
-                        fontSize: "0.9rem",
-                        fontWeight: 700,
-                        color: C.text,
-                        margin: 0,
-                      }}
-                    >
+                <div style={{ marginTop: "0.75rem" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.3rem" }}>
+                    <span style={{ fontFamily: HEAD, fontWeight: 700, fontSize: "0.85rem", color: C.white }}>
                       {item.name}
-                    </h3>
-                    <span
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: "50%",
-                        background: item.accent,
-                        opacity: 0.7,
-                        flexShrink: 0,
-                      }}
-                    />
+                    </span>
+                    <span style={{ fontFamily: MONO, fontSize: "0.45rem", letterSpacing: "0.12em", color: C.whiteMute, textTransform: "uppercase" }}>
+                      {item.vibe.split(" & ")[0]}
+                    </span>
                   </div>
-                  <p
-                    style={{
-                      fontFamily: MONO,
-                      fontSize: "0.5rem",
-                      letterSpacing: "0.1em",
-                      color: C.textMute,
-                      textTransform: "uppercase",
-                      margin: "0 0 0.6rem",
-                    }}
-                  >
-                    {item.vibe}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "0.75rem",
-                      color: C.textSoft,
-                      margin: "0 0 0.75rem",
-                      lineHeight: 1.6,
-                    }}
-                  >
+                  <p style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.05em", color: C.whiteMute, margin: 0, lineHeight: 1.6 }}>
                     {item.tag}
                   </p>
-                  <ul
-                    style={{
-                      listStyle: "none",
-                      padding: 0,
-                      margin: "0 0 0.75rem",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.25rem",
-                    }}
-                  >
-                    {item.features.map((f) => (
-                      <li
-                        key={f}
-                        style={{
-                          fontFamily: MONO,
-                          fontSize: "0.5rem",
-                          color: C.textMute,
-                          letterSpacing: "0.05em",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.4rem",
-                        }}
-                      >
-                        <span
-                          style={{ color: item.accent, fontSize: "0.55rem" }}
-                        >
-                          ›
-                        </span>{" "}
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    onClick={() => scrollTo("contact")}
-                    style={{
-                      fontFamily: MONO,
-                      fontSize: "0.5rem",
-                      letterSpacing: "0.12em",
-                      color: item.accent,
-                      background: "none",
-                      border: `1px solid ${item.accent}40`,
-                      padding: "0.35rem 0.7rem",
-                      cursor: "pointer",
-                      textTransform: "uppercase",
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    Get This Blueprint →
-                  </button>
                 </div>
               </div>
             ))}
-          </div>
-
-          <div
-            className="reveal-on-scroll"
-            style={{
-              textAlign: "center",
-              marginTop: "3rem",
-              paddingTop: "2rem",
-              borderTop: `1px solid ${C.border}`,
-            }}
-          >
-            <p
-              style={{
-                color: C.textMute,
-                fontSize: "0.8rem",
-                marginBottom: "1.5rem",
-                fontFamily: MONO,
-                letterSpacing: "0.05em",
-              }}
-            >
-              Don&apos;t see your industry? We build custom.
-            </p>
-            <a
-              href="tel:+19169077782"
-              className="ws-cta-pulse"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.6rem",
-                letterSpacing: "0.1em",
-                padding: "0.85rem 2rem",
-                background: C.orange,
-                color: "#fff",
-                textDecoration: "none",
-                textTransform: "uppercase",
-                display: "inline-block",
-              }}
-            >
-              DISCUSS YOUR PROJECT →
-            </a>
           </div>
         </div>
       </section>
 
       {/* ══════════ STATS ══════════ */}
-      <section style={{ padding: "7rem 1.5rem" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-              gap: "3rem",
-              textAlign: "center",
-            }}
-          >
-            {STATS.map((s) => (
-              <div key={s.label} className="reveal-on-scroll">
-                <div
-                  style={{
-                    fontFamily: HEAD,
-                    fontWeight: 900,
-                    fontSize: "clamp(3.5rem, 8vw, 6rem)",
-                    color: C.text,
-                    letterSpacing: "-0.04em",
-                    lineHeight: 1,
-                  }}
-                >
-                  <Counter target={s.value} suffix={s.suffix} />
-                </div>
-                <p
-                  style={{
-                    fontFamily: MONO,
-                    fontSize: "0.55rem",
-                    letterSpacing: "0.18em",
-                    color: C.textMute,
-                    textTransform: "uppercase",
-                    marginTop: "0.75rem",
-                  }}
-                >
-                  {s.label}
-                </p>
+      <section
+        style={{
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+          textAlign: "center",
+        }}
+      >
+        <div
+          className="igloo-reveal"
+          style={{
+            maxWidth: 1000,
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "3rem",
+          }}
+        >
+          {STATS.map((s) => (
+            <div key={s.label}>
+              <div
+                style={{
+                  fontFamily: SERIF,
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  fontSize: "clamp(3rem, 5vw, 4.5rem)",
+                  color: C.white,
+                  lineHeight: 1,
+                  marginBottom: "0.5rem",
+                }}
+              >
+                <Counter target={s.value} suffix={s.suffix} />
               </div>
-            ))}
-          </div>
+              <div
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.2em",
+                  color: C.whiteMute,
+                  textTransform: "uppercase",
+                }}
+              >
+                {s.label}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* ══════════ ABOUT ══════════ */}
       <section
-        style={{ padding: "7rem 1.5rem", background: C.bgLight }}
         id="about"
+        style={{
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+          background: "rgba(0,0,0,0.04)",
+        }}
       >
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <SectionTag>The Builder</SectionTag>
+        <div
+          style={{
+            maxWidth: 1100,
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "minmax(0,3fr) minmax(0,2fr)",
+            gap: "5rem",
+            alignItems: "center",
+          }}
+        >
           <blockquote
-            className="reveal-on-scroll"
+            className="igloo-reveal"
             style={{
-              fontFamily: HEAD,
-              fontSize: "clamp(1.6rem, 4vw, 2.75rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
-              color: C.text,
-              lineHeight: 1.2,
-              margin: "0 0 1.5rem",
-              borderLeft: `4px solid ${C.orange}`,
-              paddingLeft: "1.5rem",
+              fontFamily: SERIF,
+              fontWeight: 600,
+              fontStyle: "italic",
+              fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
+              color: C.white,
+              lineHeight: 1.3,
+              letterSpacing: "-0.01em",
+              margin: 0,
+              borderLeft: `2px solid ${C.iceLine}`,
+              paddingLeft: "2rem",
             }}
           >
-            &ldquo;I build every site like my name is on the door — because it
-            is.&rdquo;
+            &ldquo;I build every site like my name is on the door — because it is.&rdquo;
           </blockquote>
-          <p
-            className="reveal-on-scroll"
-            style={{
-              fontFamily: MONO,
-              fontSize: "0.6rem",
-              letterSpacing: "0.15em",
-              color: C.orange,
-              textTransform: "uppercase",
-              marginBottom: "2rem",
-            }}
-          >
-            — Jason Bamberg, Founder
-          </p>
-          <p
-            className="reveal-on-scroll"
-            style={{
-              fontSize: "1rem",
-              color: C.textSoft,
-              lineHeight: 1.8,
-              maxWidth: 640,
-              marginBottom: "2.5rem",
-            }}
-          >
-            Based in Sacramento. Serving businesses nationwide. Direct access.
-            No account managers. No runaround. When you work with Bamberg
-            Digital, you work with me.
-          </p>
-          <div
-            className="reveal-on-scroll"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1.5rem",
-              alignItems: "center",
-            }}
-          >
-            <a
-              href="mailto:hello@bambergdigital.com"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.6rem",
-                letterSpacing: "0.1em",
-                color: C.blue,
-                textDecoration: "none",
-                textTransform: "uppercase",
-                borderBottom: `1px solid ${C.blue}40`,
-                paddingBottom: "0.1rem",
-              }}
-            >
-              hello@bambergdigital.com
-            </a>
-            <a
-              href="tel:+19169077782"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.6rem",
-                letterSpacing: "0.1em",
-                color: C.textSoft,
-                textDecoration: "none",
-                textTransform: "uppercase",
-              }}
-            >
-              (916) 907-7782
-            </a>
+
+          <div className="igloo-reveal">
+            <p style={{ fontSize: "0.9rem", color: C.whiteSoft, lineHeight: 1.8, marginBottom: "1.5rem" }}>
+              Jason Bamberg, founder. Sacramento-based. I run every project personally — no account managers, no offshore hand-offs. You get direct access to the builder.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <a
+                href="mailto:hello@bambergdigital.com"
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.1em",
+                  color: C.whiteSoft,
+                  textDecoration: "none",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteSoft; }}
+              >
+                hello@bambergdigital.com
+              </a>
+              <a
+                href="tel:+19169077782"
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.1em",
+                  color: C.whiteSoft,
+                  textDecoration: "none",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteSoft; }}
+              >
+                (916) 907-7782
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ══════════ CTA ══════════ */}
       <section
+        id="contact"
         style={{
-          padding: "8rem 1.5rem",
+          minHeight: "60vh",
+          scrollSnapAlign: "start",
+          padding: "6rem 2rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
           position: "relative",
           overflow: "hidden",
         }}
-        id="contact"
       >
-        {/* Orange bg block behind BUILD */}
         <div
+          aria-hidden="true"
           style={{
             position: "absolute",
             inset: 0,
-            background: `radial-gradient(ellipse at 50% 60%, rgba(232,135,43,0.08) 0%, transparent 60%)`,
+            background: "radial-gradient(ellipse 50% 60% at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
         />
-        <div
+        <h2
+          className="igloo-reveal"
           style={{
-            maxWidth: 1200,
-            margin: "0 auto",
-            textAlign: "center",
-            position: "relative",
-            zIndex: 2,
+            fontFamily: SERIF,
+            fontWeight: 700,
+            fontStyle: "italic",
+            fontSize: "clamp(2.5rem, 5.5vw, 5rem)",
+            color: C.white,
+            letterSpacing: "-0.02em",
+            lineHeight: 1.1,
+            marginBottom: "2.5rem",
+            maxWidth: 700,
           }}
         >
-          <SectionTag>Start Today</SectionTag>
-          <h2
-            className="reveal-on-scroll"
+          Let&apos;s build something that lasts.
+        </h2>
+
+        <div className="igloo-reveal" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "2rem" }}>
+          <a
+            href="tel:+19169077782"
             style={{
-              fontFamily: HEAD,
-              fontSize: "clamp(3rem, 12vw, 9rem)",
-              fontWeight: 900,
-              letterSpacing: "-0.04em",
-              lineHeight: 0.9,
-              color: C.text,
-              margin: "0 0 2rem",
+              fontFamily: MONO,
+              fontSize: "0.65rem",
+              letterSpacing: "0.12em",
+              color: C.white,
+              background: C.accent,
+              textDecoration: "none",
+              padding: "0.85rem 2rem",
+              textTransform: "uppercase",
+              transition: "transform 0.3s, box-shadow 0.3s",
+              display: "inline-block",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 12px 40px rgba(232,135,43,0.35)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            LET&apos;S{" "}
-            <span
-              ref={ctaBuildRef}
-              className="underline-draw"
-              style={{ color: C.orange, display: "inline-block" }}
-            >
-              BUILD
-            </span>
-            .
-          </h2>
-          <p
-            className="reveal-on-scroll"
-            style={{
-              color: C.textSoft,
-              maxWidth: 480,
-              margin: "0 auto 3rem",
-              lineHeight: 1.7,
-              fontSize: "0.95rem",
-            }}
+            BEGIN PROJECT →
+          </a>
+        </div>
+
+        <div className="igloo-reveal" style={{ display: "flex", gap: "2rem", flexWrap: "wrap", justifyContent: "center" }}>
+          <a
+            href="mailto:hello@bambergdigital.com"
+            style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.12em", color: C.whiteMute, textDecoration: "none", transition: "color 0.2s" }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
           >
-            Tell me what you need. I&apos;ll tell you what it takes to build it
-            right. First call is free. No pitch. No BS.
-          </p>
-          <div
-            className="reveal-on-scroll"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              justifyContent: "center",
-            }}
+            hello@bambergdigital.com
+          </a>
+          <a
+            href="tel:+19169077782"
+            style={{ fontFamily: MONO, fontSize: "0.55rem", letterSpacing: "0.12em", color: C.whiteMute, textDecoration: "none", transition: "color 0.2s" }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
           >
-            <a
-              href="tel:+19169077782"
-              className="ws-cta-pulse"
-              onMouseMove={handleMag}
-              onMouseLeave={handleMagReset}
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.65rem",
-                letterSpacing: "0.1em",
-                padding: "1rem 2.5rem",
-                background: C.orange,
-                color: "#fff",
-                textDecoration: "none",
-                textTransform: "uppercase",
-                display: "inline-block",
-              }}
-            >
-              CALL (916) 907-7782 →
-            </a>
-            <a
-              href="mailto:hello@bambergdigital.com"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.65rem",
-                letterSpacing: "0.1em",
-                padding: "1rem 2.5rem",
-                border: `1px solid ${C.border}`,
-                color: C.textSoft,
-                textDecoration: "none",
-                textTransform: "uppercase",
-                display: "inline-block",
-                transition: "all 0.3s",
-              }}
-            >
-              EMAIL JASON →
-            </a>
-          </div>
+            (916) 907-7782
+          </a>
         </div>
       </section>
 
       {/* ══════════ FOOTER ══════════ */}
       <footer
         style={{
-          padding: "2.5rem 1.5rem",
-          borderTop: `1px solid rgba(74,158,206,0.08)`,
-          background: C.bg,
+          padding: "2rem",
+          background: C.iceDeep,
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderTop: `1px solid ${C.iceLine}`,
         }}
       >
         <div
           style={{
-            maxWidth: 1440,
+            maxWidth: 1360,
             margin: "0 auto",
             display: "flex",
-            flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "1.5rem",
+            flexWrap: "wrap",
+            gap: "1rem",
           }}
         >
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <span
-              style={{
-                fontFamily: HEAD,
-                fontWeight: 800,
-                fontSize: "1rem",
-                color: C.text,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Bamberg<span style={{ color: C.blue }}>Digital</span>
-            </span>
-          </Link>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "2rem",
-              alignItems: "center",
-            }}
-          >
-            {[
-              { label: "Services", target: "services" },
-              { label: "Work", target: "live-work" },
-              { label: "Blueprints", target: "blueprints" },
-              { label: "About", target: "about" },
-            ].map((l) => (
-              <button
-                key={l.label}
-                onClick={() => scrollTo(l.target)}
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.14em",
-                  color: C.textMute,
-                  textTransform: "uppercase",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  transition: "color 0.25s",
-                }}
-              >
-                {l.label}
-              </button>
-            ))}
-            <a
-              href="tel:+19169077782"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.55rem",
-                letterSpacing: "0.1em",
-                color: C.textMute,
-                textDecoration: "none",
-              }}
-            >
-              (916) 907-7782
-            </a>
-            <a
-              href="mailto:hello@bambergdigital.com"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.55rem",
-                letterSpacing: "0.1em",
-                color: C.textMute,
-                textDecoration: "none",
-              }}
+          <span style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: "1rem", color: C.whiteSoft }}>
+            BambergDigital
+          </span>
+          <span style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.12em", color: C.whiteMute, textTransform: "uppercase" }}>
+            © {new Date().getFullYear()} · Sacramento, CA
+          </span>
+          <div style={{ display: "flex", gap: "1.5rem" }}>
+            <a href="mailto:hello@bambergdigital.com" style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.1em", color: C.whiteMute, textDecoration: "none", transition: "color 0.2s" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
             >
               hello@bambergdigital.com
             </a>
+            <a href="tel:+19169077782" style={{ fontFamily: MONO, fontSize: "0.5rem", letterSpacing: "0.1em", color: C.whiteMute, textDecoration: "none", transition: "color 0.2s" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = C.white; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = C.whiteMute; }}
+            >
+              (916) 907-7782
+            </a>
           </div>
-          <span
-            style={{
-              fontFamily: MONO,
-              fontSize: "0.5rem",
-              letterSpacing: "0.1em",
-              color: C.textMute,
-            }}
-          >
-            © {new Date().getFullYear()} Bamberg Digital
-          </span>
         </div>
       </footer>
     </div>

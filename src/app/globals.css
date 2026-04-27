@@ -21,6 +21,74 @@ body {
   font-family: var(--font-sans);
 }
 
+/* ═══════════════════════════════════════════════════════
+   IGLOO REDESIGN — Scroll reveal + cursor + animations
+   ═══════════════════════════════════════════════════════ */
+
+/* Hide native cursor on hover-capable devices */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none !important;
+  }
+  a, button, [role="button"] {
+    cursor: none !important;
+  }
+  input, textarea, select {
+    cursor: text !important;
+  }
+}
+
+/* Igloo scroll-reveal system */
+.igloo-reveal {
+  opacity: 1;
+  transform: none;
+}
+.js-loaded .igloo-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.js-loaded .igloo-reveal.igloo-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Igloo keyframe animations */
+@keyframes igloo-fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes igloo-rotate-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes igloo-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+/* Igloo custom cursor — small 8px white dot */
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: #fff;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+@media (hover: none), (pointer: coarse) {
+  #custom-cursor { display: none !important; }
+  body { cursor: auto !important; }
+}
+
 h1,
 h2,
 h3,
