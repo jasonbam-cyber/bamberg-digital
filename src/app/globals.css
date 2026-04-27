@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════
+   R3F CANVAS HOST — full-viewport, behind body content,
+   suppressed on mobile to keep bundle/perf budget tight.
+   ═══════════════════════════════════════════════════════ */
+.r3f-canvas-host {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .r3f-canvas-host {
+    display: none;
+  }
+}
+
 @theme inline {
   --color-background: #111114;
   --color-foreground: #e8e6e1;
@@ -30,10 +46,14 @@ body {
   body {
     cursor: none !important;
   }
-  a, button, [role="button"] {
+  a,
+  button,
+  [role="button"] {
     cursor: none !important;
   }
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     cursor: text !important;
   }
 }
@@ -57,16 +77,31 @@ body {
 
 /* Igloo keyframe animations */
 @keyframes igloo-fade-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes igloo-rotate-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 @keyframes igloo-pulse {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Igloo custom cursor — small 8px white dot */
@@ -85,8 +120,12 @@ body {
   mix-blend-mode: difference;
 }
 @media (hover: none), (pointer: coarse) {
-  #custom-cursor { display: none !important; }
-  body { cursor: auto !important; }
+  #custom-cursor {
+    display: none !important;
+  }
+  body {
+    cursor: auto !important;
+  }
 }
 
 h1,
