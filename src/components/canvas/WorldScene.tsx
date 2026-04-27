@@ -5,7 +5,6 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Environment, Sparkles } from "@react-three/drei";
 import Spine from "./Spine";
 import BlueprintPlanes from "./BlueprintPlanes";
-import Laptop3D from "./Laptop3D";
 import FloatingText from "./FloatingText";
 
 function ScrollCamera() {
@@ -27,10 +26,10 @@ function ScrollCamera() {
     // Easing: stay still for the first 5% of scroll, then ease out
     const eased = p < 0.05 ? 0 : (p - 0.05) / 0.95;
     // Camera moves straight down the spine (x=0) so each tile passes through center.
-    // Z stays near constant (~5) so each tile is at consistent viewing distance.
+    // Z held at 5.5 (was 5) to compensate for spine + tiles being pushed back ~2 units.
     const targetY = -eased * 48;
     const targetX = 0;
-    const targetZ = 5 + Math.sin(eased * Math.PI) * 0.6;
+    const targetZ = 5.5 + Math.sin(eased * Math.PI) * 0.6;
     camera.position.x += (targetX - camera.position.x) * 0.05;
     camera.position.y += (targetY - camera.position.y) * 0.05;
     camera.position.z += (targetZ - camera.position.z) * 0.05;
@@ -46,11 +45,6 @@ export default function WorldScene() {
       <Environment preset="studio" background={false} />
       <directionalLight position={[5, 5, 5]} intensity={0.3} color="#e8872b" />
       <ScrollCamera />
-      <group position={[0, -0.3, 1.5]}>
-        <Suspense fallback={null}>
-          <Laptop3D />
-        </Suspense>
-      </group>
       <Spine />
       <FloatingText />
       <Suspense fallback={null}>

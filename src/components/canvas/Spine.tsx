@@ -14,7 +14,7 @@ export default function Spine() {
   });
 
   return (
-    <mesh ref={ref} position={[0, -20, 0]}>
+    <mesh ref={ref} position={[0, -20, -2]}>
       <cylinderGeometry args={[0.04, 0.04, 70, 12]} />
       <meshStandardMaterial
         color="#e8872b"
