@@ -13,15 +13,42 @@ type PlaneData = {
   accent: string;
 };
 
+const HELIX_IDS = [
+  "restaurant",
+  "bakery",
+  "brewery",
+  "dental",
+  "medical",
+  "salon",
+  "spa",
+  "gym",
+  "yoga",
+  "contractor",
+  "landscaping",
+  "realtor",
+  "lawyer",
+  "photographer",
+  "videographer",
+  "florist",
+  "interior",
+  "nonprofit",
+  "childcare",
+  "auto-dealer",
+];
+
 export default function BlueprintPlanes() {
   const groupRef = useRef<THREE.Group>(null);
 
   const positions = useMemo<PlaneData[]>(() => {
-    return CATALOG.map((item, i) => {
-      const t = i / CATALOG.length;
-      const angle = t * Math.PI * 6;
-      const radius = 4.5 + Math.sin(t * Math.PI * 2) * 0.8;
-      const y = -2 - t * 50;
+    const items = HELIX_IDS.map((id) =>
+      CATALOG.find((c) => c.id === id),
+    ).filter((c): c is (typeof CATALOG)[number] => Boolean(c));
+
+    return items.map((item, i) => {
+      const t = i / items.length;
+      const angle = t * Math.PI * 5;
+      const radius = 2.8 + Math.sin(t * Math.PI * 2) * 0.4;
+      const y = -2 - t * 48;
       return {
         id: item.id,
         position: [Math.cos(angle) * radius, y, Math.sin(angle) * radius],
@@ -54,7 +81,7 @@ export default function BlueprintPlanes() {
         if (tex) tex.colorSpace = THREE.SRGBColorSpace;
         return (
           <mesh key={p.id} position={p.position} rotation={p.rotation}>
-            <planeGeometry args={[1.6, 1.0]} />
+            <planeGeometry args={[2.6, 1.6]} />
             <meshBasicMaterial
               map={tex}
               transparent
