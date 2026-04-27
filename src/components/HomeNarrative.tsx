@@ -1457,7 +1457,7 @@ export default function HomeNarrative() {
                 lineHeight: 0.95,
                 letterSpacing: "-0.025em",
                 color: C.white,
-                fontSize: "clamp(2.5rem, 5.5vw, 6.5rem)",
+                fontSize: "clamp(2.2rem, 9.5vw, 6.5rem)",
                 maxWidth: "14ch",
                 textShadow: "0 2px 24px rgba(0,0,0,0.6)",
               }}
