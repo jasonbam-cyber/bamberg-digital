@@ -26,9 +26,11 @@ function ScrollCamera() {
     const p = scrollRef.current;
     // Easing: stay still for the first 5% of scroll, then ease out
     const eased = p < 0.05 ? 0 : (p - 0.05) / 0.95;
+    // Camera moves straight down the spine (x=0) so each tile passes through center.
+    // Z stays near constant (~5) so each tile is at consistent viewing distance.
     const targetY = -eased * 48;
-    const targetX = Math.sin(eased * Math.PI * 1.5) * 2;
-    const targetZ = 6.5 + Math.sin(eased * Math.PI * 2) * 1.2;
+    const targetX = 0;
+    const targetZ = 5 + Math.sin(eased * Math.PI) * 0.6;
     camera.position.x += (targetX - camera.position.x) * 0.05;
     camera.position.y += (targetY - camera.position.y) * 0.05;
     camera.position.z += (targetZ - camera.position.z) * 0.05;
