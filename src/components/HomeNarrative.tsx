@@ -1850,259 +1850,6 @@ export default function HomeNarrative() {
         </div>
       </section>
 
-      {/* ══════════ BLUEPRINTS CATALOG ══════════ */}
-      <section
-        id="blueprints"
-        style={{
-          minHeight: "100vh",
-          scrollSnapAlign: "start",
-          padding: "5rem 2rem",
-          background: "rgba(0,0,0,0.05)",
-        }}
-      >
-        <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
-          <IcyTag>Industry Blueprints</IcyTag>
-          <h2
-            style={{
-              fontFamily: SERIF,
-              fontWeight: 700,
-              fontSize: "clamp(2rem, 4vw, 3.25rem)",
-              color: C.white,
-              letterSpacing: "-0.015em",
-              marginBottom: "2rem",
-            }}
-          >
-            <SplitReveal by="char" style={{ display: "inline-block" }}>
-              {"Fifty industries. "}
-            </SplitReveal>
-            <SplitReveal
-              by="char"
-              delay={0.18}
-              style={{ display: "inline-block", fontStyle: "italic" }}
-            >
-              One method.
-            </SplitReveal>
-          </h2>
-
-          {/* Filter pills */}
-          <div
-            className="igloo-reveal"
-            style={{
-              display: "flex",
-              gap: "0.5rem",
-              flexWrap: "wrap",
-              marginBottom: "2.5rem",
-            }}
-          >
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCat(cat.id)}
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  padding: "0.4rem 0.9rem",
-                  border: `1px solid ${activeCat === cat.id ? "rgba(255,255,255,0.5)" : C.iceLine}`,
-                  background:
-                    activeCat === cat.id
-                      ? "rgba(255,255,255,0.12)"
-                      : "transparent",
-                  color: activeCat === cat.id ? C.white : C.whiteMute,
-                  cursor: "pointer",
-                  transition: "all 0.25s",
-                }}
-                onMouseEnter={(e) => {
-                  if (activeCat !== cat.id) {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
-                    e.currentTarget.style.color = C.whiteSoft;
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (activeCat !== cat.id) {
-                    e.currentTarget.style.borderColor = C.iceLine;
-                    e.currentTarget.style.color = C.whiteMute;
-                  }
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Catalog grid */}
-          <div
-            className="catalog-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-              gap: "1rem",
-            }}
-          >
-            {filtered.map((item) => (
-              <Link
-                key={item.id}
-                href={`/blueprints/${item.id}`}
-                className="catalog-card"
-                style={{
-                  background: C.iceDeep,
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  border: `1px solid ${C.iceLine}`,
-                  padding: "1.25rem",
-                  transition:
-                    "transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
-                  display: "block",
-                  textDecoration: "none",
-                  color: "inherit",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)";
-                  const img = e.currentTarget.querySelector("img");
-                  const overlay = e.currentTarget.querySelector(
-                    ".catalog-overlay",
-                  ) as HTMLDivElement | null;
-                  if (img)
-                    (img as HTMLImageElement).style.transform = "scale(1.06)";
-                  if (overlay) overlay.style.opacity = "1";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.borderColor = C.iceLine;
-                  const img = e.currentTarget.querySelector("img");
-                  const overlay = e.currentTarget.querySelector(
-                    ".catalog-overlay",
-                  ) as HTMLDivElement | null;
-                  if (img)
-                    (img as HTMLImageElement).style.transform = "scale(1)";
-                  if (overlay) overlay.style.opacity = "0";
-                }}
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    aspectRatio: "16/10",
-                    background: "rgba(255,255,255,0.04)",
-                    border: `1px solid ${C.iceLine}`,
-                    borderRadius: 4,
-                    overflow: "hidden",
-                  }}
-                >
-                  <img
-                    src={`/screenshots/blueprint-${item.id}.jpg`}
-                    alt={`${item.name} demo preview`}
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "top center",
-                      transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)",
-                      filter: "saturate(0.85) brightness(0.9)",
-                    }}
-                  />
-                  {/* Accent line */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 2,
-                      background: item.accent,
-                      opacity: 0.85,
-                    }}
-                  />
-                  {/* Hover overlay */}
-                  <div
-                    className="catalog-overlay"
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.65) 100%)",
-                      display: "flex",
-                      alignItems: "flex-end",
-                      justifyContent: "flex-start",
-                      padding: "0.75rem",
-                      opacity: 0,
-                      transition: "opacity 0.3s ease",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono, monospace)",
-                        fontSize: "0.5rem",
-                        letterSpacing: "0.18em",
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        borderBottom: "1px solid rgba(255,255,255,0.5)",
-                        paddingBottom: 1,
-                      }}
-                    >
-                      VIEW DEMO →
-                    </span>
-                  </div>
-                </div>
-                <div style={{ marginTop: "0.75rem" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: "0.3rem",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: HEAD,
-                        fontWeight: 700,
-                        fontSize: "0.85rem",
-                        color: C.white,
-                      }}
-                    >
-                      {item.name}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: MONO,
-                        fontSize: "0.45rem",
-                        letterSpacing: "0.12em",
-                        color: C.whiteMute,
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {item.vibe.split(" & ")[0]}
-                    </span>
-                  </div>
-                  <p
-                    style={{
-                      fontFamily: MONO,
-                      fontSize: "0.5rem",
-                      letterSpacing: "0.05em",
-                      color: C.whiteMute,
-                      margin: 0,
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {item.tag}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ══════════ STATS ══════════ */}
       <section
         style={{
@@ -2382,6 +2129,259 @@ export default function HomeNarrative() {
           >
             (916) 907-7782
           </a>
+        </div>
+      </section>
+
+      {/* ══════════ BLUEPRINTS CATALOG ══════════ */}
+      <section
+        id="blueprints"
+        style={{
+          minHeight: "100vh",
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+          background: "rgba(0,0,0,0.05)",
+        }}
+      >
+        <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
+          <IcyTag>Industry Blueprints</IcyTag>
+          <h2
+            style={{
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(2rem, 4vw, 3.25rem)",
+              color: C.white,
+              letterSpacing: "-0.015em",
+              marginBottom: "2rem",
+            }}
+          >
+            <SplitReveal by="char" style={{ display: "inline-block" }}>
+              {"Fifty industries. "}
+            </SplitReveal>
+            <SplitReveal
+              by="char"
+              delay={0.18}
+              style={{ display: "inline-block", fontStyle: "italic" }}
+            >
+              One method.
+            </SplitReveal>
+          </h2>
+
+          {/* Filter pills */}
+          <div
+            className="igloo-reveal"
+            style={{
+              display: "flex",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+              marginBottom: "2.5rem",
+            }}
+          >
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCat(cat.id)}
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  padding: "0.4rem 0.9rem",
+                  border: `1px solid ${activeCat === cat.id ? "rgba(255,255,255,0.5)" : C.iceLine}`,
+                  background:
+                    activeCat === cat.id
+                      ? "rgba(255,255,255,0.12)"
+                      : "transparent",
+                  color: activeCat === cat.id ? C.white : C.whiteMute,
+                  cursor: "pointer",
+                  transition: "all 0.25s",
+                }}
+                onMouseEnter={(e) => {
+                  if (activeCat !== cat.id) {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
+                    e.currentTarget.style.color = C.whiteSoft;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeCat !== cat.id) {
+                    e.currentTarget.style.borderColor = C.iceLine;
+                    e.currentTarget.style.color = C.whiteMute;
+                  }
+                }}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Catalog grid */}
+          <div
+            className="catalog-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+              gap: "1rem",
+            }}
+          >
+            {filtered.map((item) => (
+              <Link
+                key={item.id}
+                href={`/blueprints/${item.id}`}
+                className="catalog-card"
+                style={{
+                  background: C.iceDeep,
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: `1px solid ${C.iceLine}`,
+                  padding: "1.25rem",
+                  transition:
+                    "transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+                  display: "block",
+                  textDecoration: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)";
+                  const img = e.currentTarget.querySelector("img");
+                  const overlay = e.currentTarget.querySelector(
+                    ".catalog-overlay",
+                  ) as HTMLDivElement | null;
+                  if (img)
+                    (img as HTMLImageElement).style.transform = "scale(1.06)";
+                  if (overlay) overlay.style.opacity = "1";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = C.iceLine;
+                  const img = e.currentTarget.querySelector("img");
+                  const overlay = e.currentTarget.querySelector(
+                    ".catalog-overlay",
+                  ) as HTMLDivElement | null;
+                  if (img)
+                    (img as HTMLImageElement).style.transform = "scale(1)";
+                  if (overlay) overlay.style.opacity = "0";
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "16/10",
+                    background: "rgba(255,255,255,0.04)",
+                    border: `1px solid ${C.iceLine}`,
+                    borderRadius: 4,
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={`/screenshots/blueprint-${item.id}.jpg`}
+                    alt={`${item.name} demo preview`}
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "top center",
+                      transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)",
+                      filter: "saturate(0.85) brightness(0.9)",
+                    }}
+                  />
+                  {/* Accent line */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 2,
+                      background: item.accent,
+                      opacity: 0.85,
+                    }}
+                  />
+                  {/* Hover overlay */}
+                  <div
+                    className="catalog-overlay"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.65) 100%)",
+                      display: "flex",
+                      alignItems: "flex-end",
+                      justifyContent: "flex-start",
+                      padding: "0.75rem",
+                      opacity: 0,
+                      transition: "opacity 0.3s ease",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono, monospace)",
+                        fontSize: "0.5rem",
+                        letterSpacing: "0.18em",
+                        color: "#fff",
+                        textTransform: "uppercase",
+                        borderBottom: "1px solid rgba(255,255,255,0.5)",
+                        paddingBottom: 1,
+                      }}
+                    >
+                      VIEW DEMO →
+                    </span>
+                  </div>
+                </div>
+                <div style={{ marginTop: "0.75rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "0.3rem",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: HEAD,
+                        fontWeight: 700,
+                        fontSize: "0.85rem",
+                        color: C.white,
+                      }}
+                    >
+                      {item.name}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: MONO,
+                        fontSize: "0.45rem",
+                        letterSpacing: "0.12em",
+                        color: C.whiteMute,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {item.vibe.split(" & ")[0]}
+                    </span>
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: MONO,
+                      fontSize: "0.5rem",
+                      letterSpacing: "0.05em",
+                      color: C.whiteMute,
+                      margin: 0,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {item.tag}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
