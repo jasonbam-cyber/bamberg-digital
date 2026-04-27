@@ -25,7 +25,6 @@ export default function Scene(props: SceneProps) {
         ...(props.style ?? {}),
       }}
     >
-      <color attach="background" args={["#0a0e16"]} />
       <Suspense fallback={null}>
         <WorldScene />
         <Effects />
