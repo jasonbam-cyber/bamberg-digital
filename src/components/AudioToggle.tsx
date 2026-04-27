@@ -9,38 +9,77 @@ type WebAudioWindow = Window & {
 export default function AudioToggle() {
   const [on, setOn] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
-  const gainRef = useRef<GainNode | null>(null);
+  const masterGainRef = useRef<GainNode | null>(null);
+  const filterRef = useRef<BiquadFilterNode | null>(null);
 
   const init = () => {
     const w = window as WebAudioWindow;
     const Ctor = window.AudioContext ?? w.webkitAudioContext;
     if (!Ctor) return;
     const ctx = new Ctor();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = 60;
-    gain.gain.value = 0;
-    osc.connect(gain).connect(ctx.destination);
-    osc.start();
+
+    const master = ctx.createGain();
+    master.gain.value = 0;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 800;
+    filter.Q.value = 0.7;
+
+    filter.connect(master).connect(ctx.destination);
+
+    const freqs = [55, 165, 220];
+    const gains = [0.05, 0.025, 0.018];
+    freqs.forEach((f, i) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = f;
+      osc.detune.value = i * 6;
+      g.gain.value = gains[i];
+
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      lfo.frequency.value = 0.05 + i * 0.03;
+      lfoGain.gain.value = gains[i] * 0.4;
+      lfo.connect(lfoGain).connect(g.gain);
+      lfo.start();
+
+      osc.connect(g).connect(filter);
+      osc.start();
+    });
+
     ctxRef.current = ctx;
-    gainRef.current = gain;
+    masterGainRef.current = master;
+    filterRef.current = filter;
   };
 
-  const toggle = () => {
+  const toggle = async () => {
     if (!ctxRef.current) init();
+    const ctx = ctxRef.current;
+    if (!ctx) return;
+    if (ctx.state === "suspended") await ctx.resume();
     const next = !on;
     setOn(next);
-    if (gainRef.current && ctxRef.current) {
-      if (ctxRef.current.state === "suspended") {
-        void ctxRef.current.resume();
-      }
-      gainRef.current.gain.linearRampToValueAtTime(
-        next ? 0.04 : 0,
-        ctxRef.current.currentTime + 0.4,
-      );
-    }
+    masterGainRef.current?.gain.linearRampToValueAtTime(
+      next ? 1 : 0,
+      ctx.currentTime + 0.6,
+    );
   };
+
+  useEffect(() => {
+    const onScroll = () => {
+      const ctx = ctxRef.current;
+      const filter = filterRef.current;
+      if (!ctx || !filter) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = Math.min(window.scrollY / Math.max(max, 1), 1);
+      const target = 200 + p * 3800;
+      filter.frequency.linearRampToValueAtTime(target, ctx.currentTime + 0.2);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(
     () => () => {

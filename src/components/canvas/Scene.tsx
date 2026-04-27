@@ -1,12 +1,12 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Preload, View } from "@react-three/drei";
+import { Preload } from "@react-three/drei";
 import { Suspense } from "react";
-import tunnel from "tunnel-rat";
+import dynamic from "next/dynamic";
 import Effects from "./Effects";
 
-export const t = tunnel();
+const WorldScene = dynamic(() => import("./WorldScene"), { ssr: false });
 
 type SceneProps = React.ComponentProps<typeof Canvas>;
 
@@ -25,9 +25,9 @@ export default function Scene(props: SceneProps) {
         ...(props.style ?? {}),
       }}
     >
+      <color attach="background" args={["#0a0e16"]} />
       <Suspense fallback={null}>
-        <t.Out />
-        <View.Port />
+        <WorldScene />
         <Effects />
         <Preload all />
       </Suspense>
