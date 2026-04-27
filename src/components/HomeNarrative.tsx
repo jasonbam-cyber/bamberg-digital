@@ -180,6 +180,36 @@ const LIVE_WORK = [
     external: false,
     image: "/screenshots/blueprint-photography.jpg",
   },
+  {
+    name: "Loft Salon Co.",
+    category: "Salon — Blueprint",
+    desc: "Booking-first layout, stylist profiles, before/after gallery, gift cards.",
+    url: "/blueprints/salon",
+    label: "View blueprint →",
+    metric: "Blueprint",
+    external: false,
+    image: "/screenshots/blueprint-salon.jpg",
+  },
+  {
+    name: "Marin Castillo Realtor",
+    category: "Real Estate — Blueprint",
+    desc: "MLS-style listings grid, neighborhood guides, lead capture on every page.",
+    url: "/blueprints/realtor",
+    label: "View blueprint →",
+    metric: "Blueprint",
+    external: false,
+    image: "/screenshots/blueprint-realestate.jpg",
+  },
+  {
+    name: "Northwall Brewing Co.",
+    category: "Brewery — Blueprint",
+    desc: "Taproom menu, event calendar, online merch shop, age verification gate.",
+    url: "/blueprints/brewery",
+    label: "View blueprint →",
+    metric: "Blueprint",
+    external: false,
+    image: "/screenshots/blueprint-brewery.jpg",
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════
