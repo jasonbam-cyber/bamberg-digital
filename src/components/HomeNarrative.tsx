@@ -866,7 +866,7 @@ const STATS = [
 /* ─── Live Work ────────────────────────────────────────────────── */
 const LIVE_WORK = [
   {
-    name: "Strata Work OS",
+    name: "Layer UI",
     category: "SaaS Platform",
     desc: "Remote work platform with CRM, task management, and Stripe billing. Built from zero to live in under 90 days.",
     url: "https://layerui.io",

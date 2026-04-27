@@ -6,7 +6,7 @@ import ContactForm from "@/components/ContactForm";
 export const metadata: Metadata = {
   title: "Portfolio | Bamberg Digital — Our Work",
   description:
-    "See our work — websites, SEO, branding, and AI automation built for real businesses. View case studies from Strata, Recovery Gear, and more.",
+    "See our work — websites, SEO, branding, and AI automation built for real businesses. View case studies from Layer UI, Recovery Gear, and more.",
   alternates: { canonical: "https://bambergdigital.com/portfolio" },
   openGraph: {
     title: "Portfolio | Bamberg Digital — Our Work",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
 const caseStudies = [
   {
-    client: "Strata (formerly Layer UI)",
+    client: "Layer UI",
     category: "SaaS Platform",
     description:
       "Built a full-featured remote work OS — custom Next.js application, Supabase backend, Stripe billing integration, and multi-tenant architecture. Launched from zero to live product in under 90 days.",
