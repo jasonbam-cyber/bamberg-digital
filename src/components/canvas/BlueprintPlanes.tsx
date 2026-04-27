@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useTexture } from "@react-three/drei";
@@ -38,6 +38,17 @@ const HELIX_IDS = [
 
 export default function BlueprintPlanes() {
   const groupRef = useRef<THREE.Group>(null);
+  const scrollRef = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      scrollRef.current = Math.min(window.scrollY / Math.max(max, 1), 1);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const positions = useMemo<PlaneData[]>(() => {
     const items = HELIX_IDS.map((id) =>
@@ -69,9 +80,12 @@ export default function BlueprintPlanes() {
     [textures],
   );
 
-  useFrame((state) => {
+  useFrame(() => {
     if (!groupRef.current) return;
-    groupRef.current.rotation.y = state.clock.elapsedTime * 0.04;
+    // 0% scroll = 0 rotation, 100% scroll = 2 full turns
+    const targetRot = scrollRef.current * Math.PI * 4;
+    groupRef.current.rotation.y +=
+      (targetRot - groupRef.current.rotation.y) * 0.08;
   });
 
   return (
