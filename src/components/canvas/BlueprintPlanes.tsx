@@ -17,7 +17,6 @@ const HELIX_IDS = [
   "bakery",
   "brewery",
   "dental",
-  "medical",
   "salon",
   "spa",
   "gym",
@@ -25,14 +24,9 @@ const HELIX_IDS = [
   "contractor",
   "landscaping",
   "realtor",
-  "lawyer",
   "photographer",
-  "videographer",
   "florist",
-  "interior",
   "nonprofit",
-  "childcare",
-  "auto-dealer",
 ];
 
 const TILE_W = 3.4;

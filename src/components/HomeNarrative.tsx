@@ -9,6 +9,7 @@ import IglooLoader from "./IglooLoader";
 import AudioToggle from "./AudioToggle";
 import SplitReveal from "./motion/SplitReveal";
 import MagneticButton from "./motion/MagneticButton";
+import NewsletterForm from "./NewsletterForm";
 import { CATALOG, CATEGORIES, type CatItem } from "@/data/catalog";
 
 if (typeof window !== "undefined") {
@@ -43,6 +44,16 @@ const C = {
 const SERIF = "var(--font-fraunces, 'Fraunces', 'Cormorant Garamond', serif)";
 const HEAD = "var(--font-montserrat, 'Montserrat'), sans-serif";
 const MONO = "var(--font-mono, 'JetBrains Mono'), monospace";
+
+const footerLinkStyle: React.CSSProperties = {
+  fontFamily: MONO,
+  fontSize: "0.55rem",
+  letterSpacing: "0.12em",
+  color: "rgba(255,255,255,0.45)",
+  textDecoration: "none",
+  textTransform: "uppercase",
+  transition: "color 0.2s",
+};
 
 /* ─── Types & Catalog imported from "@/data/catalog" ─────────────── */
 
@@ -221,6 +232,52 @@ const LIVE_WORK = [
     metric: "Blueprint",
     external: false,
     image: "/screenshots/blueprint-brewery.jpg",
+  },
+];
+
+/* ─── Current Projects ─────────────────────────────────────────────── */
+type ProjectStatus = "live" | "in-progress" | "building";
+const CURRENT_PROJECTS: {
+  status: ProjectStatus;
+  label: string;
+  name: string;
+  desc: string;
+}[] = [
+  {
+    status: "live",
+    label: "Live",
+    name: "Layer UI",
+    desc: "Remote work OS — chat, tasks, files, CRM. 12 active users, growing.",
+  },
+  {
+    status: "in-progress",
+    label: "In progress",
+    name: "Recovery Gear v2",
+    desc: "Shopify storefront refresh. New PDPs, hero refactor, conversion polish.",
+  },
+  {
+    status: "building",
+    label: "Building",
+    name: "Strata Pro",
+    desc: "Tanning artist SaaS — booking, billing, client CRM. Founding customer onboarding.",
+  },
+  {
+    status: "in-progress",
+    label: "In progress",
+    name: "CopperVeil",
+    desc: "Premium GHK-Cu skincare brand. Launch site, RFQ pipeline, retail kit.",
+  },
+  {
+    status: "live",
+    label: "Live",
+    name: "Bamberg Digital",
+    desc: "This site. Page-1 Sacramento search, 50 industry blueprints live.",
+  },
+  {
+    status: "building",
+    label: "Building",
+    name: "Bronzly",
+    desc: "Spray-tan platform — multi-tenant, mobile-first, Abbey founding partner.",
   },
 ];
 
@@ -2016,6 +2073,95 @@ export default function HomeNarrative() {
         </div>
       </section>
 
+      {/* ══════════ INDUSTRIES LIST ══════════ */}
+      <section
+        id="industries"
+        style={{
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+          background: "rgba(0,0,0,0.04)",
+        }}
+      >
+        <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
+          <IcyTag>Industries we build for</IcyTag>
+          <h2
+            style={{
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(1.75rem, 3.4vw, 2.75rem)",
+              color: C.white,
+              letterSpacing: "-0.015em",
+              marginBottom: "2.25rem",
+              lineHeight: 1.1,
+            }}
+          >
+            <SplitReveal by="char" style={{ display: "inline-block" }}>
+              {"Fifty industries. "}
+            </SplitReveal>
+            <SplitReveal
+              by="char"
+              delay={0.15}
+              style={{ display: "inline-block", fontStyle: "italic" }}
+            >
+              One method.
+            </SplitReveal>
+          </h2>
+
+          <ul
+            className="igloo-reveal"
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              columnGap: "2rem",
+              rowGap: "0.45rem",
+              fontFamily: MONO,
+            }}
+          >
+            {CATALOG.map((item) => (
+              <li
+                key={item.id}
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: "0.65rem",
+                  padding: "0.35rem 0",
+                  borderBottom: `1px dashed ${C.iceDeep}`,
+                  fontSize: "0.62rem",
+                  letterSpacing: "0.04em",
+                  lineHeight: 1.5,
+                }}
+              >
+                <span
+                  style={{
+                    color: C.white,
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    minWidth: "9.5rem",
+                    flexShrink: 0,
+                  }}
+                >
+                  {item.name}
+                </span>
+                <span
+                  style={{
+                    color: C.whiteMute,
+                    fontSize: "0.6rem",
+                    letterSpacing: "0.02em",
+                    textTransform: "none",
+                  }}
+                >
+                  {item.tag}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* ══════════ STATS ══════════ */}
       <section
         style={{
@@ -2062,6 +2208,129 @@ export default function HomeNarrative() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ══════════ CURRENT PROJECTS ══════════ */}
+      <section
+        id="current-projects"
+        style={{
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+        }}
+      >
+        <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
+          <IcyTag>Now shipping</IcyTag>
+          <h2
+            style={{
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(2rem, 4vw, 3.25rem)",
+              color: C.white,
+              letterSpacing: "-0.015em",
+              marginBottom: "2.5rem",
+              lineHeight: 1.1,
+            }}
+          >
+            <SplitReveal by="char" style={{ display: "inline-block" }}>
+              {"What I'm building "}
+            </SplitReveal>
+            <SplitReveal
+              by="char"
+              delay={0.15}
+              style={{ display: "inline-block", fontStyle: "italic" }}
+            >
+              right now.
+            </SplitReveal>
+          </h2>
+
+          <div
+            className="igloo-reveal"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "1.25rem",
+            }}
+          >
+            {CURRENT_PROJECTS.map((p) => {
+              const dot =
+                p.status === "live"
+                  ? "#27ae60"
+                  : p.status === "in-progress"
+                    ? C.accent
+                    : "#5aa9ff";
+              return (
+                <article
+                  key={p.name}
+                  style={{
+                    border: `1px solid ${C.iceLine}`,
+                    background: "rgba(255,255,255,0.03)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    padding: "1.5rem 1.4rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.85rem",
+                    minHeight: 165,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.55rem",
+                    }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: "50%",
+                        background: dot,
+                        boxShadow: `0 0 10px ${dot}`,
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontFamily: MONO,
+                        fontSize: "0.55rem",
+                        letterSpacing: "0.2em",
+                        color: C.whiteMute,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {p.label}
+                    </span>
+                  </div>
+                  <h3
+                    style={{
+                      margin: 0,
+                      fontFamily: SERIF,
+                      fontWeight: 600,
+                      fontSize: "1.4rem",
+                      color: C.white,
+                      letterSpacing: "-0.01em",
+                      lineHeight: 1.15,
+                    }}
+                  >
+                    {p.name}
+                  </h3>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "0.82rem",
+                      color: C.whiteSoft,
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    {p.desc}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -2187,6 +2456,65 @@ export default function HomeNarrative() {
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ══════════ NEWSLETTER (above CTA) ══════════ */}
+      <section
+        id="newsletter"
+        style={{
+          scrollSnapAlign: "start",
+          padding: "5rem 2rem",
+          textAlign: "center",
+          background: "rgba(0,0,0,0.06)",
+        }}
+      >
+        <div
+          className="igloo-reveal"
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "1.5rem",
+          }}
+        >
+          <IcyTag>The build log</IcyTag>
+          <h2
+            style={{
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)",
+              color: C.white,
+              letterSpacing: "-0.015em",
+              lineHeight: 1.1,
+              margin: 0,
+            }}
+          >
+            Get the build log —{" "}
+            <span style={{ fontStyle: "italic" }}>
+              weekly digest of what I&apos;m shipping.
+            </span>
+          </h2>
+          <p
+            style={{
+              fontFamily: SERIF,
+              fontSize: "1rem",
+              color: C.whiteSoft,
+              lineHeight: 1.6,
+              margin: 0,
+              maxWidth: "44ch",
+            }}
+          >
+            Every Friday: one new project, one lesson learned, one tool I
+            actually use. No fluff. Unsubscribe in one click.
+          </p>
+          <NewsletterForm
+            variant="inline"
+            source="home-pre-cta"
+            className="newsletter-form"
+          />
         </div>
       </section>
 
@@ -2578,7 +2906,7 @@ export default function HomeNarrative() {
       {/* ══════════ FOOTER ══════════ */}
       <footer
         style={{
-          padding: "2rem",
+          padding: "3rem 2rem 2rem",
           background: C.iceDeep,
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
@@ -2589,23 +2917,83 @@ export default function HomeNarrative() {
           style={{
             maxWidth: 1360,
             margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(280px, 1fr)",
+            gap: "3rem",
+            alignItems: "start",
+            paddingBottom: "2rem",
+            borderBottom: `1px solid ${C.iceDeep}`,
+          }}
+          className="footer-grid"
+        >
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+          >
+            <span
+              style={{
+                fontFamily: SERIF,
+                fontStyle: "italic",
+                fontSize: "1.4rem",
+                color: C.white,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              BambergDigital
+            </span>
+            <p
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.6rem",
+                letterSpacing: "0.12em",
+                color: C.whiteMute,
+                textTransform: "uppercase",
+                margin: 0,
+              }}
+            >
+              Sacramento, CA · Hand-crafted websites
+            </p>
+            <div
+              style={{ display: "flex", gap: "1.5rem", marginTop: "0.5rem" }}
+            >
+              <a href="mailto:hello@bambergdigital.com" style={footerLinkStyle}>
+                hello@bambergdigital.com
+              </a>
+              <a href="tel:+19169077782" style={footerLinkStyle}>
+                (916) 907-7782
+              </a>
+            </div>
+          </div>
+
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+          >
+            <span
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.6rem",
+                letterSpacing: "0.22em",
+                color: C.whiteMute,
+                textTransform: "uppercase",
+              }}
+            >
+              Subscribe to the build log
+            </span>
+            <NewsletterForm variant="inline" source="footer" />
+          </div>
+        </div>
+
+        <div
+          style={{
+            maxWidth: 1360,
+            margin: "0 auto",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: "1rem",
+            paddingTop: "1.5rem",
           }}
         >
-          <span
-            style={{
-              fontFamily: SERIF,
-              fontStyle: "italic",
-              fontSize: "1rem",
-              color: C.whiteSoft,
-            }}
-          >
-            BambergDigital
-          </span>
           <span
             style={{
               fontFamily: MONO,
@@ -2615,47 +3003,18 @@ export default function HomeNarrative() {
               textTransform: "uppercase",
             }}
           >
-            © {new Date().getFullYear()} · Sacramento, CA
+            © {new Date().getFullYear()} Bamberg Digital · Sacramento, CA
           </span>
-          <div style={{ display: "flex", gap: "1.5rem" }}>
-            <a
-              href="mailto:hello@bambergdigital.com"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.5rem",
-                letterSpacing: "0.1em",
-                color: C.whiteMute,
-                textDecoration: "none",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = C.white;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = C.whiteMute;
-              }}
-            >
-              hello@bambergdigital.com
-            </a>
-            <a
-              href="tel:+19169077782"
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.5rem",
-                letterSpacing: "0.1em",
-                color: C.whiteMute,
-                textDecoration: "none",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = C.white;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = C.whiteMute;
-              }}
-            >
-              (916) 907-7782
-            </a>
+          <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+            <Link href="/terms" style={footerLinkStyle}>
+              Terms &amp; Conditions
+            </Link>
+            <Link href="/privacy" style={footerLinkStyle}>
+              Privacy
+            </Link>
+            <Link href="/unsubscribe" style={footerLinkStyle}>
+              Unsubscribe
+            </Link>
           </div>
         </div>
       </footer>
