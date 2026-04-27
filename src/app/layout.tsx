@@ -129,7 +129,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${montserrat.variable} ${fraunces.variable} ${caveat.variable} ${jetbrainsMono.variable} antialiased bg-[#111114] text-[#e8e6e1]`}
+        className={`${inter.variable} ${montserrat.variable} ${fraunces.variable} ${caveat.variable} ${jetbrainsMono.variable} antialiased`}
       >
         {children}
       </body>
