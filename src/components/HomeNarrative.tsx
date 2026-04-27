@@ -1832,13 +1832,98 @@ export default function HomeNarrative() {
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-3px)";
                   e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)";
+                  const img = e.currentTarget.querySelector("img");
+                  const overlay = e.currentTarget.querySelector(
+                    ".catalog-overlay",
+                  ) as HTMLDivElement | null;
+                  if (img)
+                    (img as HTMLImageElement).style.transform = "scale(1.06)";
+                  if (overlay) overlay.style.opacity = "1";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.borderColor = C.iceLine;
+                  const img = e.currentTarget.querySelector("img");
+                  const overlay = e.currentTarget.querySelector(
+                    ".catalog-overlay",
+                  ) as HTMLDivElement | null;
+                  if (img)
+                    (img as HTMLImageElement).style.transform = "scale(1)";
+                  if (overlay) overlay.style.opacity = "0";
                 }}
               >
-                <Wireframe layout={item.layout} accent={item.accent} />
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "16/10",
+                    background: "rgba(255,255,255,0.04)",
+                    border: `1px solid ${C.iceLine}`,
+                    borderRadius: 4,
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={`/screenshots/blueprint-${item.id}.jpg`}
+                    alt={`${item.name} demo preview`}
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "top center",
+                      transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)",
+                      filter: "saturate(0.85) brightness(0.9)",
+                    }}
+                  />
+                  {/* Accent line */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 2,
+                      background: item.accent,
+                      opacity: 0.85,
+                    }}
+                  />
+                  {/* Hover overlay */}
+                  <div
+                    className="catalog-overlay"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.65) 100%)",
+                      display: "flex",
+                      alignItems: "flex-end",
+                      justifyContent: "flex-start",
+                      padding: "0.75rem",
+                      opacity: 0,
+                      transition: "opacity 0.3s ease",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono, monospace)",
+                        fontSize: "0.5rem",
+                        letterSpacing: "0.18em",
+                        color: "#fff",
+                        textTransform: "uppercase",
+                        borderBottom: "1px solid rgba(255,255,255,0.5)",
+                        paddingBottom: 1,
+                      }}
+                    >
+                      VIEW DEMO →
+                    </span>
+                  </div>
+                </div>
                 <div style={{ marginTop: "0.75rem" }}>
                   <div
                     style={{
