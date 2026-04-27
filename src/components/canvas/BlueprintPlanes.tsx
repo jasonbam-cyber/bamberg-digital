@@ -1,15 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useMemo, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { useTexture } from "@react-three/drei";
+import { useTexture, Billboard } from "@react-three/drei";
 import { CATALOG } from "@/data/catalog";
 
 type PlaneData = {
   id: string;
   position: [number, number, number];
-  rotation: [number, number, number];
   accent: string;
 };
 
@@ -36,34 +35,29 @@ const HELIX_IDS = [
   "auto-dealer",
 ];
 
+const TILE_W = 3.4;
+const TILE_H = 2.1;
+const Y_TOP = -3;
+const Y_BOTTOM = -50;
+const SIDE_OFFSET = 1.6; // alternating left/right of spine
+
 export default function BlueprintPlanes() {
-  const groupRef = useRef<THREE.Group>(null);
-  const scrollRef = useRef(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      scrollRef.current = Math.min(window.scrollY / Math.max(max, 1), 1);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   const positions = useMemo<PlaneData[]>(() => {
     const items = HELIX_IDS.map((id) =>
       CATALOG.find((c) => c.id === id),
     ).filter((c): c is (typeof CATALOG)[number] => Boolean(c));
 
     return items.map((item, i) => {
-      const t = i / items.length;
-      const angle = t * Math.PI * 5;
-      const radius = 2.8 + Math.sin(t * Math.PI * 2) * 0.4;
-      const y = -2 - t * 48;
+      const t = i / Math.max(items.length - 1, 1);
+      const y = Y_TOP + t * (Y_BOTTOM - Y_TOP);
+      // Alternate left/right side of spine — softer arc, never directly behind
+      const side = i % 2 === 0 ? -1 : 1;
+      const x = side * SIDE_OFFSET;
+      // Slight Z forward so tiles always sit toward camera
+      const z = 1.0 + Math.sin(t * Math.PI * 1.4) * 0.6;
       return {
         id: item.id,
-        position: [Math.cos(angle) * radius, y, Math.sin(angle) * radius],
-        rotation: [0, -angle + Math.PI / 2, 0],
+        position: [x, y, z],
         accent: item.accent,
       };
     });
@@ -80,32 +74,75 @@ export default function BlueprintPlanes() {
     [textures],
   );
 
-  useFrame(() => {
-    if (!groupRef.current) return;
-    // 0% scroll = 0 rotation, 100% scroll = 2 full turns
-    const targetRot = scrollRef.current * Math.PI * 4;
-    groupRef.current.rotation.y +=
-      (targetRot - groupRef.current.rotation.y) * 0.08;
-  });
-
   return (
-    <group ref={groupRef}>
+    <group>
       {positions.map((p, i) => {
         const tex = textureArray[i];
         if (tex) tex.colorSpace = THREE.SRGBColorSpace;
         return (
-          <mesh key={p.id} position={p.position} rotation={p.rotation}>
-            <planeGeometry args={[2.6, 1.6]} />
-            <meshBasicMaterial
-              map={tex}
-              transparent
-              opacity={0.85}
-              side={THREE.DoubleSide}
-              toneMapped={false}
-            />
-          </mesh>
+          <BillboardTile
+            key={p.id}
+            position={p.position}
+            texture={tex}
+            accent={p.accent}
+          />
         );
       })}
     </group>
+  );
+}
+
+function BillboardTile({
+  position,
+  texture,
+  accent,
+}: {
+  position: [number, number, number];
+  texture: THREE.Texture;
+  accent: string;
+}) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const matRef = useRef<THREE.MeshBasicMaterial>(null);
+  const edgeRef = useRef<THREE.LineSegments>(null);
+  const { camera } = useThree();
+
+  useFrame(() => {
+    if (!meshRef.current || !matRef.current) return;
+    // Distance from camera along Y — tile is "active" when camera is at its Y
+    const dy = Math.abs(camera.position.y - position[1]);
+    // Active range: 0..6 → opacity 1..0.4, scale 1.04..0.92
+    const active = Math.max(0, 1 - dy / 6);
+    const opacity = 0.55 + active * 0.45;
+    const scale = 0.92 + active * 0.12;
+    matRef.current.opacity += (opacity - matRef.current.opacity) * 0.1;
+    meshRef.current.scale.setScalar(
+      meshRef.current.scale.x + (scale - meshRef.current.scale.x) * 0.1,
+    );
+  });
+
+  return (
+    <Billboard
+      position={position}
+      follow
+      lockX={false}
+      lockY={false}
+      lockZ={false}
+    >
+      <mesh ref={meshRef}>
+        <planeGeometry args={[TILE_W, TILE_H]} />
+        <meshBasicMaterial
+          ref={matRef}
+          map={texture}
+          transparent
+          opacity={0.75}
+          toneMapped={false}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <lineSegments ref={edgeRef}>
+        <edgesGeometry args={[new THREE.PlaneGeometry(TILE_W, TILE_H)]} />
+        <lineBasicMaterial color={accent} transparent opacity={0.5} />
+      </lineSegments>
+    </Billboard>
   );
 }
