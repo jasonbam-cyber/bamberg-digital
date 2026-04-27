@@ -55,13 +55,14 @@ body {
   animation:
     laptop-open 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both,
     laptop-float 6s ease-in-out 2s infinite;
-  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6))
-    drop-shadow(0 0 80px rgba(232, 135, 43, 0.12));
 }
 .hero-laptop-img {
   width: 100%;
   height: auto;
   display: block;
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.7),
+    0 0 80px rgba(232, 135, 43, 0.18);
 }
 @keyframes laptop-open {
   0% {
