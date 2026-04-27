@@ -1422,21 +1422,209 @@ export default function HomeNarrative() {
             maxWidth: 1360,
             margin: "0 auto",
             width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
             position: "relative",
             zIndex: 10,
           }}
         >
-          {/* Photoreal laptop centerpiece */}
+          {/* ── Text column (left on desktop, full on mobile) ── */}
+          <div className="hero-text-col">
+            {/* Eyebrow */}
+            <SplitReveal
+              by="word"
+              stagger={0.04}
+              className="hero-eyebrow"
+              style={{
+                display: "block",
+                fontFamily: MONO,
+                fontSize: "clamp(0.55rem, 0.85vw, 0.7rem)",
+                letterSpacing: "0.32em",
+                color: C.whiteSoft,
+                textTransform: "uppercase",
+                marginBottom: "1.25rem",
+                lineHeight: 1.8,
+                textShadow: "0 2px 16px rgba(0,0,0,0.7)",
+              }}
+            >
+              Sacramento · Hand-Crafted Websites · Est. 2024
+            </SplitReveal>
+
+            {/* The H1 — dominant, mixed Fraunces italic + Montserrat extra-bold */}
+            <h1
+              className="hero-h1"
+              style={{
+                margin: "0 0 1.5rem",
+                padding: 0,
+                lineHeight: 0.95,
+                letterSpacing: "-0.025em",
+                color: C.white,
+                fontSize: "clamp(2.5rem, 5.5vw, 6.5rem)",
+                maxWidth: "14ch",
+                textShadow: "0 2px 24px rgba(0,0,0,0.6)",
+              }}
+            >
+              <SplitReveal
+                by="char"
+                stagger={0.022}
+                style={{
+                  display: "block",
+                  fontFamily: HEAD,
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                Your website
+              </SplitReveal>
+              <SplitReveal
+                by="char"
+                stagger={0.022}
+                delay={0.18}
+                style={{
+                  display: "block",
+                  fontFamily: SERIF,
+                  fontStyle: "italic",
+                  fontWeight: 500,
+                  color: C.cream,
+                }}
+              >
+                is your handshake.
+              </SplitReveal>
+              <span style={{ display: "block" }}>
+                <SplitReveal
+                  by="char"
+                  stagger={0.022}
+                  delay={0.36}
+                  as="span"
+                  style={{
+                    display: "inline-block",
+                    fontFamily: HEAD,
+                    fontWeight: 800,
+                    letterSpacing: "-0.03em",
+                  }}
+                >
+                  {"Make it "}
+                </SplitReveal>
+                <SplitReveal
+                  by="char"
+                  stagger={0.022}
+                  delay={0.5}
+                  as="span"
+                  style={{
+                    display: "inline-block",
+                    fontFamily: SERIF,
+                    fontStyle: "italic",
+                    fontWeight: 600,
+                    color: C.accent,
+                  }}
+                >
+                  unforgettable.
+                </SplitReveal>
+              </span>
+            </h1>
+
+            {/* Sub-line */}
+            <p
+              className="hero-sub"
+              style={{
+                fontFamily: SERIF,
+                fontWeight: 400,
+                fontSize: "clamp(1rem, 1.4vw, 1.2rem)",
+                color: C.white,
+                lineHeight: 1.6,
+                margin: "0 0 2.25rem",
+                maxWidth: "42ch",
+                textShadow: "0 2px 18px rgba(0,0,0,0.7)",
+                opacity: 0.92,
+              }}
+            >
+              Custom-built websites that earn attention, rank on Google, and
+              convert visitors into customers. One founder. No templates.
+            </p>
+
+            {/* CTAs */}
+            <div
+              className="hero-ctas"
+              style={{
+                display: "flex",
+                gap: "1rem",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                marginBottom: "1rem",
+              }}
+            >
+              <MagneticButton strength={0.35}>
+                <button
+                  onClick={() => scrollTo("work")}
+                  style={{
+                    fontFamily: HEAD,
+                    fontWeight: 700,
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.06em",
+                    color: C.ink,
+                    background: C.white,
+                    border: "none",
+                    cursor: "pointer",
+                    padding: "1rem 2rem",
+                    borderRadius: 999,
+                    textTransform: "uppercase",
+                    transition: "transform 0.3s, background 0.3s, color 0.3s",
+                    whiteSpace: "nowrap",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = C.accent;
+                    e.currentTarget.style.color = C.white;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = C.white;
+                    e.currentTarget.style.color = C.ink;
+                  }}
+                >
+                  See the work →
+                </button>
+              </MagneticButton>
+              <MagneticButton strength={0.35}>
+                <button
+                  onClick={() => scrollTo("contact")}
+                  style={{
+                    fontFamily: HEAD,
+                    fontWeight: 600,
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.06em",
+                    color: C.white,
+                    background: "rgba(255,255,255,0.06)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255,255,255,0.35)",
+                    cursor: "pointer",
+                    padding: "1rem 2rem",
+                    borderRadius: 999,
+                    textTransform: "uppercase",
+                    transition: "border-color 0.3s, background 0.3s",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.7)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor =
+                      "rgba(255,255,255,0.35)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                  }}
+                >
+                  Free 30-min consultation
+                </button>
+              </MagneticButton>
+            </div>
+          </div>
+          {/* end hero-text-col */}
+
+          {/* ── Laptop column (right on desktop, below on mobile) ── */}
           <div className="hero-laptop-stage" aria-hidden="true">
             <div className="hero-laptop-frame">
               <img
                 src="/hero/laptop-bd.png"
-                alt="Bamberg Digital — custom websites"
+                alt="Bamberg Digital — custom websites on a MacBook"
                 className="hero-laptop-img"
                 width={1600}
                 height={873}
@@ -1445,196 +1633,8 @@ export default function HomeNarrative() {
               />
             </div>
           </div>
-
-          {/* Eyebrow */}
-          <SplitReveal
-            by="word"
-            stagger={0.04}
-            className="hero-eyebrow"
-            style={{
-              display: "block",
-              fontFamily: MONO,
-              fontSize: "clamp(0.55rem, 0.85vw, 0.7rem)",
-              letterSpacing: "0.32em",
-              color: C.whiteSoft,
-              textTransform: "uppercase",
-              marginBottom: "2rem",
-              lineHeight: 1.8,
-              textShadow: "0 2px 16px rgba(0,0,0,0.7)",
-            }}
-          >
-            Sacramento · Hand-Crafted Websites · Est. 2024
-          </SplitReveal>
-
-          {/* The H1 — dominant, mixed Fraunces italic + Montserrat extra-bold */}
-          <h1
-            className="hero-h1"
-            style={{
-              margin: "0 0 2rem",
-              padding: 0,
-              lineHeight: 0.95,
-              letterSpacing: "-0.025em",
-              color: C.white,
-              fontSize: "clamp(2.75rem, 8vw, 8rem)",
-              maxWidth: "16ch",
-              textShadow: "0 2px 24px rgba(0,0,0,0.6)",
-            }}
-          >
-            <SplitReveal
-              by="char"
-              stagger={0.022}
-              style={{
-                display: "block",
-                fontFamily: HEAD,
-                fontWeight: 800,
-                letterSpacing: "-0.03em",
-              }}
-            >
-              Your website
-            </SplitReveal>
-            <SplitReveal
-              by="char"
-              stagger={0.022}
-              delay={0.18}
-              style={{
-                display: "block",
-                fontFamily: SERIF,
-                fontStyle: "italic",
-                fontWeight: 500,
-                color: C.cream,
-              }}
-            >
-              is your handshake.
-            </SplitReveal>
-            <span style={{ display: "block" }}>
-              <SplitReveal
-                by="char"
-                stagger={0.022}
-                delay={0.36}
-                as="span"
-                style={{
-                  display: "inline-block",
-                  fontFamily: HEAD,
-                  fontWeight: 800,
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                {"Make it "}
-              </SplitReveal>
-              <SplitReveal
-                by="char"
-                stagger={0.022}
-                delay={0.5}
-                as="span"
-                style={{
-                  display: "inline-block",
-                  fontFamily: SERIF,
-                  fontStyle: "italic",
-                  fontWeight: 600,
-                  color: C.accent,
-                }}
-              >
-                unforgettable.
-              </SplitReveal>
-            </span>
-          </h1>
-
-          {/* Sub-line */}
-          <p
-            className="hero-sub"
-            style={{
-              fontFamily: SERIF,
-              fontWeight: 400,
-              fontSize: "clamp(1rem, 1.4vw, 1.25rem)",
-              color: C.white,
-              lineHeight: 1.6,
-              margin: "0 auto 2.75rem",
-              maxWidth: "44ch",
-              textShadow: "0 2px 18px rgba(0,0,0,0.7)",
-              opacity: 0.92,
-            }}
-          >
-            I build custom websites that earn attention, rank on Google, and
-            convert visitors into customers. One founder. No templates. No
-            runaround.
-          </p>
-
-          {/* CTAs */}
-          <div
-            className="hero-ctas"
-            style={{
-              display: "flex",
-              gap: "1rem",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              marginBottom: "1rem",
-            }}
-          >
-            <MagneticButton strength={0.35}>
-              <button
-                onClick={() => scrollTo("work")}
-                style={{
-                  fontFamily: HEAD,
-                  fontWeight: 700,
-                  fontSize: "0.78rem",
-                  letterSpacing: "0.06em",
-                  color: C.ink,
-                  background: C.white,
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "1rem 2rem",
-                  borderRadius: 999,
-                  textTransform: "uppercase",
-                  transition: "transform 0.3s, background 0.3s, color 0.3s",
-                  whiteSpace: "nowrap",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = C.accent;
-                  e.currentTarget.style.color = C.white;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = C.white;
-                  e.currentTarget.style.color = C.ink;
-                }}
-              >
-                See the work →
-              </button>
-            </MagneticButton>
-            <MagneticButton strength={0.35}>
-              <button
-                onClick={() => scrollTo("contact")}
-                style={{
-                  fontFamily: HEAD,
-                  fontWeight: 600,
-                  fontSize: "0.78rem",
-                  letterSpacing: "0.06em",
-                  color: C.white,
-                  background: "rgba(255,255,255,0.06)",
-                  backdropFilter: "blur(8px)",
-                  WebkitBackdropFilter: "blur(8px)",
-                  border: "1px solid rgba(255,255,255,0.35)",
-                  cursor: "pointer",
-                  padding: "1rem 2rem",
-                  borderRadius: 999,
-                  textTransform: "uppercase",
-                  transition: "border-color 0.3s, background 0.3s",
-                  whiteSpace: "nowrap",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.7)";
-                  e.currentTarget.style.background = "rgba(255,255,255,0.12)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)";
-                  e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-                }}
-              >
-                Free 30-min consultation
-              </button>
-            </MagneticButton>
-          </div>
         </div>
+        {/* end hero-content */}
 
         {/* ENTER THE WORLD scroll indicator */}
         <div

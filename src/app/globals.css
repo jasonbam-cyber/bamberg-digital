@@ -41,13 +41,56 @@ body {
    HERO LAPTOP — photoreal centerpiece, animated open + float
    Sits between R3F canvas (z=1) and hero copy (z=10).
    ═══════════════════════════════════════════════════════ */
+/* ── Hero split layout ────────────────────────────────────── */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+}
+.hero-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .hero-content {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 5rem !important;
+  }
+  .hero-text-col {
+    align-items: flex-start;
+    text-align: left;
+    flex: 0 0 46%;
+    max-width: 46%;
+  }
+  .hero-text-col .hero-eyebrow,
+  .hero-text-col .hero-h1,
+  .hero-text-col .hero-sub {
+    text-align: left;
+  }
+  .hero-text-col .hero-ctas {
+    justify-content: flex-start !important;
+  }
+  .hero-laptop-stage {
+    flex: 0 0 54% !important;
+    max-width: 54% !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}
+
+/* ── Laptop hero image ───────────────────────────────────── */
 .hero-laptop-stage {
   position: relative;
-  margin: 0 auto 2.5rem;
-  width: min(82vw, 1080px);
+  margin: 0 auto;
+  width: min(86vw, 960px);
   pointer-events: none;
   z-index: 5;
-  perspective: 1800px;
 }
 .hero-laptop-frame {
   width: 100%;
@@ -80,7 +123,7 @@ body {
     translate: 0 0;
   }
   50% {
-    translate: 0 -8px;
+    translate: 0 -10px;
   }
 }
 @media (max-width: 768px) {
