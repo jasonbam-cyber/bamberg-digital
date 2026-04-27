@@ -2,9 +2,16 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import Cursor from "./Cursor";
 import IglooLoader from "./IglooLoader";
+import AudioToggle from "./AudioToggle";
 import { CATALOG, CATEGORIES, type CatItem } from "@/data/catalog";
+
+const BlueprintCube = dynamic(() => import("./canvas/BlueprintCube"), {
+  ssr: false,
+});
+const View = dynamic(() => import("./canvas/View"), { ssr: false });
 
 /* ═══════════════════════════════════════════════════════════════════
    IGLOO.INC-INSPIRED HOMEPAGE — Bamberg Digital
@@ -1053,6 +1060,8 @@ export default function HomeNarrative() {
         overflowX: "hidden",
         minHeight: "100vh",
         scrollSnapType: "y proximity",
+        position: "relative",
+        zIndex: 2,
       }}
     >
       {/* Loader */}
@@ -1163,6 +1172,7 @@ export default function HomeNarrative() {
             >
               FREE AUDIT
             </button>
+            <AudioToggle />
           </div>
 
           {/* Mobile hamburger */}
@@ -1391,13 +1401,28 @@ export default function HomeNarrative() {
             </div>
           </div>
 
-          {/* Right column — SVG centerpiece */}
+          {/* Right column — WebGL centerpiece (View portal into root canvas).
+              Mobile keeps the SVG fallback; canvas host is hidden < 768px. */}
           <div
             className="hidden md:flex"
             style={{
               alignItems: "center",
               justifyContent: "center",
               height: 480,
+              position: "relative",
+            }}
+          >
+            <View style={{ width: "100%", height: "100%", minHeight: 480 }}>
+              <BlueprintCube />
+            </View>
+          </div>
+          <div
+            className="md:hidden"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: 360,
             }}
           >
             <BlueprintSVG />
