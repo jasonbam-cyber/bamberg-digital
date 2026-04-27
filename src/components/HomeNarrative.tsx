@@ -12,9 +12,9 @@ import { CATALOG, CATEGORIES, type CatItem } from "@/data/catalog";
    ═══════════════════════════════════════════════════════════════════ */
 
 const C = {
-  bg: "#8B95A6",
-  bgMid: "#9BA5B6",
-  bgLight: "#B4BCC8",
+  bg: "#0a0e16",
+  bgMid: "#141822",
+  bgLight: "#1f2532",
   ink: "#1a1f2e",
   inkSoft: "#3a4050",
   cream: "#F5F2EB",
@@ -1016,7 +1016,7 @@ export default function HomeNarrative() {
     <div
       style={{
         background:
-          "linear-gradient(180deg, #B4BCC8 0%, #9BA5B6 35%, #8B95A6 100%)",
+          "linear-gradient(180deg, #1f2532 0%, #141822 35%, #0a0e16 100%)",
         backgroundAttachment: "fixed",
         color: C.white,
         fontFamily: "var(--font-inter, Inter), system-ui, sans-serif",

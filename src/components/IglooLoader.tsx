@@ -32,7 +32,7 @@ export default function IglooLoader() {
         inset: 0,
         zIndex: 10000,
         background:
-          "linear-gradient(180deg, #8B95A6 0%, #9BA5B6 50%, #B4BCC8 100%)",
+          "linear-gradient(180deg, #0a0e16 0%, #141822 50%, #1f2532 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
