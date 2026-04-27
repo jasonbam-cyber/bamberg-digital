@@ -38,6 +38,64 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════
+   HERO LAPTOP — photoreal centerpiece, animated open + float
+   Sits between R3F canvas (z=1) and hero copy (z=10).
+   ═══════════════════════════════════════════════════════ */
+.hero-laptop-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(72vw, 880px);
+  pointer-events: none;
+  z-index: 2;
+  perspective: 1800px;
+}
+.hero-laptop-frame {
+  width: 100%;
+  transform-origin: center 80%;
+  animation:
+    laptop-open 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both,
+    laptop-float 6s ease-in-out 2s infinite;
+  filter:
+    drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 80px rgba(232, 135, 43, 0.12));
+}
+.hero-laptop-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+@keyframes laptop-open {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.92) rotateX(-22deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+  }
+}
+@keyframes laptop-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+@media (max-width: 768px) {
+  .hero-laptop-stage {
+    width: 92vw;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
    IGLOO REDESIGN — Scroll reveal + cursor + animations
    ═══════════════════════════════════════════════════════ */
 

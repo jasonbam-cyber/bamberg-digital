@@ -39,7 +39,7 @@ const TILE_W = 3.4;
 const TILE_H = 2.1;
 const Y_TOP = -3;
 const Y_BOTTOM = -50;
-const SIDE_OFFSET = 1.6; // alternating left/right of spine
+const SIDE_OFFSET = 1.9; // alternating left/right of spine — wider since tiles sit ~2 units back
 
 export default function BlueprintPlanes() {
   const positions = useMemo<PlaneData[]>(() => {
@@ -53,8 +53,8 @@ export default function BlueprintPlanes() {
       // Alternate left/right side of spine — softer arc, never directly behind
       const side = i % 2 === 0 ? -1 : 1;
       const x = side * SIDE_OFFSET;
-      // Slight Z forward so tiles always sit toward camera
-      const z = 1.0 + Math.sin(t * Math.PI * 1.4) * 0.6;
+      // Pushed back ~2 units in world Z so tiles no longer crowd camera
+      const z = -1.0 + Math.sin(t * Math.PI * 1.4) * 0.6;
       return {
         id: item.id,
         position: [x, y, z],

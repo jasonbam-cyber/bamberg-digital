@@ -10,11 +10,7 @@ type Msg = {
 };
 
 const MESSAGES: Msg[] = [
-  // Mid-page: anchor moment
-  { y: -16, text: "I am your founder.", size: 0.7, color: "#e8872b" },
-  { y: -17.2, text: "I build it myself.", size: 0.7 },
-
-  // Late-page: closing emotional beat
+  // late-page closing only — quiet, dignified
   { y: -36, text: "Twenty industries.", size: 0.55 },
   { y: -37, text: "One craftsman.", size: 0.55, color: "#4a9ece" },
 ];

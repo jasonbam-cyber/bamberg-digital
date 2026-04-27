@@ -1330,6 +1330,21 @@ export default function HomeNarrative() {
           }}
         />
 
+        {/* Photoreal laptop centerpiece — sits between R3F canvas (z=1) and hero text (z=10) */}
+        <div className="hero-laptop-stage" aria-hidden="true">
+          <div className="hero-laptop-frame">
+            <img
+              src="/hero/laptop-bd.png"
+              alt="Bamberg Digital — custom websites"
+              className="hero-laptop-img"
+              width={1600}
+              height={873}
+              decoding="async"
+              loading="eager"
+            />
+          </div>
+        </div>
+
         {/* Architect's left rule — vertical line + dot */}
         <div
           aria-hidden="true"
@@ -1371,7 +1386,7 @@ export default function HomeNarrative() {
             justifyContent: "center",
             textAlign: "center",
             position: "relative",
-            zIndex: 2,
+            zIndex: 10,
           }}
         >
           {/* Eyebrow */}
@@ -1577,7 +1592,7 @@ export default function HomeNarrative() {
             flexDirection: "column",
             alignItems: "center",
             gap: "0.4rem",
-            zIndex: 3,
+            zIndex: 11,
             animation: "igloo-pulse 2.5s ease-in-out infinite",
           }}
         >
