@@ -2,14 +2,13 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
+import Cursor from "./Cursor";
 
 /* ═══════════════════════════════════════════════════════════════════
    AWWWARDS-LEVEL HOMEPAGE — Bamberg Digital
    Zero external animation libs. Pure CSS + IntersectionObserver + rAF.
-   All hero content visible in initial HTML render.
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ─── Palette ──────────────────────────────────────────────────── */
 const C = {
   bg: "#111114",
   bgLight: "#18181c",
@@ -32,9 +31,8 @@ const C = {
 const MONO = "var(--font-mono, 'JetBrains Mono'), monospace";
 const HEAD = "var(--font-montserrat, 'Montserrat'), sans-serif";
 const SERIF = "var(--font-fraunces, 'Fraunces'), serif";
-const HAND = "var(--font-caveat, 'Caveat'), cursive";
 
-/* ─── Catalog Types ───────────────────────────────────────────── */
+/* ─── Catalog Types ──────────────────────────────────────────────── */
 type CatItem = {
   id: string;
   name: string;
@@ -67,7 +65,7 @@ const CATEGORIES = [
   { id: "specialty", label: "Specialty" },
 ];
 
-/* ─── 50 Industry Blueprints ──────────────────────────────────── */
+/* ─── 50 Industry Blueprints ─────────────────────────────────────── */
 const CATALOG: CatItem[] = [
   {
     id: "restaurant",
@@ -298,564 +296,576 @@ const CATALOG: CatItem[] = [
     id: "trainer",
     name: "Personal Trainer",
     cat: "beauty",
-    tag: "Programs, booking, transformation results",
+    tag: "Transformation gallery, programs, booking",
     layout: "hero",
     accent: "#FF5722",
     features: [
+      "Before/after transformation gallery",
       "Program packages & pricing",
-      "Online session booking",
-      "Client transformation gallery",
-      "Nutrition & fitness blog",
+      "Online consultation booking",
+      "Client testimonials & results",
     ],
-    vibe: "Dynamic & Results-Driven",
+    vibe: "Motivating & Results-Driven",
   },
   {
-    id: "dance",
-    name: "Dance Studio",
+    id: "nail",
+    name: "Nail Salon",
     cat: "beauty",
-    tag: "Class registration, recitals, performances",
-    layout: "booking",
-    accent: "#E040FB",
+    tag: "Service menu, gallery, online booking",
+    layout: "gallery",
+    accent: "#EC407A",
     features: [
-      "Class schedule by style & level",
-      "Online registration & payment",
-      "Recital & performance calendar",
-      "Instructor bios & videos",
+      "Service menu with photos",
+      "Online booking integration",
+      "Nail art gallery",
+      "Team profiles & specialties",
     ],
-    vibe: "Vibrant & Expressive",
-  },
-  {
-    id: "contractor",
-    name: "General Contractor",
-    cat: "home",
-    tag: "Portfolio, estimates, licensing & trust",
-    layout: "services",
-    accent: "#FF9800",
-    features: [
-      "Project portfolio with galleries",
-      "Online estimate request form",
-      "License & insurance badges",
-      "Service area map & pages",
-    ],
-    vibe: "Rugged & Professional",
+    vibe: "Fun & Creative",
   },
   {
     id: "plumber",
-    name: "Plumbing",
+    name: "Plumber",
     cat: "home",
-    tag: "Emergency service, areas, instant contact",
+    tag: "Emergency contact, services, trust badges",
     layout: "services",
-    accent: "#2196F3",
+    accent: "#1976D2",
     features: [
-      "24/7 emergency contact banner",
-      "Service descriptions & pricing",
-      "Service area coverage map",
-      "Customer reviews integration",
+      "Emergency call-now button",
+      "Service area map",
+      "Before/after project photos",
+      "Licensed & insured badges",
     ],
-    vibe: "Reliable & Fast",
+    vibe: "Reliable & Trustworthy",
   },
   {
     id: "electrician",
-    name: "Electrical",
+    name: "Electrician",
     cat: "home",
-    tag: "Safety-first services, booking, certifications",
+    tag: "Service pages, safety content, quick quote",
     layout: "services",
     accent: "#FFC107",
     features: [
-      "Service menu (residential / commercial)",
-      "Safety certification badges",
-      "Online booking & estimates",
-      "Emergency service callout",
+      "Service category pages",
+      "Safety certifications display",
+      "Online quote request",
+      "Emergency contact prominence",
     ],
-    vibe: "Technical & Trustworthy",
+    vibe: "Safe & Professional",
   },
   {
     id: "hvac",
     name: "HVAC",
     cat: "home",
-    tag: "Seasonal service, maintenance plans, financing",
+    tag: "Seasonal campaigns, maintenance plans, emergency",
     layout: "services",
-    accent: "#00BCD4",
+    accent: "#0097A7",
     features: [
-      "Seasonal promotion banners",
+      "Seasonal service promotions",
       "Maintenance plan sign-up",
-      "Financing options page",
-      "Energy efficiency calculator",
+      "Emergency service request",
+      "Energy savings calculator",
     ],
-    vibe: "Comfortable & Efficient",
-  },
-  {
-    id: "roofing",
-    name: "Roofing",
-    cat: "home",
-    tag: "Free inspections, materials, before/after",
-    layout: "services",
-    accent: "#8D6E63",
-    features: [
-      "Free inspection request form",
-      "Materials & options comparison",
-      "Before / after project gallery",
-      "Storm damage assessment page",
-    ],
-    vibe: "Solid & Dependable",
+    vibe: "Efficient & Trustworthy",
   },
   {
     id: "landscaping",
     name: "Landscaping",
     cat: "home",
-    tag: "Design gallery, seasonal services, maintenance",
+    tag: "Portfolio gallery, seasonal services, quote",
     layout: "gallery",
     accent: "#4CAF50",
     features: [
-      "Project design gallery",
+      "Portfolio gallery by project type",
       "Seasonal service packages",
-      "Maintenance plan sign-up",
-      "Outdoor living inspiration blog",
+      "Online quote calculator",
+      "Maintenance scheduling",
     ],
-    vibe: "Natural & Creative",
+    vibe: "Natural & Professional",
   },
   {
-    id: "pest",
-    name: "Pest Control",
+    id: "roofing",
+    name: "Roofing",
     cat: "home",
-    tag: "Treatment plans, prevention, instant booking",
+    tag: "Storm damage, insurance help, project gallery",
     layout: "services",
+    accent: "#795548",
+    features: [
+      "Storm damage inspection CTA",
+      "Insurance claim guidance",
+      "Project before/after gallery",
+      "Financing options page",
+    ],
+    vibe: "Strong & Dependable",
+  },
+  {
+    id: "cleaning",
+    name: "Cleaning Service",
+    cat: "home",
+    tag: "Booking system, service packages, reviews",
+    layout: "booking",
+    accent: "#29B6F6",
+    features: [
+      "Online booking with date/time",
+      "Service tier packages",
+      "Recurring schedule setup",
+      "Review integration",
+    ],
+    vibe: "Fresh & Organized",
+  },
+  {
+    id: "interior",
+    name: "Interior Designer",
+    cat: "home",
+    tag: "Portfolio, mood boards, consultation booking",
+    layout: "gallery",
+    accent: "#AB47BC",
+    features: [
+      "Project portfolio by style",
+      "Mood board showcase",
+      "Consultation booking form",
+      "Press & feature mentions",
+    ],
+    vibe: "Sophisticated & Inspiring",
+  },
+  {
+    id: "contractor",
+    name: "General Contractor",
+    cat: "home",
+    tag: "Project showcase, licensing, free estimate",
+    layout: "gallery",
     accent: "#607D8B",
     features: [
-      "Pest identification guides",
-      "Treatment plan options",
-      "Prevention tip resources",
-      "Same-day booking capability",
+      "Project showcase by category",
+      "Licensing & insurance proof",
+      "Free estimate request form",
+      "Sub-trade partner listings",
     ],
-    vibe: "Clean & Thorough",
+    vibe: "Solid & Experienced",
   },
   {
-    id: "pool",
-    name: "Pool Service",
-    cat: "home",
-    tag: "Maintenance plans, repairs, new installations",
-    layout: "services",
-    accent: "#03A9F4",
-    features: [
-      "Weekly maintenance plans",
-      "Repair request forms",
-      "Pool equipment shop",
-      "Seasonal opening / closing packages",
-    ],
-    vibe: "Fresh & Reliable",
-  },
-  {
-    id: "pressure-wash",
-    name: "Pressure Washing",
-    cat: "home",
-    tag: "Instant quotes, before/after, service areas",
-    layout: "gallery",
-    accent: "#78909C",
-    features: [
-      "Instant quote calculator",
-      "Before / after galleries",
-      "Service area coverage",
-      "Commercial & residential pages",
-    ],
-    vibe: "Powerful & Satisfying",
-  },
-  {
-    id: "solar",
-    name: "Solar Installation",
-    cat: "home",
-    tag: "Savings calculator, installs, financing options",
-    layout: "sidebar",
-    accent: "#FFD600",
-    features: [
-      "Solar savings calculator",
-      "Installation process timeline",
-      "Financing & incentives page",
-      "Customer case studies",
-    ],
-    vibe: "Green & Innovative",
-  },
-  {
-    id: "law",
+    id: "lawyer",
     name: "Law Firm",
     cat: "pro",
-    tag: "Practice areas, case results, free consultations",
+    tag: "Practice areas, attorney bios, case evaluation",
     layout: "sidebar",
-    accent: "#1B5E7C",
+    accent: "#B71C1C",
     features: [
       "Practice area landing pages",
       "Attorney profiles & credentials",
-      "Case results & testimonials",
-      "Free consultation scheduling",
+      "Free case evaluation form",
+      "Confidential contact options",
     ],
     vibe: "Authoritative & Trustworthy",
   },
   {
-    id: "accounting",
-    name: "Accounting & CPA",
+    id: "accountant",
+    name: "Accountant / CPA",
     cat: "pro",
-    tag: "Tax services, client portal, resource center",
-    layout: "sidebar",
-    accent: "#2E7D32",
+    tag: "Services, tax season CTAs, client portal",
+    layout: "services",
+    accent: "#1B5E20",
     features: [
-      "Service packages & pricing",
-      "Client portal integration",
-      "Tax deadline calendar",
-      "Financial resource library",
+      "Service packages by need",
+      "Seasonal tax prep CTAs",
+      "Client portal link",
+      "Compliance & licensing badges",
     ],
-    vibe: "Precise & Reliable",
+    vibe: "Precise & Professional",
   },
   {
-    id: "insurance",
-    name: "Insurance Agent",
+    id: "consultant",
+    name: "Business Consultant",
     cat: "pro",
-    tag: "Quote tools, coverage info, claims support",
-    layout: "sidebar",
-    accent: "#1565C0",
+    tag: "Case studies, framework explainer, discovery call",
+    layout: "hero",
+    accent: "#1A237E",
     features: [
-      "Online quote request forms",
-      "Coverage type explainers",
-      "Claims process guide",
-      "Agent bio & credentials",
+      "Framework / methodology page",
+      "Client case studies",
+      "Discovery call booking",
+      "ROI calculator or stats",
     ],
-    vibe: "Secure & Accessible",
+    vibe: "Strategic & Results-Driven",
+  },
+  {
+    id: "therapist",
+    name: "Therapist / Counselor",
+    cat: "pro",
+    tag: "Specialties, intake, telehealth, trust",
+    layout: "sidebar",
+    accent: "#5C6BC0",
+    features: [
+      "Specialty / modality pages",
+      "Secure online intake forms",
+      "Telehealth session booking",
+      "FAQ & what to expect",
+    ],
+    vibe: "Warm & Safe",
   },
   {
     id: "financial",
     name: "Financial Advisor",
     cat: "pro",
-    tag: "Planning tools, resources, appointment booking",
+    tag: "Services, planning tools, appointment booking",
     layout: "sidebar",
-    accent: "#6A1B9A",
+    accent: "#2E7D32",
     features: [
-      "Financial planning calculator",
-      "Service & specialty pages",
-      "Resource library & blog",
-      "Consultation booking system",
+      "Service / planning area pages",
+      "Retirement or savings calculator",
+      "Appointment scheduler",
+      "Regulatory disclosures (ADV)",
     ],
-    vibe: "Sophisticated & Clear",
+    vibe: "Secure & Expert",
   },
   {
-    id: "architect",
-    name: "Architecture Firm",
+    id: "insurance",
+    name: "Insurance Agency",
     cat: "pro",
-    tag: "Project portfolio, design process, awards",
-    layout: "gallery",
-    accent: "#455A64",
+    tag: "Quote forms, carrier logos, product pages",
+    layout: "services",
+    accent: "#0277BD",
     features: [
-      "Project portfolio with renderings",
-      "Design process walkthrough",
-      "Awards & recognition page",
-      "Careers & team profiles",
+      "Product landing pages",
+      "Online quote request forms",
+      "Carrier & partner logos",
+      "Claims process explainer",
     ],
-    vibe: "Refined & Visionary",
+    vibe: "Reliable & Protective",
   },
   {
-    id: "interior",
-    name: "Interior Designer",
-    cat: "pro",
-    tag: "Portfolio, style quiz, consultation booking",
-    layout: "gallery",
-    accent: "#AD8B73",
-    features: [
-      "Room-by-room portfolio",
-      "Design style quiz",
-      "Consultation booking",
-      "Product sourcing page",
-    ],
-    vibe: "Elegant & Inspiring",
-  },
-  {
-    id: "realestate",
-    name: "Real Estate Agent",
+    id: "realtor",
+    name: "Realtor / Agent",
     cat: "auto",
-    tag: "Listings, property search, neighborhood guides",
+    tag: "MLS listings, neighborhood guides, lead capture",
     layout: "grid",
-    accent: "#1E88E5",
+    accent: "#C62828",
     features: [
-      "IDX / MLS property search",
-      "Individual listing detail pages",
+      "MLS / IDX listing integration",
       "Neighborhood guide pages",
-      "Lead capture on every page",
+      "Lead capture landing pages",
+      "Market update blog",
     ],
-    vibe: "Polished & Local",
+    vibe: "Professional & Local",
   },
   {
-    id: "property-mgmt",
-    name: "Property Management",
+    id: "auto-dealer",
+    name: "Auto Dealer",
     cat: "auto",
-    tag: "Tenant portal, listings, maintenance requests",
-    layout: "sidebar",
-    accent: "#546E7A",
+    tag: "Inventory, financing, trade-in, test drives",
+    layout: "grid",
+    accent: "#212121",
     features: [
-      "Tenant portal & login",
-      "Available unit listings",
-      "Maintenance request forms",
-      "Owner resources & reporting",
+      "Vehicle inventory with filters",
+      "Finance calculator",
+      "Trade-in valuation form",
+      "Test drive scheduling",
     ],
-    vibe: "Organized & Efficient",
+    vibe: "Bold & Credible",
   },
   {
     id: "auto-repair",
     name: "Auto Repair Shop",
     cat: "auto",
-    tag: "Service menu, online booking, vehicle tips",
+    tag: "Services, appointment, digital inspection",
     layout: "services",
-    accent: "#D32F2F",
-    features: [
-      "Service menu & pricing",
-      "Online appointment booking",
-      "Vehicle maintenance tips blog",
-      "Customer review showcase",
-    ],
-    vibe: "Honest & Expert",
-  },
-  {
-    id: "dealership",
-    name: "Car Dealership",
-    cat: "auto",
-    tag: "Inventory browser, financing, trade-in values",
-    layout: "grid",
-    accent: "#424242",
-    features: [
-      "Searchable vehicle inventory",
-      "Financing calculator",
-      "Trade-in value estimator",
-      "Service department booking",
-    ],
-    vibe: "Sleek & Premium",
-  },
-  {
-    id: "photography",
-    name: "Photography Studio",
-    cat: "creative",
-    tag: "Portfolio, packages, session booking",
-    layout: "gallery",
     accent: "#37474F",
     features: [
-      "Portfolio gallery by category",
-      "Session packages & pricing",
-      "Online booking system",
-      "Client gallery / proofing",
+      "Service menu & pricing guide",
+      "Online appointment booking",
+      "Digital inspection reports",
+      "Loyalty rewards program",
     ],
-    vibe: "Artistic & Personal",
+    vibe: "Honest & Reliable",
   },
   {
-    id: "videography",
-    name: "Videography",
+    id: "photographer",
+    name: "Photographer",
     cat: "creative",
-    tag: "Showreel, packages, production info",
+    tag: "Portfolio, packages, booking, prints",
     layout: "gallery",
-    accent: "#263238",
+    accent: "#4A148C",
     features: [
-      "Embedded showreel / demo reel",
-      "Production packages",
-      "Behind-the-scenes content",
-      "Client testimonials & logos",
+      "Masonry / fullscreen gallery",
+      "Package & pricing pages",
+      "Inquiry & booking form",
+      "Print sales integration",
     ],
-    vibe: "Cinematic & Dynamic",
+    vibe: "Artistic & Visual",
   },
   {
-    id: "wedding",
-    name: "Wedding Planner",
+    id: "videographer",
+    name: "Videographer",
     cat: "creative",
-    tag: "Portfolio, packages, vendor network",
+    tag: "Showreel, project work, packages",
     layout: "hero",
-    accent: "#F8BBD0",
+    accent: "#880E4F",
     features: [
-      "Wedding portfolio gallery",
-      "Planning packages & tiers",
-      "Vendor network & partners",
-      "Inquiry & consultation form",
+      "Video showreel hero",
+      "Project category pages",
+      "Package & rate cards",
+      "Fast inquiry form",
     ],
-    vibe: "Romantic & Organized",
+    vibe: "Cinematic & Bold",
+  },
+  {
+    id: "musician",
+    name: "Musician / Band",
+    cat: "creative",
+    tag: "Music player, tour dates, merch, booking",
+    layout: "hero",
+    accent: "#E65100",
+    features: [
+      "Embedded music player",
+      "Tour / show date calendar",
+      "Merch store integration",
+      "Booking / press inquiry",
+    ],
+    vibe: "Energetic & Authentic",
+  },
+  {
+    id: "artist",
+    name: "Visual Artist",
+    cat: "creative",
+    tag: "Gallery, commissions, prints, CV",
+    layout: "gallery",
+    accent: "#6A1B9A",
+    features: [
+      "Artwork gallery by series",
+      "Commission request form",
+      "Print / original sales",
+      "Artist CV & exhibitions",
+    ],
+    vibe: "Creative & Expressive",
+  },
+  {
+    id: "tutoring",
+    name: "Tutoring / Education",
+    cat: "community",
+    tag: "Subjects, scheduling, parent resources",
+    layout: "services",
+    accent: "#F57F17",
+    features: [
+      "Subject / grade level pages",
+      "Tutor profiles & qualifications",
+      "Session scheduling form",
+      "Parent resource center",
+    ],
+    vibe: "Encouraging & Clear",
+  },
+  {
+    id: "church",
+    name: "Church / Ministry",
+    cat: "community",
+    tag: "Sermons, events, giving, community",
+    layout: "hero",
+    accent: "#4527A0",
+    features: [
+      "Sermon archive & livestream",
+      "Events & small groups calendar",
+      "Online giving integration",
+      "New visitor welcome page",
+    ],
+    vibe: "Welcoming & Inspiring",
+  },
+  {
+    id: "nonprofit",
+    name: "Nonprofit",
+    cat: "community",
+    tag: "Mission, donate, volunteer, impact",
+    layout: "hero",
+    accent: "#00695C",
+    features: [
+      "Mission & impact storytelling",
+      "Donation form integration",
+      "Volunteer sign-up",
+      "Grant & sponsor pages",
+    ],
+    vibe: "Purposeful & Warm",
+  },
+  {
+    id: "sports",
+    name: "Sports Team / League",
+    cat: "community",
+    tag: "Schedule, roster, tickets, stats",
+    layout: "grid",
+    accent: "#D32F2F",
+    features: [
+      "Game schedule & results",
+      "Roster & player profiles",
+      "Ticket / registration sales",
+      "Sponsor recognition page",
+    ],
+    vibe: "Energetic & Team-Focused",
+  },
+  {
+    id: "event",
+    name: "Event Venue",
+    cat: "community",
+    tag: "Gallery, packages, inquiry, date availability",
+    layout: "gallery",
+    accent: "#6D4C41",
+    features: [
+      "Venue gallery & virtual tour",
+      "Event package pages",
+      "Date availability checker",
+      "Catering partner listings",
+    ],
+    vibe: "Elegant & Celebratory",
+  },
+  {
+    id: "pet",
+    name: "Pet Services",
+    cat: "specialty",
+    tag: "Boarding, grooming, daycare, booking",
+    layout: "booking",
+    accent: "#F9A825",
+    features: [
+      "Service packages & add-ons",
+      "Online boarding reservation",
+      "Meet the staff & facility tour",
+      "Pet parent resources",
+    ],
+    vibe: "Fun & Caring",
+  },
+  {
+    id: "childcare",
+    name: "Childcare / Daycare",
+    cat: "specialty",
+    tag: "Programs, enrollment, tour scheduling, safety",
+    layout: "sidebar",
+    accent: "#43A047",
+    features: [
+      "Program & age-group pages",
+      "Enrollment application form",
+      "Tour scheduling",
+      "Safety policies & credentials",
+    ],
+    vibe: "Safe & Nurturing",
   },
   {
     id: "florist",
     name: "Florist",
-    cat: "creative",
-    tag: "Arrangements, online ordering, event services",
-    layout: "store",
-    accent: "#E8A0BF",
-    features: [
-      "Arrangement catalog & ordering",
-      "Same-day delivery info",
-      "Event & wedding floral services",
-      "Subscription / recurring orders",
-    ],
-    vibe: "Delicate & Vibrant",
-  },
-  {
-    id: "tattoo",
-    name: "Tattoo Shop",
-    cat: "creative",
-    tag: "Artist portfolios, booking, flash gallery",
+    cat: "specialty",
+    tag: "Arrangements, events, online ordering",
     layout: "gallery",
-    accent: "#616161",
+    accent: "#AD1457",
     features: [
-      "Artist portfolios & styles",
-      "Online booking by artist",
-      "Flash art gallery",
-      "Aftercare guides & FAQs",
+      "Product gallery by occasion",
+      "Online flower ordering",
+      "Wedding & event inquiry",
+      "Seasonal collection pages",
     ],
-    vibe: "Bold & Authentic",
+    vibe: "Beautiful & Seasonal",
   },
   {
-    id: "tutoring",
-    name: "Tutoring & Education",
-    cat: "community",
-    tag: "Subjects, booking, student success stories",
-    layout: "sidebar",
-    accent: "#FF7043",
-    features: [
-      "Subject & grade level pages",
-      "Tutor profiles & credentials",
-      "Online session booking",
-      "Student testimonial page",
-    ],
-    vibe: "Encouraging & Smart",
-  },
-  {
-    id: "daycare",
-    name: "Daycare & Childcare",
-    cat: "community",
-    tag: "Programs, enrollment, virtual facility tour",
-    layout: "hero",
-    accent: "#FFB74D",
-    features: [
-      "Program pages by age group",
-      "Online enrollment forms",
-      "Virtual tour & photo gallery",
-      "Parent resource center",
-    ],
-    vibe: "Warm & Safe",
-  },
-  {
-    id: "church",
-    name: "Church & Worship",
-    cat: "community",
-    tag: "Service times, events, online giving",
-    layout: "hero",
-    accent: "#5C6BC0",
-    features: [
-      "Service schedule & livestream",
-      "Event calendar & registration",
-      "Online giving / donations",
-      "Sermon archive & podcast",
-    ],
-    vibe: "Welcoming & Purposeful",
-  },
-  {
-    id: "nonprofit",
-    name: "Nonprofit Organization",
-    cat: "community",
-    tag: "Mission, impact metrics, donation system",
-    layout: "hero",
-    accent: "#26A69A",
-    features: [
-      "Mission & impact storytelling",
-      "Online donation system",
-      "Volunteer sign-up portal",
-      "Annual report & transparency",
-    ],
-    vibe: "Impactful & Transparent",
-  },
-  {
-    id: "cleaning",
-    name: "Cleaning Service",
+    id: "catering",
+    name: "Catering",
     cat: "specialty",
-    tag: "Instant pricing, booking, service checklists",
+    tag: "Menus, events, quote request, gallery",
+    layout: "gallery",
+    accent: "#BF360C",
+    features: [
+      "Event type landing pages",
+      "Menu showcase with photos",
+      "Quote request form",
+      "Testimonials & event gallery",
+    ],
+    vibe: "Delicious & Professional",
+  },
+  {
+    id: "travel",
+    name: "Travel Agency",
+    cat: "specialty",
+    tag: "Destinations, packages, booking, inspiration",
+    layout: "hero",
+    accent: "#0288D1",
+    features: [
+      "Destination showcase pages",
+      "Package & itinerary builder",
+      "Inquiry / quote request",
+      "Travel blog for SEO",
+    ],
+    vibe: "Inspiring & Adventurous",
+  },
+  {
+    id: "boutique",
+    name: "Boutique / Retail",
+    cat: "specialty",
+    tag: "Product catalog, lookbook, e-commerce",
+    layout: "store",
+    accent: "#880E4F",
+    features: [
+      "Product catalog with filters",
+      "Lookbook / editorial pages",
+      "E-commerce checkout",
+      "Email list & loyalty perks",
+    ],
+    vibe: "Curated & Stylish",
+  },
+  {
+    id: "staffing",
+    name: "Staffing Agency",
+    cat: "pro",
+    tag: "Job board, employer services, apply now",
     layout: "services",
-    accent: "#26C6DA",
+    accent: "#1565C0",
     features: [
-      "Instant price estimator",
-      "Online booking system",
-      "Service checklists by type",
-      "Recurring service plans",
+      "Job listing board",
+      "Employer services page",
+      "Candidate application flow",
+      "Industry specialty pages",
     ],
-    vibe: "Spotless & Simple",
-  },
-  {
-    id: "moving",
-    name: "Moving Company",
-    cat: "specialty",
-    tag: "Quote calculator, services, coverage areas",
-    layout: "services",
-    accent: "#FF8A65",
-    features: [
-      "Moving quote calculator",
-      "Service tiers (local / long-distance)",
-      "Packing supply shop",
-      "Moving tips & checklist blog",
-    ],
-    vibe: "Strong & Organized",
-  },
-  {
-    id: "pet-grooming",
-    name: "Pet Grooming",
-    cat: "specialty",
-    tag: "Services, online booking, pet gallery",
-    layout: "booking",
-    accent: "#FFAB91",
-    features: [
-      "Service menu by breed / size",
-      "Online appointment booking",
-      "Before / after pet gallery",
-      "Pet care tips & blog",
-    ],
-    vibe: "Playful & Professional",
-  },
-  {
-    id: "martial-arts",
-    name: "Martial Arts Studio",
-    cat: "specialty",
-    tag: "Programs, class schedule, belt progression",
-    layout: "hero",
-    accent: "#B71C1C",
-    features: [
-      "Program pages by discipline",
-      "Class schedule & registration",
-      "Belt / rank progression tracker",
-      "Instructor bios & credentials",
-    ],
-    vibe: "Disciplined & Powerful",
+    vibe: "Professional & Efficient",
   },
 ];
 
-/* ─── Services ────────────────────────────────────────────────── */
+/* ─── Services ────────────────────────────────────────────────────── */
 const SERVICES = [
   {
     num: "01",
     title: "Web Design & Development",
-    desc: "Custom-built sites engineered for conversion. No templates. No page builders. Clean, fast, accessible code that ranks and converts.",
+    price: "From $497",
+    desc: "No templates. Built to convert.",
+    full: "Custom-built sites engineered for conversion. Clean, fast, accessible code that ranks and converts.",
   },
   {
     num: "02",
     title: "SEO & Search Systems",
-    desc: "Technical SEO, content strategy, and local search optimization. We build ranking systems that compound over time — not quick fixes that fade.",
+    price: "From $297/mo",
+    desc: "Rankings that compound.",
+    full: "Technical SEO, content strategy, and local search optimization. We build ranking systems that compound over time.",
   },
   {
     num: "03",
     title: "Lead Generation",
-    desc: "Verified leads with real contact data, not vanity metrics. Every lead we deliver is someone who needs what you sell, in your service area.",
+    price: "From $197/mo",
+    desc: "Verified contacts, your territory.",
+    full: "Verified leads with real contact data. Every lead is someone who needs what you sell, in your service area.",
   },
   {
     num: "04",
     title: "AI & Automation",
-    desc: "Chatbots, AI voice agents, workflow automation, and custom tools. Your business keeps working while you sleep.",
+    price: "From $997",
+    desc: "Your business runs while you sleep.",
+    full: "Chatbots, AI voice agents, workflow automation, and custom tools. Your business keeps working around the clock.",
   },
   {
     num: "05",
     title: "Branding & Identity",
-    desc: "Logo, color systems, typography, and brand guidelines that make your business look as good as your work actually is.",
+    price: "From $697",
+    desc: "Logo, colors, typography system.",
+    full: "Logo, color systems, typography, and brand guidelines that make your business look as good as your work actually is.",
   },
   {
     num: "06",
     title: "Content & Social",
-    desc: "Photography, video, copywriting, and social media management. Consistent content that builds authority and drives traffic.",
+    price: "From $199/mo",
+    desc: "Content that builds authority.",
+    full: "Photography, video, copywriting, and social media management. Consistent content that drives traffic.",
   },
 ];
 
-/* ─── Stats ────────────────────────────────────────────────────── */
+/* ─── Stats ───────────────────────────────────────────────────────── */
 const STATS = [
   { value: 47, suffix: "+", label: "Projects shipped" },
   { value: 1, suffix: "", label: "Founder you talk to" },
@@ -863,72 +873,66 @@ const STATS = [
   { value: 50, suffix: "+", label: "Industry blueprints" },
 ];
 
-/* ─── Live Work ────────────────────────────────────────────────── */
+/* ─── Live Work ───────────────────────────────────────────────────── */
 const LIVE_WORK = [
   {
     name: "Layer UI",
     category: "SaaS Platform",
-    desc: "Remote work platform with CRM, task management, and Stripe billing. Built from zero to live in under 90 days.",
+    desc: "Remote work OS. Chat, tasks, files, CRM. Launched zero to live in 90 days.",
     url: "https://layerui.io",
     label: "layerui.io",
     accent: "#4a9ece",
     metric: "$40 MRR",
-    metricNote: "within weeks of launch",
     external: true,
   },
   {
     name: "Recovery Gear",
     category: "E-Commerce",
-    desc: "Shopify store for health & recovery products. Zendrop fulfillment configured for hands-free operations from day one.",
+    desc: "Shopify store for health & recovery. Zendrop fulfillment from day one.",
     url: "https://recoverygear.us",
     label: "recoverygear.us",
     accent: "#27AE60",
-    metric: "Live",
-    metricNote: "hands-free fulfillment",
+    metric: "Live Store",
     external: true,
   },
   {
     name: "Bamberg Digital",
     category: "Agency Website",
-    desc: "This site — Next.js App Router, 12 service pages, JSON-LD schema, local SEO targeting Sacramento. You're looking at it.",
+    desc: "This site. Next.js, 12 service pages, JSON-LD schema, Page 1 Sacramento.",
     url: "https://bambergdigital.com",
-    label: "bambergdigital.com",
+    label: "This site ↑",
     accent: "#e8872b",
     metric: "Page 1",
-    metricNote: "Sacramento keywords",
     external: false,
   },
   {
-    name: "NodPod Hotels",
-    category: "Hospitality — Sample",
-    desc: "Booking-focused hotel site with room types, amenities showcase, photo gallery, and conversion-optimized layout.",
+    name: "NodPod",
+    category: "E-Commerce — Sample",
+    desc: "Wellness product store. Hero lifestyle photography, shipping bar, conversion-optimized.",
     url: "/demo/nodpod",
-    label: "View Sample →",
+    label: "View Demo →",
     accent: "#8B6914",
-    metric: "Sample",
-    metricNote: "full live build",
+    metric: "Sample Build",
     external: false,
   },
   {
     name: "NodPod Luxury",
-    category: "Luxury Hotel — Sample",
-    desc: "Premium hospitality redesign with dark editorial aesthetic, immersive hero, and high-end booking experience.",
+    category: "Luxury — Sample",
+    desc: "Dark editorial hospitality redesign. Cormorant Garamond, gold accents, deep immersion.",
     url: "/demo/nodpod-luxury",
-    label: "View Sample →",
+    label: "View Demo →",
     accent: "#AD8B73",
-    metric: "Sample",
-    metricNote: "full live build",
+    metric: "Sample Build",
     external: false,
   },
   {
-    name: "Bright Smiles Dental",
+    name: "Bright Smiles",
     category: "Healthcare — Sample",
-    desc: "Patient-first dental website with appointment booking flow, service pages, insurance info, and trust signals.",
+    desc: "Dental practice site. Trust-focused, appointment booking, family positioning.",
     url: "/demo/dental",
-    label: "View Sample →",
+    label: "View Demo →",
     accent: "#4ECDC4",
-    metric: "Sample",
-    metricNote: "full live build",
+    metric: "Sample Build",
     external: false,
   },
 ];
@@ -937,7 +941,6 @@ const LIVE_WORK = [
    SUB-COMPONENTS
    ═══════════════════════════════════════════════════════════════════ */
 
-/* Wireframe preview for each layout type */
 function Wireframe({
   layout,
   accent,
@@ -995,6 +998,7 @@ function Wireframe({
         </div>
       </div>
     );
+
   if (layout === "grid")
     return (
       <div style={box}>
@@ -1021,6 +1025,7 @@ function Wireframe({
         </div>
       </div>
     );
+
   if (layout === "gallery")
     return (
       <div style={box}>
@@ -1047,6 +1052,7 @@ function Wireframe({
         </div>
       </div>
     );
+
   if (layout === "booking")
     return (
       <div style={box}>
@@ -1082,6 +1088,7 @@ function Wireframe({
         </div>
       </div>
     );
+
   if (layout === "services")
     return (
       <div style={box}>
@@ -1110,6 +1117,7 @@ function Wireframe({
         </div>
       </div>
     );
+
   if (layout === "store")
     return (
       <div style={box}>
@@ -1149,7 +1157,7 @@ function Wireframe({
         </div>
       </div>
     );
-  /* hero, local, default */
+
   return (
     <div style={box}>
       <div style={nav} />
@@ -1165,7 +1173,6 @@ function Wireframe({
   );
 }
 
-/* Animated counter */
 function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [n, setN] = useState(target);
@@ -1201,7 +1208,6 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   );
 }
 
-/* Section label */
 function SectionTag({ children, id }: { children: string; id?: string }) {
   return (
     <div
@@ -1235,16 +1241,216 @@ function SectionTag({ children, id }: { children: string; id?: string }) {
   );
 }
 
+/* Scroll-progress indicator */
+function ScrollProgress() {
+  const dotRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const dot = dotRef.current;
+    if (!dot) return;
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? window.scrollY / max : 0;
+      dot.style.top = `${pct * 100}%`;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div id="scroll-progress-track" aria-hidden="true">
+      <div id="scroll-progress-dot" ref={dotRef} />
+    </div>
+  );
+}
+
+/* Horizontal work track with drag support */
+function WorkTrack() {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    const onDown = (e: MouseEvent) => {
+      isDown = true;
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    };
+    const onLeave = () => {
+      isDown = false;
+    };
+    const onUp = () => {
+      isDown = false;
+    };
+    const onMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+    };
+
+    track.addEventListener("mousedown", onDown);
+    track.addEventListener("mouseleave", onLeave);
+    track.addEventListener("mouseup", onUp);
+    track.addEventListener("mousemove", onMove);
+    return () => {
+      track.removeEventListener("mousedown", onDown);
+      track.removeEventListener("mouseleave", onLeave);
+      track.removeEventListener("mouseup", onUp);
+      track.removeEventListener("mousemove", onMove);
+    };
+  }, []);
+
+  return (
+    <div id="work-track" ref={trackRef}>
+      {LIVE_WORK.map((w) => (
+        <div
+          key={w.name}
+          data-cursor-card
+          style={{
+            minWidth: 380,
+            height: 280,
+            background: C.card,
+            borderTop: `3px solid ${w.accent}`,
+            borderLeft: `1px solid ${C.border}`,
+            borderRight: `1px solid ${C.border}`,
+            borderBottom: `1px solid ${C.border}`,
+            padding: "1.75rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            scrollSnapAlign: "start",
+            flexShrink: 0,
+            transition:
+              "border-color 0.3s, transform 0.4s cubic-bezier(0.16,1,0.3,1)",
+            position: "relative",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.5rem",
+                  letterSpacing: "0.18em",
+                  color: w.accent,
+                  textTransform: "uppercase",
+                  padding: "0.25rem 0.6rem",
+                  border: `1px solid ${w.accent}40`,
+                  background: `${w.accent}10`,
+                }}
+              >
+                {w.category}
+              </span>
+              <span
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.65rem",
+                  fontWeight: 700,
+                  color: w.accent,
+                  letterSpacing: "0.05em",
+                }}
+              >
+                {w.metric}
+              </span>
+            </div>
+            <h3
+              style={{
+                fontFamily: HEAD,
+                fontWeight: 800,
+                fontSize: "1.6rem",
+                color: C.text,
+                letterSpacing: "-0.025em",
+                margin: "0.75rem 0 0.5rem",
+              }}
+            >
+              {w.name}
+            </h3>
+            <p
+              style={{
+                fontFamily: "inherit",
+                fontSize: "0.85rem",
+                color: C.textSoft,
+                lineHeight: 1.65,
+                margin: 0,
+              }}
+            >
+              {w.desc}
+            </p>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            {w.external ? (
+              <a
+                href={w.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.14em",
+                  color: w.accent,
+                  textDecoration: "none",
+                  textTransform: "uppercase",
+                }}
+              >
+                {w.label} ↗
+              </a>
+            ) : (
+              <Link
+                href={w.url}
+                style={{
+                  fontFamily: MONO,
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.14em",
+                  color: w.accent,
+                  textDecoration: "none",
+                  textTransform: "uppercase",
+                }}
+              >
+                {w.label}
+              </Link>
+            )}
+            <span
+              style={{
+                width: 24,
+                height: 1,
+                background: w.accent,
+                opacity: 0.35,
+                display: "block",
+              }}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════ */
-
 export default function HomeNarrative() {
-  const mainRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCat, setActiveCat] = useState("all");
+  const [heroReady, setHeroReady] = useState(false);
+  const ctaBuildRef = useRef<HTMLSpanElement>(null);
 
   const filtered = useMemo(
     () =>
@@ -1254,7 +1460,13 @@ export default function HomeNarrative() {
     [activeCat],
   );
 
-  /* ─── Scroll-triggered reveals ─── */
+  /* Hero animate-in after mount */
+  useEffect(() => {
+    const id = setTimeout(() => setHeroReady(true), 100);
+    return () => clearTimeout(id);
+  }, []);
+
+  /* Scroll reveals */
   useEffect(() => {
     document.documentElement.classList.add("js-loaded");
     const observer = new IntersectionObserver(
@@ -1268,35 +1480,30 @@ export default function HomeNarrative() {
       },
       { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
     );
-    const els = document.querySelectorAll(".reveal-on-scroll");
-    els.forEach((el) => observer.observe(el));
+    document
+      .querySelectorAll(".reveal-on-scroll")
+      .forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
-  /* ─── Parallax via scroll ─── */
+  /* CTA underline trigger */
   useEffect(() => {
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const els = document.querySelectorAll<HTMLElement>("[data-parallax]");
-        els.forEach((el) => {
-          const speed = parseFloat(el.dataset.parallax || "0.1");
-          const rect = el.getBoundingClientRect();
-          const center = rect.top + rect.height / 2;
-          const offset = (center - window.innerHeight / 2) * speed;
-          el.style.transform = `translateY(${offset}px)`;
-        });
-        ticking = false;
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    const el = ctaBuildRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          el.classList.add("triggered");
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
-  /* ─── Scroll detection for nav ─── */
+  /* Nav scroll state */
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", fn, { passive: true });
@@ -1304,42 +1511,7 @@ export default function HomeNarrative() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  /* ─── Custom cursor (desktop only) ─── */
-  useEffect(() => {
-    const el = cursorRef.current;
-    if (!el) return;
-    if (
-      typeof matchMedia !== "undefined" &&
-      matchMedia("(hover: none)").matches
-    )
-      return;
-    document.body.style.cursor = "none";
-    let mx = 0,
-      my = 0,
-      cx = -100,
-      cy = -100;
-    let running = true;
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-    };
-    const tick = () => {
-      if (!running) return;
-      cx += (mx - cx) * 0.12;
-      cy += (my - cy) * 0.12;
-      el.style.transform = `translate(${cx - 16}px, ${cy - 16}px)`;
-      requestAnimationFrame(tick);
-    };
-    window.addEventListener("mousemove", onMove);
-    requestAnimationFrame(tick);
-    return () => {
-      running = false;
-      document.body.style.cursor = "";
-      window.removeEventListener("mousemove", onMove);
-    };
-  }, []);
-
-  /* ─── 3D card tilt ─── */
+  /* 3D tilt */
   const handleTilt = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width - 0.5;
@@ -1353,10 +1525,10 @@ export default function HomeNarrative() {
     e.currentTarget.style.borderColor = C.border;
   }, []);
 
-  /* ─── Magnetic button ─── */
+  /* Magnetic button */
   const handleMag = useCallback((e: React.MouseEvent<HTMLElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.2}px, ${(e.clientY - r.top - r.height / 2) * 0.2}px)`;
+    e.currentTarget.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.2}px,${(e.clientY - r.top - r.height / 2) * 0.2}px)`;
   }, []);
   const handleMagReset = useCallback((e: React.MouseEvent<HTMLElement>) => {
     e.currentTarget.style.transform = "translate(0,0)";
@@ -1370,7 +1542,6 @@ export default function HomeNarrative() {
   /* ═════════════════════ RENDER ═════════════════════ */
   return (
     <div
-      ref={mainRef}
       style={{
         background: C.bg,
         color: C.text,
@@ -1378,8 +1549,14 @@ export default function HomeNarrative() {
         overflowX: "hidden",
       }}
     >
-      {/* Custom Cursor */}
-      <div ref={cursorRef} className="bd-cursor" aria-hidden="true" />
+      {/* Grain overlay */}
+      <div className="grain-overlay" aria-hidden="true" />
+
+      {/* Custom cursor */}
+      <Cursor />
+
+      {/* Scroll progress */}
+      <ScrollProgress />
 
       {/* ══════════ NAV ══════════ */}
       <nav
@@ -1407,26 +1584,26 @@ export default function HomeNarrative() {
           <Link href="/" style={{ textDecoration: "none" }}>
             <span
               style={{
-                fontFamily: SERIF,
-                fontStyle: "italic",
-                fontSize: "1.35rem",
-                fontWeight: 600,
+                fontFamily: HEAD,
+                fontWeight: 800,
+                fontSize: "1.15rem",
                 color: C.text,
-                letterSpacing: "-0.01em",
+                letterSpacing: "-0.02em",
               }}
             >
               Bamberg<span style={{ color: C.blue }}>Digital</span>
             </span>
           </Link>
+
           <div
             className="hidden md:flex"
             style={{ alignItems: "center", gap: "2rem" }}
           >
             {[
               { label: "Services", target: "services" },
+              { label: "Work", target: "live-work" },
               { label: "Blueprints", target: "blueprints" },
               { label: "About", target: "about" },
-              { label: "Contact", target: "contact" },
             ].map((l) => (
               <button
                 key={l.label}
@@ -1450,10 +1627,22 @@ export default function HomeNarrative() {
             ))}
             <a
               href="tel:+19169077782"
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.58rem",
+                letterSpacing: "0.06em",
+                color: C.textMute,
+                textDecoration: "none",
+              }}
+            >
+              (916) 907-7782
+            </a>
+            <a
+              href="tel:+19169077782"
               className="nav-cta"
               style={{
                 fontFamily: MONO,
-                fontSize: "0.6rem",
+                fontSize: "0.58rem",
                 letterSpacing: "0.08em",
                 padding: "0.5rem 1.1rem",
                 border: `1px solid ${C.orange}`,
@@ -1463,9 +1652,10 @@ export default function HomeNarrative() {
                 transition: "all 0.3s",
               }}
             >
-              (916) 907-7782
+              FREE AUDIT →
             </a>
           </div>
+
           <button
             className="md:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -1499,6 +1689,7 @@ export default function HomeNarrative() {
             </svg>
           </button>
         </div>
+
         {menuOpen && (
           <div
             className="md:hidden"
@@ -1509,7 +1700,7 @@ export default function HomeNarrative() {
               gap: "1.25rem",
             }}
           >
-            {["services", "blueprints", "about", "contact"].map((id) => (
+            {["services", "live-work", "blueprints", "about"].map((id) => (
               <button
                 key={id}
                 onClick={() => scrollTo(id)}
@@ -1525,7 +1716,7 @@ export default function HomeNarrative() {
                   textAlign: "left",
                 }}
               >
-                {id}
+                {id.replace("-", " ")}
               </button>
             ))}
           </div>
@@ -1534,7 +1725,6 @@ export default function HomeNarrative() {
 
       {/* ══════════ HERO ══════════ */}
       <section
-        className="ws-blueprint-grid"
         style={{
           minHeight: "100svh",
           display: "flex",
@@ -1543,30 +1733,16 @@ export default function HomeNarrative() {
           padding: "8rem 1.5rem 4rem",
           position: "relative",
           overflow: "hidden",
+          background: C.bg,
+          backgroundImage: `
+            linear-gradient(rgba(74,158,206,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(74,158,206,0.03) 1px, transparent 1px),
+            radial-gradient(ellipse at 30% 50%, rgba(74,158,206,0.06) 0%, transparent 55%),
+            radial-gradient(ellipse at 75% 80%, rgba(232,135,43,0.04) 0%, transparent 50%)
+          `,
+          backgroundSize: "80px 80px, 80px 80px, 100% 100%, 100% 100%",
         }}
       >
-        {/* Glow */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse at 25% 45%, rgba(74,158,206,0.07) 0%, transparent 55%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            right: "-10%",
-            bottom: "-15%",
-            width: "45vw",
-            height: "45vw",
-            background:
-              "radial-gradient(circle, rgba(232,135,43,0.04) 0%, transparent 60%)",
-            pointerEvents: "none",
-          }}
-        />
         <div
           style={{
             maxWidth: 1440,
@@ -1576,71 +1752,150 @@ export default function HomeNarrative() {
             zIndex: 2,
           }}
         >
-          {/* Label */}
+          {/* Eyebrow */}
           <div
-            className="hero-anim hero-d1"
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "0.75rem",
-              marginBottom: "1.5rem",
+              gap: "0.5rem",
+              marginBottom: "2rem",
+              opacity: heroReady ? 1 : 0,
+              transform: heroReady ? "translateY(0)" : "translateY(16px)",
+              transition:
+                "opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s",
             }}
           >
-            <span style={{ width: 40, height: 1, background: C.blue }} />
+            <span
+              style={{ width: 32, height: 1, background: C.blue, opacity: 0.5 }}
+            />
             <span
               style={{
                 fontFamily: MONO,
-                fontSize: "0.55rem",
-                letterSpacing: "0.2em",
+                fontSize: "0.5rem",
+                letterSpacing: "0.22em",
                 color: C.blue,
                 textTransform: "uppercase",
               }}
             >
-              Sacramento Digital Agency — Est. 2024
+              SACRAMENTO&nbsp;&nbsp;›&nbsp;&nbsp;DIGITAL
+              AGENCY&nbsp;&nbsp;›&nbsp;&nbsp;EST. 2024
             </span>
           </div>
-          {/* Headline */}
+
+          {/* H1 — kinetic staggered lines */}
           <h1
-            className="hero-anim hero-d2"
             style={{
               fontFamily: HEAD,
-              fontWeight: 800,
+              fontWeight: 900,
               letterSpacing: "-0.045em",
               lineHeight: 0.88,
-              fontSize: "clamp(3.2rem, 11vw, 10rem)",
-              margin: 0,
-              color: C.text,
+              margin: "0 0 0.1em",
             }}
           >
-            ENGINEERED
-            <br />
-            <span style={{ color: C.blue }}>TO PERFORM</span>
-            <span style={{ color: C.orange }}>.</span>
+            {/* Line 1 */}
+            <div
+              style={{
+                overflow: "hidden",
+                display: "block",
+                fontSize: "clamp(3.5rem, 12vw, 10rem)",
+              }}
+            >
+              <span
+                style={{
+                  display: "block",
+                  color: C.text,
+                  opacity: heroReady ? 1 : 0,
+                  transform: heroReady ? "translateY(0)" : "translateY(105%)",
+                  transition:
+                    "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.4s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.4s",
+                }}
+              >
+                ENGINEERED
+              </span>
+            </div>
+            {/* Line 2 */}
+            <div
+              style={{
+                overflow: "hidden",
+                display: "block",
+                fontSize: "clamp(3.5rem, 12vw, 10rem)",
+              }}
+            >
+              <span
+                style={{
+                  display: "block",
+                  opacity: heroReady ? 1 : 0,
+                  transform: heroReady ? "translateY(0)" : "translateY(105%)",
+                  transition:
+                    "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.55s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.55s",
+                }}
+              >
+                <span style={{ color: C.orange }}>TO&nbsp;</span>
+                <span style={{ color: C.text }}>PERFORM</span>
+              </span>
+            </div>
+            {/* Giant period */}
+            <div
+              style={{ overflow: "hidden", display: "block", lineHeight: 1 }}
+            >
+              <span
+                style={{
+                  display: "block",
+                  fontSize: "clamp(6rem, 18vw, 16rem)",
+                  color: C.orange,
+                  lineHeight: 0.75,
+                  opacity: heroReady ? 1 : 0,
+                  transform: heroReady
+                    ? "translateY(0) scale(1)"
+                    : "translateY(60%) scale(0.8)",
+                  transition:
+                    "opacity 1s cubic-bezier(0.16,1,0.3,1) 0.75s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.75s",
+                  animation: heroReady
+                    ? "float-subtle 6s ease-in-out 1.5s infinite"
+                    : "none",
+                }}
+              >
+                .
+              </span>
+            </div>
           </h1>
-          {/* Subhead */}
+
+          {/* Subtext */}
           <p
-            className="hero-anim hero-d3"
             style={{
-              fontSize: "clamp(0.95rem, 1.5vw, 1.15rem)",
+              fontSize: "clamp(0.95rem, 1.5vw, 1.1rem)",
               color: C.textSoft,
               maxWidth: 560,
               margin: "2rem 0 2.5rem",
               lineHeight: 1.75,
               fontWeight: 300,
+              opacity: heroReady ? 1 : 0,
+              transform: heroReady ? "translateY(0)" : "translateY(20px)",
+              transition:
+                "opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.95s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.95s",
             }}
           >
             One founder. No templates. Custom websites, SEO systems, and AI
-            automation — built from blueprint to launch for small businesses
-            nationwide.
+            automation — built from blueprint to launch.
           </p>
+
           {/* CTAs */}
           <div
-            className="hero-anim hero-d4"
-            style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "1rem",
+              opacity: heroReady ? 1 : 0,
+              transform: heroReady ? "translateY(0)" : "translateY(20px)",
+              transition:
+                "opacity 0.8s cubic-bezier(0.16,1,0.3,1) 1.1s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 1.1s",
+            }}
           >
             <button
               onClick={() => scrollTo("blueprints")}
               className="ws-cta-pulse"
+              onMouseMove={handleMag}
+              onMouseLeave={handleMagReset}
               style={{
                 fontFamily: MONO,
                 fontSize: "0.65rem",
@@ -1652,10 +1907,8 @@ export default function HomeNarrative() {
                 border: "none",
                 cursor: "pointer",
               }}
-              onMouseMove={handleMag}
-              onMouseLeave={handleMagReset}
             >
-              Browse 50+ Blueprints ↓
+              BROWSE 50+ BLUEPRINTS ↓
             </button>
             <a
               href="tel:+19169077782"
@@ -1673,13 +1926,13 @@ export default function HomeNarrative() {
                 background: "transparent",
               }}
             >
-              Free Consultation →
+              FREE CONSULTATION →
             </a>
           </div>
         </div>
+
         {/* Scroll indicator */}
         <div
-          className="hero-anim hero-d4"
           style={{
             position: "absolute",
             bottom: "2rem",
@@ -1689,12 +1942,14 @@ export default function HomeNarrative() {
             flexDirection: "column",
             alignItems: "center",
             gap: "0.5rem",
+            opacity: heroReady ? 1 : 0,
+            transition: "opacity 1s 1.4s",
           }}
         >
           <span
             style={{
               fontFamily: MONO,
-              fontSize: "0.5rem",
+              fontSize: "0.48rem",
               letterSpacing: "0.3em",
               color: C.textMute,
               textTransform: "uppercase",
@@ -1713,14 +1968,14 @@ export default function HomeNarrative() {
         </div>
       </section>
 
-      {/* ══════════ MARQUEE 1 ══════════ */}
+      {/* ══════════ MARQUEE ══════════ */}
       <div
         style={{
           overflow: "hidden",
           padding: "0.85rem 0",
           background: C.bgLight,
-          borderTop: `1px solid ${C.border}`,
-          borderBottom: `1px solid ${C.border}`,
+          borderTop: `1px solid rgba(74,158,206,0.08)`,
+          borderBottom: `1px solid rgba(74,158,206,0.08)`,
         }}
       >
         <div
@@ -1739,7 +1994,7 @@ export default function HomeNarrative() {
               }}
             >
               {
-                "WEB DESIGN \u2726 SEO SYSTEMS \u2726 LEAD GENERATION \u2726 AI AUTOMATION \u2726 BRANDING \u2726 CONTENT STRATEGY \u2726 SOCIAL MEDIA \u2726 CUSTOM TOOLS \u2726 "
+                "WEB DESIGN ✦ SEO ✦ AI AUTOMATION ✦ LEAD GENERATION ✦ BRANDING ✦ CONTENT ✦ "
               }
             </span>
           ))}
@@ -1747,9 +2002,12 @@ export default function HomeNarrative() {
       </div>
 
       {/* ══════════ SERVICES ══════════ */}
-      <section style={{ padding: "6rem 1.5rem 7rem" }}>
+      <section
+        style={{ padding: "7rem 1.5rem 8rem", background: C.bgLight }}
+        id="services"
+      >
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <SectionTag id="services">What We Build</SectionTag>
+          <SectionTag>What We Build</SectionTag>
           <h2
             className="reveal-on-scroll"
             style={{
@@ -1759,112 +2017,152 @@ export default function HomeNarrative() {
               letterSpacing: "-0.03em",
               color: C.text,
               margin: "0 0 3.5rem",
+              lineHeight: 1.1,
             }}
           >
-            Six Services.
+            Six disciplines.
             <br />
-            <span style={{ color: C.textMute }}>One Builder.</span>
+            <span style={{ color: C.textMute }}>One obsession.</span>
           </h2>
-          {SERVICES.map((s, i) => (
-            <div
-              key={s.num}
-              className="reveal-on-scroll"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "auto 1fr",
-                gap: "1.5rem",
-                padding: "2rem 0",
-                borderBottom: `1px solid ${C.border}`,
-                alignItems: "start",
-                transitionDelay: `${i * 60}ms`,
-              }}
-            >
-              <span
-                data-parallax={(i % 2 === 0 ? 0.04 : -0.04).toString()}
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gap: "1.5rem",
+            }}
+          >
+            {SERVICES.map((s, i) => (
+              <div
+                key={s.num}
+                className="reveal-on-scroll service-card"
+                data-cursor-card
                 style={{
-                  fontFamily: HEAD,
-                  fontSize: "clamp(1.75rem, 4.5vw, 3rem)",
-                  fontWeight: 800,
-                  color: C.blueDim,
-                  lineHeight: 1,
+                  background: C.card,
+                  border: `1px solid ${C.border}`,
+                  padding: "2rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                  transitionDelay: `${i * 60}ms`,
+                  cursor: "default",
                 }}
               >
-                {s.num}
-              </span>
-              <div>
+                <span
+                  className="service-num"
+                  style={{
+                    fontFamily: HEAD,
+                    fontSize: "2.5rem",
+                    fontWeight: 900,
+                    color: C.blueDim,
+                    lineHeight: 1,
+                    transition: "color 0.3s, text-shadow 0.3s",
+                  }}
+                >
+                  {s.num}
+                </span>
                 <h3
                   style={{
                     fontFamily: HEAD,
-                    fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
+                    fontSize: "1.05rem",
                     fontWeight: 700,
                     color: C.text,
-                    margin: "0 0 0.4rem",
+                    margin: 0,
+                    letterSpacing: "-0.01em",
                   }}
                 >
                   {s.title}
                 </h3>
                 <p
                   style={{
-                    fontSize: "0.88rem",
-                    color: C.textSoft,
-                    lineHeight: 1.7,
-                    maxWidth: 550,
+                    fontFamily: MONO,
+                    fontSize: "0.6rem",
+                    letterSpacing: "0.1em",
+                    color: C.orange,
                     margin: 0,
+                    textTransform: "uppercase",
                   }}
                 >
-                  {s.desc}
+                  {s.price} — {s.desc}
                 </p>
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    color: C.textSoft,
+                    margin: 0,
+                    lineHeight: 1.65,
+                  }}
+                >
+                  {s.full}
+                </p>
+                <div style={{ marginTop: "auto", paddingTop: "1rem" }}>
+                  <button
+                    onClick={() => scrollTo("contact")}
+                    style={{
+                      fontFamily: MONO,
+                      fontSize: "0.55rem",
+                      letterSpacing: "0.14em",
+                      color: C.blue,
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      padding: 0,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    EXPLORE →
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ══════════ MARQUEE 2 (reverse, orange) ══════════ */}
-      <div
-        style={{
-          overflow: "hidden",
-          padding: "0.85rem 0",
-          background: C.bgLight,
-          borderTop: `1px solid ${C.border}`,
-          borderBottom: `1px solid ${C.border}`,
-        }}
-      >
-        <div
-          className="marquee-track-rev"
-          style={{ display: "flex", whiteSpace: "nowrap" }}
-        >
-          {[0, 1].map((i) => (
-            <span
-              key={i}
+      {/* ══════════ LIVE WORK — HORIZONTAL SCROLL ══════════ */}
+      <section style={{ padding: "7rem 0 5rem" }} id="live-work">
+        <div style={{ maxWidth: 1440, margin: "0 auto", padding: "0 1.5rem" }}>
+          <SectionTag>Portfolio</SectionTag>
+          <div className="reveal-on-scroll" style={{ marginBottom: "0.75rem" }}>
+            <h2
               style={{
-                fontFamily: MONO,
-                fontSize: "0.6rem",
-                letterSpacing: "0.3em",
-                color: C.orange,
+                fontFamily: HEAD,
+                fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+                fontWeight: 900,
+                letterSpacing: "-0.035em",
+                color: C.text,
+                margin: 0,
                 textTransform: "uppercase",
-                opacity: 0.55,
               }}
             >
-              {
-                "RESTAURANT \u2726 DENTAL \u2726 SALON \u2726 LAW FIRM \u2726 CONTRACTOR \u2726 REAL ESTATE \u2726 GYM \u2726 PHOTOGRAPHER \u2726 PLUMBER \u2726 BREWERY \u2726 "
-              }
-            </span>
-          ))}
+              REAL WORK. LIVE RIGHT NOW.
+            </h2>
+          </div>
+          <p
+            className="reveal-on-scroll"
+            style={{
+              fontSize: "0.85rem",
+              color: C.textMute,
+              marginBottom: "2.5rem",
+              fontFamily: MONO,
+              letterSpacing: "0.05em",
+            }}
+          >
+            Click to visit — every site built by Bamberg Digital.
+          </p>
         </div>
-      </div>
+        <div style={{ paddingLeft: "1.5rem" }}>
+          <WorkTrack />
+        </div>
+      </section>
 
       {/* ══════════ INDUSTRY CATALOG ══════════ */}
       <section
-        style={{
-          padding: "6rem 1.5rem 7rem",
-          background: C.bgLight,
-          scrollMarginTop: 80,
-        }}
+        style={{ padding: "7rem 1.5rem 8rem", background: C.bgLight }}
         id="blueprints"
       >
-        <div style={{ maxWidth: 1440, margin: "0 auto" }}>
-          <SectionTag>Industry Catalog</SectionTag>
+        <div style={{ maxWidth: 1300, margin: "0 auto" }}>
+          <SectionTag>Industry Blueprints</SectionTag>
           <h2
             className="reveal-on-scroll"
             style={{
@@ -1876,21 +2174,22 @@ export default function HomeNarrative() {
               margin: "0 0 0.75rem",
             }}
           >
-            50+ Industry Blueprints
+            50+ industries.
+            <br />
+            <span style={{ color: C.textMute }}>One builder.</span>
           </h2>
           <p
             className="reveal-on-scroll"
             style={{
-              fontSize: "0.92rem",
               color: C.textSoft,
+              marginBottom: "2.5rem",
+              maxWidth: 500,
               lineHeight: 1.7,
-              maxWidth: 550,
-              margin: "0 0 2.5rem",
+              fontSize: "0.9rem",
             }}
           >
-            Pre-engineered website specifications for your industry. Each
-            blueprint includes layout, features, integrations, and a unique
-            visual identity.
+            Browse our full catalog of industry-specific website blueprints.
+            Each one is a battle-tested design system ready to build from.
           </p>
 
           {/* Category pills */}
@@ -1899,10 +2198,8 @@ export default function HomeNarrative() {
             style={{
               display: "flex",
               flexWrap: "wrap",
-              gap: "0.4rem",
-              marginBottom: "2.5rem",
-              overflowX: "auto",
-              paddingBottom: "0.5rem",
+              gap: "0.5rem",
+              marginBottom: "3rem",
             }}
           >
             {CATEGORIES.map((cat) => (
@@ -1914,13 +2211,12 @@ export default function HomeNarrative() {
                   fontSize: "0.55rem",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  padding: "0.4rem 0.9rem",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                  transition: "all 0.25s",
+                  padding: "0.45rem 0.9rem",
+                  background: activeCat === cat.id ? C.blue : "transparent",
+                  color: activeCat === cat.id ? "#fff" : C.textSoft,
                   border: `1px solid ${activeCat === cat.id ? C.blue : C.border}`,
-                  background: activeCat === cat.id ? C.blueDim : "transparent",
-                  color: activeCat === cat.id ? C.blue : C.textMute,
+                  cursor: "pointer",
+                  transition: "all 0.25s",
                 }}
               >
                 {cat.label}
@@ -1928,11 +2224,11 @@ export default function HomeNarrative() {
             ))}
           </div>
 
-          {/* Grid */}
+          {/* Blueprint cards grid */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
               gap: "1rem",
             }}
           >
@@ -1940,474 +2236,410 @@ export default function HomeNarrative() {
               <div
                 key={item.id}
                 className="catalog-card"
-                style={{
-                  animationDelay: `${Math.min(i * 35, 500)}ms`,
-                  background: C.card,
-                  border: `1px solid ${C.border}`,
-                  overflow: "hidden",
-                  willChange: "transform",
-                  transition: "border-color 0.3s, box-shadow 0.3s",
-                }}
+                data-cursor-card
                 onMouseMove={handleTilt}
                 onMouseLeave={handleTiltReset}
+                style={{
+                  background: C.card,
+                  border: `1px solid ${C.border}`,
+                  padding: "1.25rem",
+                  animationDelay: `${(i % 12) * 40}ms`,
+                  cursor: "default",
+                  transition:
+                    "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s",
+                }}
               >
-                <div style={{ height: 2, background: item.accent }} />
-                <div style={{ padding: "0.9rem" }}>
-                  <Wireframe layout={item.layout} accent={item.accent} />
-                  <h4
+                <Wireframe layout={item.layout} accent={item.accent} />
+                <div style={{ paddingTop: "0.85rem" }}>
+                  <div
                     style={{
-                      fontFamily: HEAD,
-                      fontSize: "0.85rem",
-                      fontWeight: 700,
-                      color: C.text,
-                      margin: "0.7rem 0 0.25rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      marginBottom: "0.4rem",
                     }}
                   >
-                    {item.name}
-                  </h4>
+                    <h3
+                      style={{
+                        fontFamily: HEAD,
+                        fontSize: "0.9rem",
+                        fontWeight: 700,
+                        color: C.text,
+                        margin: 0,
+                      }}
+                    >
+                      {item.name}
+                    </h3>
+                    <span
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: "50%",
+                        background: item.accent,
+                        opacity: 0.7,
+                        flexShrink: 0,
+                      }}
+                    />
+                  </div>
                   <p
-                    style={{
-                      fontSize: "0.7rem",
-                      color: C.textMute,
-                      lineHeight: 1.5,
-                      margin: "0 0 0.5rem",
-                    }}
-                  >
-                    {item.tag}
-                  </p>
-                  <span
                     style={{
                       fontFamily: MONO,
                       fontSize: "0.5rem",
                       letterSpacing: "0.1em",
-                      color: item.accent,
+                      color: C.textMute,
                       textTransform: "uppercase",
-                      opacity: 0.85,
+                      margin: "0 0 0.6rem",
                     }}
                   >
                     {item.vibe}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════ LIVE WORK ══════════ */}
-      <section
-        style={{
-          padding: "6rem 1.5rem 7rem",
-          background: C.bgLight,
-          scrollMarginTop: 80,
-        }}
-        id="work"
-      >
-        <div style={{ maxWidth: 1440, margin: "0 auto" }}>
-          <SectionTag>Live Projects</SectionTag>
-          <h2
-            className="reveal-on-scroll"
-            style={{
-              fontFamily: HEAD,
-              fontSize: "clamp(2rem, 5vw, 3.25rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
-              color: C.text,
-              margin: "0 0 0.75rem",
-            }}
-          >
-            Real Sites. Live Right Now.
-          </h2>
-          <p
-            className="reveal-on-scroll"
-            style={{
-              fontSize: "0.92rem",
-              color: C.textSoft,
-              lineHeight: 1.7,
-              maxWidth: 520,
-              margin: "0 0 3rem",
-            }}
-          >
-            Click through to see actual work shipped by Bamberg Digital — live
-            e-commerce stores, SaaS platforms, and service business websites.
-            The samples show exactly what we build for each industry.
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: "1.25rem",
-            }}
-          >
-            {LIVE_WORK.map((site) => (
-              <a
-                key={site.name}
-                href={site.url}
-                target={site.external ? "_blank" : undefined}
-                rel={site.external ? "noopener noreferrer" : undefined}
-                className="reveal-on-scroll"
-                style={{
-                  display: "block",
-                  textDecoration: "none",
-                  background: C.card,
-                  border: `1px solid ${C.border}`,
-                  overflow: "hidden",
-                  transition:
-                    "border-color 0.3s, box-shadow 0.3s, transform 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    site.accent;
-                  (e.currentTarget as HTMLAnchorElement).style.boxShadow =
-                    `0 4px 24px ${site.accent}22`;
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    C.border;
-                  (e.currentTarget as HTMLAnchorElement).style.boxShadow =
-                    "none";
-                }}
-              >
-                <div style={{ height: 3, background: site.accent }} />
-                <div style={{ padding: "1.25rem" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      marginBottom: "0.75rem",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: MONO,
-                        fontSize: "0.5rem",
-                        letterSpacing: "0.12em",
-                        color: site.accent,
-                        textTransform: "uppercase",
-                        opacity: 0.9,
-                      }}
-                    >
-                      {site.category}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: MONO,
-                        fontSize: "0.48rem",
-                        letterSpacing: "0.08em",
-                        color: C.textMute,
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {site.metric} · {site.metricNote}
-                    </span>
-                  </div>
-                  <h3
-                    style={{
-                      fontFamily: HEAD,
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                      color: C.text,
-                      margin: "0 0 0.5rem",
-                    }}
-                  >
-                    {site.name}
-                  </h3>
+                  </p>
                   <p
                     style={{
                       fontSize: "0.75rem",
                       color: C.textSoft,
+                      margin: "0 0 0.75rem",
                       lineHeight: 1.6,
-                      margin: "0 0 1rem",
                     }}
                   >
-                    {site.desc}
+                    {item.tag}
                   </p>
-                  <span
+                  <ul
+                    style={{
+                      listStyle: "none",
+                      padding: 0,
+                      margin: "0 0 0.75rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.25rem",
+                    }}
+                  >
+                    {item.features.map((f) => (
+                      <li
+                        key={f}
+                        style={{
+                          fontFamily: MONO,
+                          fontSize: "0.5rem",
+                          color: C.textMute,
+                          letterSpacing: "0.05em",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.4rem",
+                        }}
+                      >
+                        <span
+                          style={{ color: item.accent, fontSize: "0.55rem" }}
+                        >
+                          ›
+                        </span>{" "}
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    onClick={() => scrollTo("contact")}
                     style={{
                       fontFamily: MONO,
-                      fontSize: "0.55rem",
-                      letterSpacing: "0.1em",
-                      color: site.accent,
+                      fontSize: "0.5rem",
+                      letterSpacing: "0.12em",
+                      color: item.accent,
+                      background: "none",
+                      border: `1px solid ${item.accent}40`,
+                      padding: "0.35rem 0.7rem",
+                      cursor: "pointer",
                       textTransform: "uppercase",
-                      borderBottom: `1px solid ${site.accent}55`,
-                      paddingBottom: 2,
+                      transition: "all 0.25s",
                     }}
                   >
-                    {site.external ? `↗ ${site.label}` : site.label}
-                  </span>
+                    Get This Blueprint →
+                  </button>
                 </div>
-              </a>
+              </div>
             ))}
+          </div>
+
+          <div
+            className="reveal-on-scroll"
+            style={{
+              textAlign: "center",
+              marginTop: "3rem",
+              paddingTop: "2rem",
+              borderTop: `1px solid ${C.border}`,
+            }}
+          >
+            <p
+              style={{
+                color: C.textMute,
+                fontSize: "0.8rem",
+                marginBottom: "1.5rem",
+                fontFamily: MONO,
+                letterSpacing: "0.05em",
+              }}
+            >
+              Don&apos;t see your industry? We build custom.
+            </p>
+            <a
+              href="tel:+19169077782"
+              className="ws-cta-pulse"
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.6rem",
+                letterSpacing: "0.1em",
+                padding: "0.85rem 2rem",
+                background: C.orange,
+                color: "#fff",
+                textDecoration: "none",
+                textTransform: "uppercase",
+                display: "inline-block",
+              }}
+            >
+              DISCUSS YOUR PROJECT →
+            </a>
           </div>
         </div>
       </section>
 
       {/* ══════════ STATS ══════════ */}
-      <section className="ws-blueprint-grid" style={{ padding: "5rem 1.5rem" }}>
-        <div
-          style={{
-            maxWidth: 1100,
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "2.5rem",
-          }}
-          className="md:!grid-cols-4"
-        >
-          {STATS.map((s) => (
-            <div
-              key={s.label}
-              className="reveal-on-scroll"
-              style={{ textAlign: "center" }}
-            >
-              <div
-                style={{
-                  fontFamily: HEAD,
-                  fontSize: "clamp(2.5rem, 6vw, 3.75rem)",
-                  fontWeight: 800,
-                  color: C.text,
-                  lineHeight: 1,
-                }}
-              >
-                <Counter target={s.value} suffix={s.suffix} />
+      <section style={{ padding: "7rem 1.5rem" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+              gap: "3rem",
+              textAlign: "center",
+            }}
+          >
+            {STATS.map((s) => (
+              <div key={s.label} className="reveal-on-scroll">
+                <div
+                  style={{
+                    fontFamily: HEAD,
+                    fontWeight: 900,
+                    fontSize: "clamp(3.5rem, 8vw, 6rem)",
+                    color: C.text,
+                    letterSpacing: "-0.04em",
+                    lineHeight: 1,
+                  }}
+                >
+                  <Counter target={s.value} suffix={s.suffix} />
+                </div>
+                <p
+                  style={{
+                    fontFamily: MONO,
+                    fontSize: "0.55rem",
+                    letterSpacing: "0.18em",
+                    color: C.textMute,
+                    textTransform: "uppercase",
+                    marginTop: "0.75rem",
+                  }}
+                >
+                  {s.label}
+                </p>
               </div>
-              <p
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.15em",
-                  color: C.textMute,
-                  textTransform: "uppercase",
-                  marginTop: "0.5rem",
-                }}
-              >
-                {s.label}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ══════════ ABOUT ══════════ */}
       <section
+        style={{ padding: "7rem 1.5rem", background: C.bgLight }}
         id="about"
-        style={{
-          padding: "6rem 1.5rem 7rem",
-          background: C.bgLight,
-          scrollMarginTop: 80,
-        }}
       >
-        <div
-          style={{
-            maxWidth: 1100,
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: "3rem",
-            alignItems: "center",
-          }}
-          className="md:!grid-cols-2 md:!gap-16"
-        >
-          <div className="reveal-on-scroll">
-            <SectionTag>The Builder</SectionTag>
-            <blockquote
-              style={{
-                fontFamily: SERIF,
-                fontStyle: "italic",
-                fontSize: "clamp(1.4rem, 2.8vw, 2.1rem)",
-                color: C.text,
-                lineHeight: 1.4,
-                margin: "1.5rem 0 0",
-                borderLeft: `3px solid ${C.blue}`,
-                paddingLeft: "1.5rem",
-              }}
-            >
-              &ldquo;I build every site like my name is on the door — because it
-              is.&rdquo;
-            </blockquote>
-            <p
-              style={{
-                fontFamily: HAND,
-                fontSize: "1.6rem",
-                color: C.blue,
-                marginTop: "1.5rem",
-              }}
-            >
-              — Jason Bamberg
-            </p>
-          </div>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <SectionTag>The Builder</SectionTag>
+          <blockquote
+            className="reveal-on-scroll"
+            style={{
+              fontFamily: HEAD,
+              fontSize: "clamp(1.6rem, 4vw, 2.75rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              color: C.text,
+              lineHeight: 1.2,
+              margin: "0 0 1.5rem",
+              borderLeft: `4px solid ${C.orange}`,
+              paddingLeft: "1.5rem",
+            }}
+          >
+            &ldquo;I build every site like my name is on the door — because it
+            is.&rdquo;
+          </blockquote>
+          <p
+            className="reveal-on-scroll"
+            style={{
+              fontFamily: MONO,
+              fontSize: "0.6rem",
+              letterSpacing: "0.15em",
+              color: C.orange,
+              textTransform: "uppercase",
+              marginBottom: "2rem",
+            }}
+          >
+            — Jason Bamberg, Founder
+          </p>
+          <p
+            className="reveal-on-scroll"
+            style={{
+              fontSize: "1rem",
+              color: C.textSoft,
+              lineHeight: 1.8,
+              maxWidth: 640,
+              marginBottom: "2.5rem",
+            }}
+          >
+            Based in Sacramento. Serving businesses nationwide. Direct access.
+            No account managers. No runaround. When you work with Bamberg
+            Digital, you work with me.
+          </p>
           <div
             className="reveal-on-scroll"
-            style={{ transitionDelay: "0.15s" }}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "1.5rem",
+              alignItems: "center",
+            }}
           >
-            <p
+            <a
+              href="mailto:hello@bambergdigital.com"
               style={{
-                fontSize: "0.92rem",
+                fontFamily: MONO,
+                fontSize: "0.6rem",
+                letterSpacing: "0.1em",
+                color: C.blue,
+                textDecoration: "none",
+                textTransform: "uppercase",
+                borderBottom: `1px solid ${C.blue}40`,
+                paddingBottom: "0.1rem",
+              }}
+            >
+              hello@bambergdigital.com
+            </a>
+            <a
+              href="tel:+19169077782"
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.6rem",
+                letterSpacing: "0.1em",
                 color: C.textSoft,
-                lineHeight: 1.8,
-                margin: 0,
+                textDecoration: "none",
+                textTransform: "uppercase",
               }}
             >
-              {`Bamberg Digital isn\u2019t an agency with layers of account managers. It\u2019s one person \u2014 Jason \u2014 who handles every call, every design decision, every line of code.`}
-            </p>
-            <p
-              style={{
-                fontSize: "0.92rem",
-                color: C.textSoft,
-                lineHeight: 1.8,
-                marginTop: "1.25rem",
-              }}
-            >
-              Based in Sacramento, serving businesses nationwide. No templates.
-              No page builders. No runaround. Just direct access to the person
-              building your site — from blueprint to launch.
-            </p>
-            <div
-              style={{
-                marginTop: "2rem",
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "1.5rem",
-              }}
-            >
-              <a
-                href="mailto:hello@bambergdigital.com"
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.1em",
-                  color: C.blue,
-                  textDecoration: "none",
-                  textTransform: "uppercase",
-                  borderBottom: `1px solid ${C.blueDim}`,
-                  paddingBottom: 2,
-                }}
-              >
-                hello@bambergdigital.com
-              </a>
-              <a
-                href="tel:+19169077782"
-                style={{
-                  fontFamily: MONO,
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.1em",
-                  color: C.blue,
-                  textDecoration: "none",
-                  textTransform: "uppercase",
-                  borderBottom: `1px solid ${C.blueDim}`,
-                  paddingBottom: 2,
-                }}
-              >
-                (916) 907-7782
-              </a>
-            </div>
+              (916) 907-7782
+            </a>
           </div>
         </div>
       </section>
 
       {/* ══════════ CTA ══════════ */}
       <section
-        id="contact"
         style={{
-          padding: "7rem 1.5rem 8rem",
-          textAlign: "center",
+          padding: "8rem 1.5rem",
           position: "relative",
           overflow: "hidden",
-          scrollMarginTop: 80,
         }}
+        id="contact"
       >
+        {/* Orange bg block behind BUILD */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background:
-              "radial-gradient(circle at 50% 50%, rgba(74,158,206,0.06) 0%, transparent 50%)",
+            background: `radial-gradient(ellipse at 50% 60%, rgba(232,135,43,0.08) 0%, transparent 60%)`,
             pointerEvents: "none",
           }}
         />
         <div
           style={{
-            maxWidth: 800,
+            maxWidth: 1200,
             margin: "0 auto",
+            textAlign: "center",
             position: "relative",
             zIndex: 2,
           }}
         >
-          <div className="reveal-on-scroll">
-            <h2
-              style={{
-                fontFamily: HEAD,
-                fontSize: "clamp(3rem, 12vw, 8rem)",
-                fontWeight: 800,
-                letterSpacing: "-0.045em",
-                color: C.text,
-                lineHeight: 0.88,
-                margin: 0,
-              }}
+          <SectionTag>Start Today</SectionTag>
+          <h2
+            className="reveal-on-scroll"
+            style={{
+              fontFamily: HEAD,
+              fontSize: "clamp(3rem, 12vw, 9rem)",
+              fontWeight: 900,
+              letterSpacing: "-0.04em",
+              lineHeight: 0.9,
+              color: C.text,
+              margin: "0 0 2rem",
+            }}
+          >
+            LET&apos;S{" "}
+            <span
+              ref={ctaBuildRef}
+              className="underline-draw"
+              style={{ color: C.orange, display: "inline-block" }}
             >
-              {"LET\u2019S"}
-              <br />
-              <span style={{ color: C.blue }}>BUILD</span>
-              <span style={{ color: C.orange }}>.</span>
-            </h2>
-          </div>
+              BUILD
+            </span>
+            .
+          </h2>
           <p
             className="reveal-on-scroll"
             style={{
-              fontSize: "1rem",
               color: C.textSoft,
+              maxWidth: 480,
+              margin: "0 auto 3rem",
               lineHeight: 1.7,
-              maxWidth: 420,
-              margin: "1.5rem auto 2.5rem",
-              transitionDelay: "0.1s",
+              fontSize: "0.95rem",
             }}
           >
-            Ready to see what your industry blueprint looks like? {"Let\u2019s"}{" "}
-            talk.
+            Tell me what you need. I&apos;ll tell you what it takes to build it
+            right. First call is free. No pitch. No BS.
           </p>
           <div
             className="reveal-on-scroll"
             style={{
               display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "1.5rem",
-              transitionDelay: "0.2s",
+              flexWrap: "wrap",
+              gap: "1rem",
+              justifyContent: "center",
             }}
           >
             <a
               href="tel:+19169077782"
               className="ws-cta-pulse"
+              onMouseMove={handleMag}
+              onMouseLeave={handleMagReset}
               style={{
                 fontFamily: MONO,
-                fontSize: "0.7rem",
+                fontSize: "0.65rem",
                 letterSpacing: "0.1em",
-                textTransform: "uppercase",
                 padding: "1rem 2.5rem",
                 background: C.orange,
                 color: "#fff",
                 textDecoration: "none",
+                textTransform: "uppercase",
                 display: "inline-block",
-                transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1)",
               }}
-              onMouseMove={handleMag}
-              onMouseLeave={handleMagReset}
             >
-              (916) 907-7782
+              CALL (916) 907-7782 →
             </a>
             <a
               href="mailto:hello@bambergdigital.com"
               style={{
                 fontFamily: MONO,
-                fontSize: "0.6rem",
-                letterSpacing: "0.12em",
-                color: C.blue,
+                fontSize: "0.65rem",
+                letterSpacing: "0.1em",
+                padding: "1rem 2.5rem",
+                border: `1px solid ${C.border}`,
+                color: C.textSoft,
                 textDecoration: "none",
                 textTransform: "uppercase",
+                display: "inline-block",
+                transition: "all 0.3s",
               }}
             >
-              hello@bambergdigital.com
+              EMAIL JASON →
             </a>
           </div>
         </div>
@@ -2415,7 +2647,11 @@ export default function HomeNarrative() {
 
       {/* ══════════ FOOTER ══════════ */}
       <footer
-        style={{ padding: "2.5rem 1.5rem", borderTop: `1px solid ${C.border}` }}
+        style={{
+          padding: "2.5rem 1.5rem",
+          borderTop: `1px solid rgba(74,158,206,0.08)`,
+          background: C.bg,
+        }}
       >
         <div
           style={{
@@ -2423,68 +2659,91 @@ export default function HomeNarrative() {
             margin: "0 auto",
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "space-between",
             alignItems: "center",
+            justifyContent: "space-between",
             gap: "1.5rem",
           }}
         >
-          <div>
+          <Link href="/" style={{ textDecoration: "none" }}>
             <span
               style={{
-                fontFamily: SERIF,
-                fontStyle: "italic",
+                fontFamily: HEAD,
+                fontWeight: 800,
                 fontSize: "1rem",
-                fontWeight: 600,
-                color: C.textMute,
+                color: C.text,
+                letterSpacing: "-0.02em",
               }}
             >
               Bamberg<span style={{ color: C.blue }}>Digital</span>
             </span>
-            <p
-              style={{
-                fontFamily: MONO,
-                fontSize: "0.5rem",
-                letterSpacing: "0.12em",
-                color: C.textMute,
-                textTransform: "uppercase",
-                marginTop: "0.25rem",
-              }}
-            >
-              Sacramento, CA — Nationwide
-            </p>
-          </div>
-          <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
-            {["services", "blueprints", "about", "contact"].map((id) => (
+          </Link>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "2rem",
+              alignItems: "center",
+            }}
+          >
+            {[
+              { label: "Services", target: "services" },
+              { label: "Work", target: "live-work" },
+              { label: "Blueprints", target: "blueprints" },
+              { label: "About", target: "about" },
+            ].map((l) => (
               <button
-                key={id}
-                onClick={() => scrollTo(id)}
-                className="nav-link"
+                key={l.label}
+                onClick={() => scrollTo(l.target)}
                 style={{
                   fontFamily: MONO,
                   fontSize: "0.55rem",
-                  letterSpacing: "0.1em",
+                  letterSpacing: "0.14em",
                   color: C.textMute,
                   textTransform: "uppercase",
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  transition: "color 0.2s",
+                  transition: "color 0.25s",
                 }}
               >
-                {id}
+                {l.label}
               </button>
             ))}
+            <a
+              href="tel:+19169077782"
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.55rem",
+                letterSpacing: "0.1em",
+                color: C.textMute,
+                textDecoration: "none",
+              }}
+            >
+              (916) 907-7782
+            </a>
+            <a
+              href="mailto:hello@bambergdigital.com"
+              style={{
+                fontFamily: MONO,
+                fontSize: "0.55rem",
+                letterSpacing: "0.1em",
+                color: C.textMute,
+                textDecoration: "none",
+              }}
+            >
+              hello@bambergdigital.com
+            </a>
           </div>
-          <p
+          <span
             style={{
               fontFamily: MONO,
               fontSize: "0.5rem",
+              letterSpacing: "0.1em",
               color: C.textMute,
-              letterSpacing: "0.08em",
             }}
           >
-            &copy; {new Date().getFullYear()} Bamberg Digital
-          </p>
+            © {new Date().getFullYear()} Bamberg Digital
+          </span>
         </div>
       </footer>
     </div>
