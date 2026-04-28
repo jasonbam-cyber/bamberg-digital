@@ -1151,3 +1151,13 @@ section h3,
     padding-bottom: 0.75rem !important;
   }
 }
+
+/* ── Stronger section backdrop (reduce 3D tile bleed-through) ─ */
+section:not(.hero-section):not(.trust-ribbon) {
+  background: rgba(6, 10, 18, 0.82) !important;
+}
+/* ── Method / service cards: more opaque so tiles don't show through ── */
+.igloo-reveal > div[style*="rgba(255,255,255,0.08)"],
+section .igloo-reveal > div {
+  background: rgba(15, 20, 32, 0.88) !important;
+}

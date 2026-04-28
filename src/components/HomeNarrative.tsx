@@ -1896,27 +1896,6 @@ export default function HomeNarrative() {
       >
         <div style={{ maxWidth: 1360, margin: "0 auto", width: "100%" }}>
           <IcyTag>What We Build</IcyTag>
-          <h2
-            style={{
-              fontFamily: SERIF,
-              fontWeight: 700,
-              fontSize: "clamp(2rem, 4vw, 3.25rem)",
-              color: C.white,
-              letterSpacing: "-0.015em",
-              marginBottom: "3rem",
-            }}
-          >
-            <SplitReveal by="char" style={{ display: "inline-block" }}>
-              {"Six disciplines. "}
-            </SplitReveal>
-            <SplitReveal
-              by="char"
-              delay={0.18}
-              style={{ display: "inline-block", fontStyle: "italic" }}
-            >
-              One discipline.
-            </SplitReveal>
-          </h2>
 
           <div
             className="igloo-reveal"
