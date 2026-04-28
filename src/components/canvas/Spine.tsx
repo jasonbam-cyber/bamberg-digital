@@ -17,7 +17,7 @@ export default function Spine() {
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
-    const pulse = 0.5 + Math.sin(t * 0.7) * 0.15;
+    const pulse = 0.2 + Math.sin(t * 0.5) * 0.08;
     if (spineRef.current) {
       const m = spineRef.current.material as THREE.MeshStandardMaterial;
       m.emissiveIntensity = pulse;
@@ -36,13 +36,13 @@ export default function Spine() {
     <group>
       {/* Spine column */}
       <mesh ref={spineRef} position={[0, SPINE_MID, -2]}>
-        <cylinderGeometry args={[0.04, 0.04, SPINE_LEN, 12]} />
+        <cylinderGeometry args={[0.018, 0.018, SPINE_LEN, 8]} />
         <meshStandardMaterial
-          color="#e8872b"
-          emissive="#e8872b"
-          emissiveIntensity={0.5}
-          metalness={0.5}
-          roughness={0.2}
+          color="#d4752a"
+          emissive="#c96820"
+          emissiveIntensity={0.2}
+          metalness={0.3}
+          roughness={0.5}
         />
       </mesh>
 

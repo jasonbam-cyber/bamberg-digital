@@ -1161,3 +1161,15 @@ section:not(.hero-section):not(.trust-ribbon) {
 section .igloo-reveal > div {
   background: rgba(15, 20, 32, 0.88) !important;
 }
+
+/* ═══════════════════════════════════════════════════════
+   SPINE BEHIND EVERYTHING — sections fully opaque
+   3D world visible only through hero (transparent) and
+   natural gaps between sections. Blueprint tiles never
+   bleed through content sections.
+   ═══════════════════════════════════════════════════════ */
+section:not(.hero-section):not(.trust-ribbon) {
+  background: #09101f !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
