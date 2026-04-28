@@ -2086,28 +2086,6 @@ export default function HomeNarrative() {
       >
         <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
           <IcyTag>Industries we build for</IcyTag>
-          <h2
-            style={{
-              fontFamily: SERIF,
-              fontWeight: 700,
-              fontSize: "clamp(1.75rem, 3.4vw, 2.75rem)",
-              color: C.white,
-              letterSpacing: "-0.015em",
-              marginBottom: "2.25rem",
-              lineHeight: 1.1,
-            }}
-          >
-            <SplitReveal by="char" style={{ display: "inline-block" }}>
-              {"Fifty industries. "}
-            </SplitReveal>
-            <SplitReveal
-              by="char"
-              delay={0.15}
-              style={{ display: "inline-block", fontStyle: "italic" }}
-            >
-              One method.
-            </SplitReveal>
-          </h2>
 
           <ul
             className="igloo-reveal"
