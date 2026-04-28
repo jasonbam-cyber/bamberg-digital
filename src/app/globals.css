@@ -1173,3 +1173,41 @@ section:not(.hero-section):not(.trust-ribbon) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
+/* ═══════════════════════════════════════════════════════
+   IMMERSIVE GRADIENTS — sections float in 3D world
+   Each section fades in/out smoothly so the 3D spine
+   and world peek through at section boundaries.
+   ═══════════════════════════════════════════════════════ */
+section:not(.hero-section):not(.trust-ribbon) {
+  background: linear-gradient(
+    180deg,
+    rgba(9, 16, 31, 0) 0px,
+    rgba(9, 16, 31, 0.97) 72px,
+    rgba(9, 16, 31, 0.97) calc(100% - 72px),
+    rgba(9, 16, 31, 0) 100%
+  ) !important;
+}
+
+/* Hero bottom fade — smooth handoff to first section */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, transparent, #09101f);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Trust ribbon keeps solid dark */
+.trust-ribbon {
+  background: rgba(6, 10, 18, 0.96) !important;
+}
+
+/* Footer solid — no fadeout at page end */
+footer, .footer-grid {
+  background: #09101f !important;
+}
