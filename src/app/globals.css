@@ -989,3 +989,165 @@ section:not(.hero-section):not(.trust-ribbon) {
   border-top: 1px solid rgba(255, 255, 255, 0.055);
   position: relative;
 }
+
+/* ═══════════════════════════════════════════════════════
+   COMPREHENSIVE MOBILE OPTIMIZATION
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Section padding ─────────────────────────────────── */
+@media (max-width: 768px) {
+  section:not(.hero-section):not(.trust-ribbon) {
+    padding: 3rem 1.25rem !important;
+    min-height: auto !important;
+  }
+
+  /* ── Section headings ─────────────────────────────── */
+  section h2 {
+    font-size: clamp(1.75rem, 8vw, 2.8rem) !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* ── Hero section tighter on small phones ──────────── */
+  .hero-section {
+    padding: 4.5rem 1.25rem 2.5rem !important;
+    min-height: 100svh !important;
+  }
+
+  /* ── Hero sub text ──────────────────────────────────── */
+  .hero-sub {
+    font-size: 0.95rem !important;
+    max-width: 36ch !important;
+  }
+
+  /* ── CTA buttons stack on mobile ───────────────────── */
+  .hero-ctas {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+  .hero-ctas button {
+    width: 100% !important;
+    max-width: 320px !important;
+    justify-content: center !important;
+  }
+
+  /* ── Nav ───────────────────────────────────────────── */
+  .site-nav-links {
+    display: none !important;
+  }
+
+  /* ── Work cards carousel: full scroll on mobile ─────── */
+  .work-scroll-track {
+    gap: 1rem !important;
+  }
+  .work-card {
+    min-width: 85vw !important;
+    max-width: 85vw !important;
+  }
+
+  /* ── Services grid: 1 col on mobile ─────────────────── */
+  .services-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Method cards: 1 col on mobile ──────────────────── */
+  .method-cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Industries list: 1 col ──────────────────────────── */
+  .industries-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  .industries-grid > div {
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    padding: 0.75rem 0 !important;
+  }
+
+  /* ── Current projects: 1 col ──────────────────────────── */
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Stats grid: 2 col ───────────────────────────────── */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* ── About section: stack vertically ─────────────────── */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* ── Newsletter form: stack inputs ───────────────────── */
+  .newsletter-form-row {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  .newsletter-form-row input,
+  .newsletter-form-row button {
+    width: 100% !important;
+    border-radius: 6px !important;
+  }
+
+  /* ── Footer: 1 col ──────────────────────────────────── */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* ── Catalog grid: 2 cols already set, tighten gap ───── */
+  .catalog-grid {
+    gap: 0.5rem !important;
+  }
+
+  /* ── Trust ribbon marquee: slightly smaller ──────────── */
+  .trust-ribbon .marquee-track > div {
+    font-size: 0.55rem !important;
+    letter-spacing: 0.2em !important;
+  }
+
+  /* ── Scroll indicator: hide on very small screens ─────── */
+  .hero-scroll-indicator {
+    display: none !important;
+  }
+
+  /* ── Section tag eyebrow ─────────────────────────────── */
+  .icy-tag-wrap {
+    justify-content: center !important;
+  }
+}
+
+/* ── Tablet (768–1024): mid breakpoint tweaks ──────────── */
+@media (min-width: 769px) and (max-width: 1023px) {
+  section:not(.hero-section):not(.trust-ribbon) {
+    padding: 4rem 2rem !important;
+  }
+  .work-card {
+    min-width: 60vw !important;
+  }
+}
+
+/* ── Spine contrast: text-shadow on headings over orange spine ── */
+section h2,
+section h3,
+.hero-h1 {
+  text-shadow:
+    0 2px 20px rgba(0, 0, 0, 0.85),
+    0 0 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ── Work card mobile override (class now in JSX) ────────── */
+@media (max-width: 768px) {
+  .work-card {
+    min-width: 82vw !important;
+    max-width: 82vw !important;
+  }
+  .work-track {
+    gap: 1rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+}

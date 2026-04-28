@@ -612,10 +612,12 @@ function WorkTrack() {
         userSelect: "none",
         scrollbarWidth: "none",
       }}
+      className="work-track"
     >
       {LIVE_WORK.map((w) => (
         <div
           key={w.name}
+          className="work-card"
           style={{
             minWidth: 380,
             flexShrink: 0,
@@ -1457,8 +1459,8 @@ export default function HomeNarrative() {
                 lineHeight: 0.95,
                 letterSpacing: "-0.025em",
                 color: C.white,
-                fontSize: "clamp(2.2rem, 9.5vw, 6.5rem)",
-                maxWidth: "14ch",
+                fontSize: "clamp(2rem, 4vw, 4.5rem)",
+                maxWidth: "none",
                 textShadow: "0 2px 24px rgba(0,0,0,0.6)",
               }}
             >
