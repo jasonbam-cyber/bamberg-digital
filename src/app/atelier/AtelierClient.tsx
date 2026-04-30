@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics";
 import ContactForm from "@/components/ContactForm";
 
 const C = {
@@ -12,12 +13,6 @@ const C = {
   surface: "rgba(240,237,232,0.04)",
   surfaceBorder: "rgba(240,237,232,0.08)",
 };
-
-function firePlausible(event: string) {
-  if (typeof window !== "undefined" && typeof window.plausible === "function") {
-    window.plausible(event);
-  }
-}
 
 export default function AtelierClient() {
   return (
@@ -96,7 +91,7 @@ export default function AtelierClient() {
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
           <a
             href="#contact"
-            onClick={() => firePlausible("atelier_cta_primary")}
+            onClick={() => track("atelier_cta_primary")}
             style={{
               display: "inline-block",
               background: C.brass,
@@ -116,7 +111,7 @@ export default function AtelierClient() {
           </a>
           <a
             href="#work"
-            onClick={() => firePlausible("atelier_cta_secondary")}
+            onClick={() => track("atelier_cta_secondary")}
             style={{
               display: "inline-block",
               background: "transparent",

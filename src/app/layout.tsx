@@ -6,7 +6,7 @@ import {
   Caveat,
   JetBrains_Mono,
 } from "next/font/google";
-import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import SmoothScroll from "@/components/SmoothScroll";
 import CanvasHost from "@/components/canvas/CanvasHost";
 import RouteTransition from "@/components/RouteTransition";
@@ -45,9 +45,6 @@ const jetbrainsMono = JetBrains_Mono({
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bambergdigital.com";
-
-const PLAUSIBLE_DOMAIN =
-  process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN ?? "bambergdigital.com";
 
 export const metadata: Metadata = {
   title: "Bamberg Digital — Engineered Systems.",
@@ -147,13 +144,7 @@ export default function RootLayout({
         <SmoothScroll />
         <CanvasHost />
         <RouteTransition>{children}</RouteTransition>
-        {/* Plausible — set NEXT_PUBLIC_PLAUSIBLE_DOMAIN in Vercel env to activate */}
-        <Script
-          defer
-          data-domain={PLAUSIBLE_DOMAIN}
-          src="https://plausible.io/js/script.js"
-          strategy="afterInteractive"
-        />
+        <Analytics />
       </body>
     </html>
   );

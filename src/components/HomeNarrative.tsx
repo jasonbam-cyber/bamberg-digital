@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { track } from "@vercel/analytics";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Cursor from "./Cursor";
@@ -1558,9 +1559,7 @@ export default function HomeNarrative() {
               <MagneticButton strength={0.35}>
                 <button
                   onClick={() => {
-                    if (typeof window !== "undefined" && typeof (window as typeof window & { plausible?: (e: string) => void }).plausible === "function") {
-                      (window as typeof window & { plausible?: (e: string) => void }).plausible!("hero_cta_secondary");
-                    }
+                    track("hero_cta_secondary");
                     router.push("/portfolio");
                   }}
                   style={{
@@ -1594,9 +1593,7 @@ export default function HomeNarrative() {
               <MagneticButton strength={0.35}>
                 <button
                   onClick={() => {
-                    if (typeof window !== "undefined" && typeof (window as typeof window & { plausible?: (e: string) => void }).plausible === "function") {
-                      (window as typeof window & { plausible?: (e: string) => void }).plausible!("hero_cta_primary");
-                    }
+                    track("hero_cta_primary");
                     router.push("/contact");
                   }}
                   style={{

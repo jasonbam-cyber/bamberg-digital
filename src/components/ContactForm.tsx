@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@vercel/analytics";
 
 interface ContactFormProps {
   ctaLabel?: string;
@@ -55,12 +56,7 @@ export default function ContactForm({
       setSent(true);
       onSuccess?.();
 
-      if (
-        typeof window !== "undefined" &&
-        typeof window.plausible === "function"
-      ) {
-        window.plausible(`${source}_form_submit`);
-      }
+      track(`${source}_form_submit`);
     } catch {
       setError("Network error. Please check your connection and try again.");
     } finally {
