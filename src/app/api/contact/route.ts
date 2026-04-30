@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TO = "info@bambergdigital.com";
 
 function buildHtml(fields: Record<string, string>): string {
   const rows = Object.entries(fields)
@@ -94,7 +93,7 @@ export async function POST(req: NextRequest) {
       });
       await transporter.sendMail({
         from: `"Bamberg Digital Contact" <${smtpUser}>`,
-        to: TO,
+        to: process.env.CONTACT_TO_EMAIL || "info@bambergdigital.com",
         replyTo: email,
         subject,
         text: buildText(fields),
