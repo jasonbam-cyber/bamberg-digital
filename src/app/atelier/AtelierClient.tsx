@@ -4,14 +4,14 @@ import { track } from "@vercel/analytics";
 import ContactForm from "@/components/ContactForm";
 
 const C = {
-  bg: "#0d0d0f",
-  ink: "#f0ede8",
-  ink2: "rgba(240,237,232,0.65)",
-  brass: "#c8a96e",
-  brassLight: "#e0c78a",
-  hairline: "rgba(240,237,232,0.1)",
-  surface: "rgba(240,237,232,0.04)",
-  surfaceBorder: "rgba(240,237,232,0.08)",
+  bg: "#070F1B",
+  ink: "#F5F1E8",
+  ink2: "rgba(245,241,232,0.65)",
+  brass: "#B5894E",
+  brassLight: "#d4a96e",
+  hairline: "rgba(245,241,232,0.1)",
+  surface: "rgba(245,241,232,0.04)",
+  surfaceBorder: "rgba(245,241,232,0.08)",
 };
 
 export default function AtelierClient() {
@@ -95,7 +95,7 @@ export default function AtelierClient() {
             style={{
               display: "inline-block",
               background: C.brass,
-              color: "#0d0d0f",
+              color: "#070F1B",
               fontFamily:
                 "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
               fontWeight: 700,
@@ -242,9 +242,9 @@ export default function AtelierClient() {
           </div>
           <div
             style={{
-              background: "rgba(200,169,110,0.06)",
+              background: "rgba(181,137,78,0.06)",
               borderRadius: 4,
-              border: `1px solid rgba(200,169,110,0.15)`,
+              border: `1px solid rgba(181,137,78,0.15)`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -271,7 +271,7 @@ export default function AtelierClient() {
             fontFamily:
               "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
             fontSize: "0.8rem",
-            color: "rgba(240,237,232,0.3)",
+            color: "rgba(245,241,232,0.3)",
             marginTop: 24,
           }}
         >
@@ -440,30 +440,30 @@ export default function AtelierClient() {
             #atelier-form input,
             #atelier-form select,
             #atelier-form textarea {
-              background: rgba(240,237,232,0.05) !important;
-              border: 1px solid rgba(240,237,232,0.12) !important;
-              color: #f0ede8 !important;
+              background: rgba(245,241,232,0.05) !important;
+              border: 1px solid rgba(245,241,232,0.12) !important;
+              color: #F5F1E8 !important;
             }
             #atelier-form input::placeholder,
             #atelier-form textarea::placeholder {
-              color: rgba(240,237,232,0.3) !important;
+              color: rgba(245,241,232,0.3) !important;
             }
             #atelier-form label {
-              color: rgba(240,237,232,0.5) !important;
+              color: rgba(245,241,232,0.5) !important;
             }
             #atelier-form select option {
-              background: #1a1a1f;
-              color: #f0ede8;
+              background: #0d1829;
+              color: #F5F1E8;
             }
             #atelier-form button[type="submit"] {
-              background: #c8a96e !important;
-              color: #0d0d0f !important;
+              background: #B5894E !important;
+              color: #070F1B !important;
             }
             #atelier-form button[type="submit"]:disabled {
-              background: rgba(200,169,110,0.4) !important;
+              background: rgba(181,137,78,0.4) !important;
             }
             #atelier-form p:last-child {
-              color: rgba(240,237,232,0.3) !important;
+              color: rgba(245,241,232,0.3) !important;
             }
           `}</style>
           <div id="atelier-form">

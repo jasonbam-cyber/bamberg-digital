@@ -79,14 +79,14 @@ const jsonLd = {
 };
 
 const C = {
-  bg: "#0d0d0f",
-  ink: "#f0ede8",
-  ink2: "rgba(240,237,232,0.65)",
-  ink3: "rgba(240,237,232,0.45)",
-  brass: "#c8a96e",
-  hairline: "rgba(240,237,232,0.1)",
-  surface: "rgba(240,237,232,0.04)",
-  surfaceBorder: "rgba(240,237,232,0.08)",
+  bg: "#070F1B",
+  ink: "#F5F1E8",
+  ink2: "rgba(245,241,232,0.65)",
+  ink3: "rgba(245,241,232,0.45)",
+  brass: "#B5894E",
+  hairline: "rgba(245,241,232,0.1)",
+  surface: "rgba(245,241,232,0.04)",
+  surfaceBorder: "rgba(245,241,232,0.08)",
 };
 
 const proseStyle: React.CSSProperties = {
@@ -182,7 +182,7 @@ export default function LayerUICaseStudy() {
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
                   color: C.brass,
-                  border: `1px solid rgba(200,169,110,0.3)`,
+                  border: `1px solid rgba(181,137,78,0.3)`,
                   padding: "4px 10px",
                   borderRadius: 3,
                 }}
@@ -435,7 +435,7 @@ export default function LayerUICaseStudy() {
               style={{
                 display: "inline-block",
                 background: C.brass,
-                color: "#0d0d0f",
+                color: "#070F1B",
                 fontFamily:
                   "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
                 fontWeight: 700,
