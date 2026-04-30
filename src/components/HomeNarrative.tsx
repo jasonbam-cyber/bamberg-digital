@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Cursor from "./Cursor";
@@ -1070,6 +1071,7 @@ function IcyTag({ children }: { children: string }) {
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════ */
 export default function HomeNarrative() {
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCat, setActiveCat] = useState("all");
@@ -1555,7 +1557,12 @@ export default function HomeNarrative() {
             >
               <MagneticButton strength={0.35}>
                 <button
-                  onClick={() => scrollTo("work")}
+                  onClick={() => {
+                    if (typeof window !== "undefined" && typeof (window as typeof window & { plausible?: (e: string) => void }).plausible === "function") {
+                      (window as typeof window & { plausible?: (e: string) => void }).plausible!("hero_cta_secondary");
+                    }
+                    router.push("/portfolio");
+                  }}
                   style={{
                     fontFamily: HEAD,
                     fontWeight: 700,
@@ -1586,7 +1593,12 @@ export default function HomeNarrative() {
               </MagneticButton>
               <MagneticButton strength={0.35}>
                 <button
-                  onClick={() => scrollTo("contact")}
+                  onClick={() => {
+                    if (typeof window !== "undefined" && typeof (window as typeof window & { plausible?: (e: string) => void }).plausible === "function") {
+                      (window as typeof window & { plausible?: (e: string) => void }).plausible!("hero_cta_primary");
+                    }
+                    router.push("/contact");
+                  }}
                   style={{
                     fontFamily: HEAD,
                     fontWeight: 600,
