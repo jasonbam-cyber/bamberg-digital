@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Terms & Conditions | Bamberg Digital",
   description:
     "Terms and conditions governing the use of Bamberg Digital services and website.",
-  alternates: { canonical: "https://bambergdigital.com/terms" },
+  alternates: { canonical: "https://www.bambergdigital.com/terms" },
   robots: { index: true, follow: true },
 };
 

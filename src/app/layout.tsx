@@ -6,6 +6,7 @@ import {
   Caveat,
   JetBrains_Mono,
 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import SmoothScroll from "@/components/SmoothScroll";
 import CanvasHost from "@/components/canvas/CanvasHost";
 import RouteTransition from "@/components/RouteTransition";
@@ -23,7 +24,6 @@ const montserrat = Montserrat({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-// Editorial serif for warm, distinctive headlines
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
@@ -31,52 +31,53 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
-// Handwritten script for Jason's signature
 const caveat = Caveat({
   variable: "--font-caveat",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
-// Monospace for Builder Workshop labels and technical accents
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bambergdigital.com";
+
 export const metadata: Metadata = {
-  title: "Bamberg Digital | AI-Powered SEO Audits & Lead Generation",
+  title: "Bamberg Digital — Engineered Systems.",
   description:
-    "Bamberg Digital uses AI to find the customers your competitors miss. SEO audits, verified lead generation, and marketing automation for small businesses nationwide.",
+    "Sacramento's founder-led digital agency. Custom websites, SEO systems, and lead engines — engineered from blueprint to launch. Browse 47+ industry blueprints.",
   keywords:
     "digital marketing agency sacramento, web design sacramento, SEO services sacramento, social media marketing sacramento, lead generation, AI marketing automation, small business website design, branding sacramento, content creation, AI consulting",
-  metadataBase: new URL("https://bambergdigital.com"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
-    title: "Bamberg Digital — We find the customers your competitors miss.",
+    title: "Bamberg Digital — Engineered Systems.",
     description:
-      "AI-powered SEO audits, verified lead generation, and marketing automation for small businesses. Start with a free SEO audit.",
-    url: "https://bambergdigital.com",
+      "Sacramento's founder-led digital agency. Custom websites, SEO systems, and lead engines — engineered from blueprint to launch.",
+    url: SITE_URL,
     siteName: "Bamberg Digital",
     type: "website",
     locale: "en_US",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Bamberg Digital — AI-Powered Marketing for Small Businesses",
+        alt: "Bamberg Digital — Engineered Systems.",
       },
     ],
   },
   alternates: {
-    canonical: "https://bambergdigital.com",
+    canonical: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bamberg Digital — AI-Powered SEO & Lead Generation",
+    title: "Bamberg Digital — Engineered Systems.",
     description:
-      "SEO audits, verified leads, and marketing automation for small businesses. Start free.",
+      "Sacramento's founder-led digital agency. Custom websites, SEO systems, and lead engines — engineered from blueprint to launch.",
   },
   robots: {
     index: true,
@@ -99,7 +100,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
               name: "Bamberg Digital",
-              url: "https://bambergdigital.com",
+              url: SITE_URL,
               email: "hello@bambergdigital.com",
               telephone: "+19169077782",
               description:
@@ -143,6 +144,7 @@ export default function RootLayout({
         <SmoothScroll />
         <CanvasHost />
         <RouteTransition>{children}</RouteTransition>
+        <Analytics />
       </body>
     </html>
   );

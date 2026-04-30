@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "Web Design Sacramento | Bamberg Digital",
   description:
     "Professional website design for Sacramento small businesses. Custom sites from $497. Mobile-first, SEO-ready, and built to convert. Free consultation.",
-  alternates: { canonical: "https://bambergdigital.com/web-design" },
+  alternates: { canonical: "https://www.bambergdigital.com/web-design" },
   openGraph: {
     title: "Web Design Sacramento | Bamberg Digital",
     description:
       "Professional website design for Sacramento small businesses. Custom sites from $497. Mobile-first, SEO-ready, and built to convert.",
-    url: "https://bambergdigital.com/web-design",
+    url: "https://www.bambergdigital.com/web-design",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

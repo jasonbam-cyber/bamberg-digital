@@ -110,14 +110,14 @@ export default function SiteNav({
             </div>
             <span
               style={{
-                fontFamily: "var(--font-montserrat), ui-sans-serif, system-ui, sans-serif",
+                fontFamily:
+                  "var(--font-montserrat), ui-sans-serif, system-ui, sans-serif",
                 fontWeight: 700,
                 fontSize: "1.1rem",
                 color: logoText,
               }}
             >
-              Bamberg{" "}
-              <span style={{ color: logoAccent }}>Digital</span>
+              Bamberg <span style={{ color: logoAccent }}>Digital</span>
             </span>
           </a>
 
@@ -213,30 +213,28 @@ export default function SiteNav({
               )}
             </div>
 
-            {["Pricing", "Bundles", "Portfolio", "About", "Our Story"].map(
-              (label) => {
-                const href =
-                  label === "Our Story"
-                    ? "/story"
-                    : `/${label.toLowerCase()}`;
-                return (
-                  <a
-                    key={label}
-                    href={href}
-                    style={{
-                      fontSize: "0.875rem",
-                      fontWeight: 500,
-                      color:
-                        active === href ? textHover : textColor,
-                      textDecoration: "none",
-                      transition: "color 0.2s",
-                    }}
-                  >
-                    {label}
-                  </a>
-                );
-              }
-            )}
+            {[
+              { label: "Pricing", href: "/pricing" },
+              { label: "Bundles", href: "/bundles" },
+              { label: "Portfolio", href: "/portfolio" },
+              { label: "Atelier", href: "/atelier" },
+              { label: "About", href: "/about" },
+              { label: "Our Story", href: "/story" },
+            ].map(({ label, href }) => (
+              <a
+                key={href}
+                href={href}
+                style={{
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                  color: active === href ? textHover : textColor,
+                  textDecoration: "none",
+                  transition: "color 0.2s",
+                }}
+              >
+                {label}
+              </a>
+            ))}
 
             <a
               href="/#contact"
@@ -347,28 +345,29 @@ export default function SiteNav({
                 margin: "8px 0",
               }}
             />
-            {["Pricing", "Bundles", "Portfolio", "About", "Our Story"].map(
-              (label) => {
-                const href =
-                  label === "Our Story" ? "/story" : `/${label.toLowerCase()}`;
-                return (
-                  <a
-                    key={label}
-                    href={href}
-                    style={{
-                      display: "block",
-                      fontSize: "0.875rem",
-                      fontWeight: 500,
-                      color: isDark ? "rgba(255,255,255,0.65)" : "#374151",
-                      textDecoration: "none",
-                      padding: "6px 8px",
-                    }}
-                  >
-                    {label}
-                  </a>
-                );
-              }
-            )}
+            {[
+              { label: "Pricing", href: "/pricing" },
+              { label: "Bundles", href: "/bundles" },
+              { label: "Portfolio", href: "/portfolio" },
+              { label: "Atelier", href: "/atelier" },
+              { label: "About", href: "/about" },
+              { label: "Our Story", href: "/story" },
+            ].map(({ label, href }) => (
+              <a
+                key={href}
+                href={href}
+                style={{
+                  display: "block",
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                  color: isDark ? "rgba(255,255,255,0.65)" : "#374151",
+                  textDecoration: "none",
+                  padding: "6px 8px",
+                }}
+              >
+                {label}
+              </a>
+            ))}
             <a
               href="/#contact"
               style={{

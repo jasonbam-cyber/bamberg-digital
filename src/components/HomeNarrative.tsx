@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { track } from "@vercel/analytics";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Cursor from "./Cursor";
@@ -108,7 +110,7 @@ const STATS = [
   { value: 47, suffix: "+", label: "Projects shipped" },
   { value: 1, suffix: "", label: "Founder you talk to" },
   { value: 48, suffix: "hr", label: "Response time" },
-  { value: 50, suffix: "+", label: "Industry blueprints" },
+  { value: 47, suffix: "+", label: "Industry blueprints" },
 ];
 
 /* ─── Live Work ───────────────────────────────────────────────────── */
@@ -271,7 +273,7 @@ const CURRENT_PROJECTS: {
     status: "live",
     label: "Live",
     name: "Bamberg Digital",
-    desc: "This site. Page-1 Sacramento search, 50 industry blueprints live.",
+    desc: "This site. Page-1 Sacramento search, 47 industry blueprints live.",
   },
   {
     status: "building",
@@ -1070,6 +1072,7 @@ function IcyTag({ children }: { children: string }) {
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════ */
 export default function HomeNarrative() {
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCat, setActiveCat] = useState("all");
@@ -1555,7 +1558,10 @@ export default function HomeNarrative() {
             >
               <MagneticButton strength={0.35}>
                 <button
-                  onClick={() => scrollTo("work")}
+                  onClick={() => {
+                    track("hero_cta_secondary");
+                    router.push("/portfolio");
+                  }}
                   style={{
                     fontFamily: HEAD,
                     fontWeight: 700,
@@ -1586,7 +1592,10 @@ export default function HomeNarrative() {
               </MagneticButton>
               <MagneticButton strength={0.35}>
                 <button
-                  onClick={() => scrollTo("contact")}
+                  onClick={() => {
+                    track("hero_cta_primary");
+                    router.push("/contact");
+                  }}
                   style={{
                     fontFamily: HEAD,
                     fontWeight: 600,
@@ -2632,7 +2641,7 @@ export default function HomeNarrative() {
             }}
           >
             <SplitReveal by="char" style={{ display: "inline-block" }}>
-              {"Fifty industries. "}
+              {"47+ industries. "}
             </SplitReveal>
             <SplitReveal
               by="char"

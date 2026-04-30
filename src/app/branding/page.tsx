@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "Brand Identity & Design Sacramento | Bamberg Digital",
   description:
     "Logo design, brand identity, and full brand guidelines for Sacramento businesses. Starter brand from $697. Full brand package from $1,497.",
-  alternates: { canonical: "https://bambergdigital.com/branding" },
+  alternates: { canonical: "https://www.bambergdigital.com/branding" },
   openGraph: {
     title: "Brand Identity & Design Sacramento | Bamberg Digital",
     description:
       "Logo design, brand identity, and full brand guidelines for Sacramento businesses. Starter brand from $697. Full brand package from $1,497.",
-    url: "https://bambergdigital.com/branding",
+    url: "https://www.bambergdigital.com/branding",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },
