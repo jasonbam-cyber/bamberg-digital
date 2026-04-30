@@ -64,7 +64,10 @@ export default function SiteFooter() {
               </span>
             </p>
             <div style={{ fontSize: "0.875rem", lineHeight: 1.8 }}>
-              <a href="tel:9169077782" style={{ ...linkStyle, color: C.ink, fontWeight: 600 }}>
+              <a
+                href="tel:9169077782"
+                style={{ ...linkStyle, color: C.ink, fontWeight: 600 }}
+              >
                 (916) 907-7782
               </a>
               <br />
@@ -79,7 +82,16 @@ export default function SiteFooter() {
           {/* Services */}
           <div>
             <p style={headStyle}>Services</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
               {[
                 { href: "/web-design", label: "Website Design" },
                 { href: "/social-media", label: "Social Media" },
@@ -98,7 +110,16 @@ export default function SiteFooter() {
           {/* More services */}
           <div>
             <p style={headStyle}>More</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
               {[
                 { href: "/digital-marketing", label: "Digital Marketing" },
                 { href: "/branding", label: "Branding" },
@@ -119,11 +140,21 @@ export default function SiteFooter() {
           {/* Company */}
           <div>
             <p style={headStyle}>Company</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
               {[
                 { href: "/pricing", label: "Pricing" },
                 { href: "/bundles", label: "Bundles" },
                 { href: "/portfolio", label: "Portfolio" },
+                { href: "/atelier", label: "Atelier" },
                 { href: "/about", label: "About" },
                 { href: "/#contact", label: "Contact" },
               ].map((l) => (
