@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "Lead Generation Services | Bamberg Digital",
   description:
     "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-  alternates: { canonical: "https://bambergdigital.com/leads" },
+  alternates: { canonical: "https://www.bambergdigital.com/leads" },
   openGraph: {
     title: "Lead Generation Services | Bamberg Digital",
     description:
       "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
-    url: "https://bambergdigital.com/leads",
+    url: "https://www.bambergdigital.com/leads",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

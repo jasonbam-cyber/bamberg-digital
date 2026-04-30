@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "Content Creation & Copywriting | Bamberg Digital",
   description:
     "Blog posts, website copy, email sequences, and social content for small businesses. Strategy from $297. Ongoing content from $397/mo.",
-  alternates: { canonical: "https://bambergdigital.com/content-creation" },
+  alternates: { canonical: "https://www.bambergdigital.com/content-creation" },
   openGraph: {
     title: "Content Creation & Copywriting | Bamberg Digital",
     description:
       "Blog posts, website copy, email sequences, and social content for small businesses. Strategy from $297. Ongoing content from $397/mo.",
-    url: "https://bambergdigital.com/content-creation",
+    url: "https://www.bambergdigital.com/content-creation",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

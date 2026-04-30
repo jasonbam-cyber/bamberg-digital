@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "Pricing | Bamberg Digital — Sacramento Digital Agency",
   description:
     "Transparent pricing for web design, SEO, social media, branding, lead generation, and AI consulting. Intro rates for new clients.",
-  alternates: { canonical: "https://bambergdigital.com/pricing" },
+  alternates: { canonical: "https://www.bambergdigital.com/pricing" },
   openGraph: {
     title: "Pricing | Bamberg Digital — Sacramento Digital Agency",
     description:
       "Transparent pricing for web design, SEO, social media, branding, lead generation, and AI consulting.",
-    url: "https://bambergdigital.com/pricing",
+    url: "https://www.bambergdigital.com/pricing",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

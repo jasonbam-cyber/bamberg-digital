@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "Digital Marketing Agency Sacramento | Bamberg Digital",
   description:
     "Full-service digital marketing for Sacramento businesses. Strategy, execution, and AI automation. Consultation from $497. Retainers from $997/mo.",
-  alternates: { canonical: "https://bambergdigital.com/digital-marketing" },
+  alternates: { canonical: "https://www.bambergdigital.com/digital-marketing" },
   openGraph: {
     title: "Digital Marketing Agency Sacramento | Bamberg Digital",
     description:
       "Full-service digital marketing for Sacramento businesses. Strategy, execution, and AI automation. Consultation from $497. Retainers from $997/mo.",
-    url: "https://bambergdigital.com/digital-marketing",
+    url: "https://www.bambergdigital.com/digital-marketing",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

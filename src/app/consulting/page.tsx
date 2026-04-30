@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "AI & Automation Consulting | Bamberg Digital",
   description:
     "AI and automation consulting for small businesses. Cut manual work, automate follow-up, and scale without hiring. From $197/hr or $1,997 project.",
-  alternates: { canonical: "https://bambergdigital.com/consulting" },
+  alternates: { canonical: "https://www.bambergdigital.com/consulting" },
   openGraph: {
     title: "AI & Automation Consulting | Bamberg Digital",
     description:
       "AI and automation consulting for small businesses. Cut manual work, automate follow-up, and scale without hiring. From $197/hr or $1,997 project.",
-    url: "https://bambergdigital.com/consulting",
+    url: "https://www.bambergdigital.com/consulting",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

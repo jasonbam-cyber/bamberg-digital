@@ -8,16 +8,16 @@ export const metadata: Metadata = {
     "Bundle Pricing | Bamberg Digital — Sacramento All-in-One Business Packages",
   description:
     "Website + SEO + Layer UI workspace bundled into one annual plan. Sacramento small businesses get more for less — starting at $19/seat/mo. 14-day money-back guarantee.",
-  alternates: { canonical: "https://bambergdigital.com/bundles" },
+  alternates: { canonical: "https://www.bambergdigital.com/bundles" },
   openGraph: {
     title:
       "Bundle Pricing | Bamberg Digital — Sacramento All-in-One Business Packages",
     description:
       "Website + SEO + Layer UI workspace bundled into one annual plan. Starting at $19/seat/mo with 14-day money-back guarantee.",
-    url: "https://bambergdigital.com/bundles",
+    url: "https://www.bambergdigital.com/bundles",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

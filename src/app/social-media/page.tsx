@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "Social Media Marketing Sacramento | Bamberg Digital",
   description:
     "Social media management for Sacramento businesses. Posts, ads, and growth strategy from $199/mo. Free first-month audit included.",
-  alternates: { canonical: "https://bambergdigital.com/social-media" },
+  alternates: { canonical: "https://www.bambergdigital.com/social-media" },
   openGraph: {
     title: "Social Media Marketing Sacramento | Bamberg Digital",
     description:
       "Social media management for Sacramento businesses. Posts, ads, and growth strategy from $199/mo. Free first-month audit included.",
-    url: "https://bambergdigital.com/social-media",
+    url: "https://www.bambergdigital.com/social-media",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

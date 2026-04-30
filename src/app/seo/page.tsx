@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "SEO Services Sacramento | Bamberg Digital",
   description:
     "Sacramento SEO agency using AI to rank your business on Google. Free SEO audit. Local SEO, technical SEO, and content strategy from $497/mo.",
-  alternates: { canonical: "https://bambergdigital.com/seo" },
+  alternates: { canonical: "https://www.bambergdigital.com/seo" },
   openGraph: {
     title: "SEO Services Sacramento | Bamberg Digital",
     description:
       "Sacramento SEO agency using AI to rank your business on Google. Free SEO audit. Local SEO, technical SEO, and content strategy from $497/mo.",
-    url: "https://bambergdigital.com/seo",
+    url: "https://www.bambergdigital.com/seo",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

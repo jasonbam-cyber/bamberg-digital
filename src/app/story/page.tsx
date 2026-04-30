@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   title: "Our Story | Bamberg Digital",
   description:
     "See why Sacramento businesses choose Bamberg Digital. Web design from $497, social media from $199/mo, SEO from $297/mo.",
-  alternates: { canonical: "https://bambergdigital.com/story" },
+  alternates: { canonical: "https://www.bambergdigital.com/story" },
   openGraph: {
     title: "Bamberg Digital — Sacramento's AI-Powered Digital Agency",
     description: "See why Sacramento businesses choose Bamberg Digital.",
-    url: "https://bambergdigital.com/story",
+    url: "https://www.bambergdigital.com/story",
     siteName: "Bamberg Digital",
     type: "website",
   },

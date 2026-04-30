@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "Custom Business Tools Sacramento | Bamberg Digital",
   description:
     "Custom CRMs, dashboards, booking systems & client portals for Sacramento businesses. Starts at $1,997. Built for how you actually work.",
-  alternates: { canonical: "https://bambergdigital.com/custom-tools" },
+  alternates: { canonical: "https://www.bambergdigital.com/custom-tools" },
   openGraph: {
     title: "Custom Business Tools Sacramento | Bamberg Digital",
     description:
       "Custom CRMs, dashboards, booking systems & client portals for Sacramento businesses. Starts at $1,997. Built for how you actually work.",
-    url: "https://bambergdigital.com/custom-tools",
+    url: "https://www.bambergdigital.com/custom-tools",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },

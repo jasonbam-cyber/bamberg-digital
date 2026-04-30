@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy | Bamberg Digital",
   description:
     "How Bamberg Digital collects, uses, and protects your personal information.",
-  alternates: { canonical: "https://bambergdigital.com/privacy" },
+  alternates: { canonical: "https://www.bambergdigital.com/privacy" },
   robots: { index: true, follow: true },
 };
 

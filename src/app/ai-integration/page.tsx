@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: "AI Integration Sacramento | Bamberg Digital",
   description:
     "Practical AI integration for Sacramento businesses. Automated follow-ups, smart scheduling, chatbots & lead scoring. $497 consultation + implementation.",
-  alternates: { canonical: "https://bambergdigital.com/ai-integration" },
+  alternates: { canonical: "https://www.bambergdigital.com/ai-integration" },
   openGraph: {
     title: "AI Integration Sacramento | Bamberg Digital",
     description:
       "Practical AI integration for Sacramento businesses. Automated follow-ups, smart scheduling, chatbots & lead scoring. $497 consultation + implementation.",
-    url: "https://bambergdigital.com/ai-integration",
+    url: "https://www.bambergdigital.com/ai-integration",
     images: [
       {
-        url: "https://bambergdigital.com/og-image.jpg",
+        url: "https://www.bambergdigital.com/og-image.jpg",
         width: 1200,
         height: 630,
       },
