@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     siteName: "Bamberg Digital",
     type: "website",
   },
+  robots: { index: false, follow: false },
 };
 
 const CSS_STRING = `
