@@ -109,7 +109,7 @@ const STATS = [
   { value: 47, suffix: "+", label: "Projects shipped" },
   { value: 1, suffix: "", label: "Founder you talk to" },
   { value: 48, suffix: "hr", label: "Response time" },
-  { value: 50, suffix: "+", label: "Industry blueprints" },
+  { value: 47, suffix: "+", label: "Industry blueprints" },
 ];
 
 /* ─── Live Work ───────────────────────────────────────────────────── */
@@ -272,7 +272,7 @@ const CURRENT_PROJECTS: {
     status: "live",
     label: "Live",
     name: "Bamberg Digital",
-    desc: "This site. Page-1 Sacramento search, 50 industry blueprints live.",
+    desc: "This site. Page-1 Sacramento search, 47 industry blueprints live.",
   },
   {
     status: "building",
@@ -2644,7 +2644,7 @@ export default function HomeNarrative() {
             }}
           >
             <SplitReveal by="char" style={{ display: "inline-block" }}>
-              {"Fifty industries. "}
+              {"47+ industries. "}
             </SplitReveal>
             <SplitReveal
               by="char"
