@@ -3,12 +3,26 @@ import nodemailer from "nodemailer";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function isValidEmail(email: string): boolean {
+  if (/[\r\n]/.test(email)) return false;
+  return EMAIL_RE.test(email);
+}
+
 function buildHtml(fields: Record<string, string>): string {
   const rows = Object.entries(fields)
     .filter(([, v]) => v)
     .map(
       ([k, v]) =>
-        `<tr><td style="padding:6px 12px;font-weight:600;color:#1a1410;white-space:nowrap;vertical-align:top">${k}</td><td style="padding:6px 12px;color:#4a3f33">${v}</td></tr>`,
+        `<tr><td style="padding:6px 12px;font-weight:600;color:#1a1410;white-space:nowrap;vertical-align:top">${escapeHtml(k)}</td><td style="padding:6px 12px;color:#4a3f33">${escapeHtml(v)}</td></tr>`,
     )
     .join("");
   return `<!DOCTYPE html><html><body style="font-family:system-ui,sans-serif;background:#f9f6f1;margin:0;padding:32px">
@@ -25,7 +39,33 @@ function buildText(fields: Record<string, string>): string {
     .join("\n");
 }
 
+const rateLimitMap = new Map<string, [number, number]>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now - entry[1] > RATE_LIMIT_WINDOW_MS) {
+    rateLimitMap.set(ip, [1, now]);
+    return false;
+  }
+  if (entry[0] >= RATE_LIMIT_MAX) return true;
+  rateLimitMap.set(ip, [entry[0] + 1, entry[1]]);
+  return false;
+}
+
 export async function POST(req: NextRequest) {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a minute and try again." },
+      { status: 429 },
+    );
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();
@@ -55,7 +95,7 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
-  if (!EMAIL_RE.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json(
       { error: "Invalid email address" },
       { status: 400 },
@@ -101,7 +141,14 @@ export async function POST(req: NextRequest) {
       });
       return NextResponse.json({ ok: true });
     } catch (err) {
-      console.error("[contact] SMTP send failed:", err);
+      console.error(
+        JSON.stringify({
+          event: "contact_smtp_failure",
+          error: (err as Error)?.message,
+          source: body?.source,
+          timestamp: new Date().toISOString(),
+        }),
+      );
       return NextResponse.json(
         {
           ok: false,
@@ -122,7 +169,13 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify(fields),
       });
     } catch {
-      console.error("[contact] webhook delivery failed");
+      console.error(
+        JSON.stringify({
+          event: "contact_webhook_failure",
+          source: body?.source,
+          timestamp: new Date().toISOString(),
+        }),
+      );
     }
   }
 
