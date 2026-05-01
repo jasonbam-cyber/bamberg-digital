@@ -1,16 +1,53 @@
 import type { NextConfig } from "next";
 
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  "connect-src 'self' https://va.vercel-scripts.com https://*.vercel-insights.com",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "upgrade-insecure-requests",
+].join("; ");
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
       {
         source: "/(.*)",
         headers: [
+          {
+            key: "Content-Security-Policy",
+            value: CSP,
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), payment=()",
+          },
           { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
           {
             key: "Referrer-Policy",
             value: "strict-origin-when-cross-origin",
+          },
+        ],
+      },
+      {
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "https://www.bambergdigital.com",
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "POST, OPTIONS",
           },
         ],
       },
