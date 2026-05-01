@@ -326,6 +326,23 @@ export default function ContactForm({
           fontSize: "0.75rem",
           color: "#7a6f63",
           textAlign: "center",
+          margin: "0 0 4px",
+        }}
+      >
+        By submitting, you agree to our{" "}
+        <a
+          href="/privacy"
+          style={{ color: "#7a6f63", textDecoration: "underline" }}
+        >
+          Privacy Policy
+        </a>
+        .
+      </p>
+      <p
+        style={{
+          fontSize: "0.75rem",
+          color: "#7a6f63",
+          textAlign: "center",
           margin: 0,
         }}
       >
