@@ -154,6 +154,7 @@ export default function SiteFooter() {
                 { href: "/pricing", label: "Pricing" },
                 { href: "/bundles", label: "Bundles" },
                 { href: "/portfolio", label: "Portfolio" },
+                { href: "/agentic-ai", label: "Agentic AI" },
                 { href: "/atelier", label: "Atelier" },
                 { href: "/about", label: "About" },
                 { href: "/#contact", label: "Contact" },

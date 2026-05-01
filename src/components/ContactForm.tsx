@@ -222,11 +222,60 @@ export default function ContactForm({
         </>
       )}
 
+      {source === "agentic-ai" && (
+        <>
+          <div>
+            <label htmlFor="cf-project-type" style={labelStyle}>
+              Engagement type *
+            </label>
+            <select
+              id="cf-project-type"
+              name="projectType"
+              required
+              value={form.projectType}
+              onChange={(e) =>
+                setForm({ ...form, projectType: e.target.value })
+              }
+              style={{ ...inputStyle, appearance: "none" }}
+            >
+              <option value="">Select one</option>
+              <option value="New audit">New audit</option>
+              <option value="Full stack build">Full stack build</option>
+              <option value="Managed engagement">Managed engagement</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="cf-budget" style={labelStyle}>
+              Budget *
+            </label>
+            <select
+              id="cf-budget"
+              name="budget"
+              required
+              value={form.budget}
+              onChange={(e) => setForm({ ...form, budget: e.target.value })}
+              style={{ ...inputStyle, appearance: "none" }}
+            >
+              <option value="">Select one</option>
+              <option value="$5K–$10K">$5K–$10K</option>
+              <option value="$10K–$30K">$10K–$30K</option>
+              <option value="$30K–$60K">$30K–$60K</option>
+              <option value="$60K+">$60K+</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+          </div>
+        </>
+      )}
+
       <div>
         <label htmlFor="cf-message" style={labelStyle}>
           {source === "atelier"
             ? "What are you building? *"
-            : "What's your biggest challenge? *"}
+            : source === "agentic-ai"
+              ? "What have you already tried? *"
+              : "What's your biggest challenge? *"}
         </label>
         <textarea
           id="cf-message"
@@ -239,7 +288,9 @@ export default function ContactForm({
           placeholder={
             source === "atelier"
               ? "One paragraph. What it is, who it's for, what done looks like."
-              : "Not enough leads, low website traffic, slow follow-up..."
+              : source === "agentic-ai"
+                ? "What AI you have running, what failed, what you need to change."
+                : "Not enough leads, low website traffic, slow follow-up..."
           }
         />
       </div>

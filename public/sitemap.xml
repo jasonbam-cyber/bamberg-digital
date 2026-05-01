@@ -392,6 +392,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.bambergdigital.com/agentic-ai</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
     <loc>https://www.bambergdigital.com/atelier</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
