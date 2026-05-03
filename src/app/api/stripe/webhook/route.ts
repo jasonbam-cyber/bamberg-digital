@@ -3,12 +3,20 @@ import crypto from "crypto";
 
 export const dynamic = "force-dynamic";
 
-function verifySquareSignature(rawBody: string, signature: string, sigKey: string, webhookUrl: string): boolean {
+function verifySquareSignature(
+  rawBody: string,
+  signature: string,
+  sigKey: string,
+  webhookUrl: string,
+): boolean {
   const hmac = crypto.createHmac("sha256", sigKey);
   hmac.update(webhookUrl + rawBody);
   const expected = hmac.digest("base64");
   try {
-    return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
+    return crypto.timingSafeEqual(
+      Buffer.from(expected),
+      Buffer.from(signature),
+    );
   } catch {
     return false;
   }
@@ -22,7 +30,10 @@ export async function POST(req: NextRequest) {
     const sigKey = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY ?? "";
     const webhookUrl = process.env.SQUARE_WEBHOOK_URL ?? "";
 
-    if (!sigKey || !verifySquareSignature(rawBody, signature, sigKey, webhookUrl)) {
+    if (
+      !sigKey ||
+      !verifySquareSignature(rawBody, signature, sigKey, webhookUrl)
+    ) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
@@ -33,7 +44,7 @@ export async function POST(req: NextRequest) {
       case "payment.completed": {
         const payment = body.data?.object?.payment;
         console.log(
-          `✅ Payment received: $${payment?.amount_money?.amount ? (Number(payment.amount_money.amount) / 100).toFixed(2) : "?"} — Order: ${payment?.order_id}`
+          `✅ Payment received: $${payment?.amount_money?.amount ? (Number(payment.amount_money.amount) / 100).toFixed(2) : "?"} — Order: ${payment?.order_id}`,
         );
         // Auto-synced to QBO via Square integration
         break;
@@ -42,7 +53,7 @@ export async function POST(req: NextRequest) {
       case "invoice.payment_made": {
         const invoice = body.data?.object?.invoice;
         console.log(
-          `💰 Invoice paid: ${invoice?.id} — ${invoice?.primary_recipient?.email_address}`
+          `💰 Invoice paid: ${invoice?.id} — ${invoice?.primary_recipient?.email_address}`,
         );
         break;
       }
@@ -50,26 +61,68 @@ export async function POST(req: NextRequest) {
       case "subscription.created": {
         const subscription = body.data?.object?.subscription;
         console.log(
-          `🎉 New subscription: ${subscription?.id} — ${subscription?.customer_id}`
+          JSON.stringify({
+            event: "subscription.created",
+            customerId: subscription?.customer_id,
+            subscriptionId: subscription?.id,
+            status: subscription?.status,
+          }),
         );
-        // TODO: Send welcome email, provision services
+        // Stub: alert on new subscriber; full welcome email/provisioning TBD
+        try {
+          const slackUrl = process.env.SLACK_WEBHOOK_URL;
+          if (slackUrl) {
+            await fetch(slackUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                text: `🎉 *New subscriber!* Customer ID: \`${subscription?.customer_id}\` | Subscription ID: \`${subscription?.id}\``,
+              }),
+            });
+          }
+        } catch (slackErr) {
+          console.error("Slack alert failed (subscription.created):", slackErr);
+        }
         break;
       }
 
       case "subscription.updated": {
         const subscription = body.data?.object?.subscription;
         console.log(
-          `🔄 Subscription updated: ${subscription?.id} — Status: ${subscription?.status}`
+          `🔄 Subscription updated: ${subscription?.id} — Status: ${subscription?.status}`,
         );
         break;
       }
 
       case "invoice.payment_failed": {
         const invoice = body.data?.object?.invoice;
+        const customerEmail =
+          invoice?.primary_recipient?.email_address ?? "unknown";
+        const amountDue =
+          invoice?.payment_requests?.[0]?.computed_amount_money?.amount;
+        const amountFormatted = amountDue
+          ? `$${(Number(amountDue) / 100).toFixed(2)}`
+          : "unknown amount";
         console.error(
-          `🚨 Payment FAILED: Invoice ${invoice?.id}`
+          `🚨 Payment FAILED: Invoice ${invoice?.id} — ${customerEmail} — ${amountFormatted}`,
         );
-        // TODO: Notify Jason
+        try {
+          const slackUrl = process.env.SLACK_WEBHOOK_URL;
+          if (slackUrl) {
+            await fetch(slackUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                text: `🚨 *Payment failed!* Customer: \`${customerEmail}\` | Amount: ${amountFormatted} | Invoice ID: \`${invoice?.id}\``,
+              }),
+            });
+          }
+        } catch (slackErr) {
+          console.error(
+            "Slack alert failed (invoice.payment_failed):",
+            slackErr,
+          );
+        }
         break;
       }
 
@@ -80,6 +133,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true });
   } catch (err: unknown) {
     console.error("Webhook error:", err);
-    return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Webhook processing failed" },
+      { status: 500 },
+    );
   }
 }
