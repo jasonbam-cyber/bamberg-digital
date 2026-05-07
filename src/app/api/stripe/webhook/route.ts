@@ -9,14 +9,19 @@ function verifySquareSignature(
   sigKey: string,
   webhookUrl: string,
 ): boolean {
+  if (!signature) return false;
   const hmac = crypto.createHmac("sha256", sigKey);
   hmac.update(webhookUrl + rawBody);
-  const expected = hmac.digest("base64");
+  const expected = hmac.digest();
+  let provided: Buffer;
   try {
-    return crypto.timingSafeEqual(
-      Buffer.from(expected),
-      Buffer.from(signature),
-    );
+    provided = Buffer.from(signature, "base64");
+  } catch {
+    return false;
+  }
+  if (provided.length !== expected.length) return false;
+  try {
+    return crypto.timingSafeEqual(expected, provided);
   } catch {
     return false;
   }
@@ -62,27 +67,14 @@ export async function POST(req: NextRequest) {
         const subscription = body.data?.object?.subscription;
         console.log(
           JSON.stringify({
-            event: "subscription.created",
-            customerId: subscription?.customer_id,
-            subscriptionId: subscription?.id,
-            status: subscription?.status,
+            event: "subscription_created",
+            id: subscription?.id,
+            customer_id: subscription?.customer_id,
+            timestamp: new Date().toISOString(),
           }),
         );
-        // Stub: alert on new subscriber; full welcome email/provisioning TBD
-        try {
-          const slackUrl = process.env.SLACK_WEBHOOK_URL;
-          if (slackUrl) {
-            await fetch(slackUrl, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                text: `🎉 *New subscriber!* Customer ID: \`${subscription?.customer_id}\` | Subscription ID: \`${subscription?.id}\``,
-              }),
-            });
-          }
-        } catch (slackErr) {
-          console.error("Slack alert failed (subscription.created):", slackErr);
-        }
+        // Welcome email + service provisioning handled by n8n workflow
+        // listening on the same webhook stream — see ~/docker/n8n-workflows/.
         break;
       }
 
@@ -96,33 +88,17 @@ export async function POST(req: NextRequest) {
 
       case "invoice.payment_failed": {
         const invoice = body.data?.object?.invoice;
-        const customerEmail =
-          invoice?.primary_recipient?.email_address ?? "unknown";
-        const amountDue =
-          invoice?.payment_requests?.[0]?.computed_amount_money?.amount;
-        const amountFormatted = amountDue
-          ? `$${(Number(amountDue) / 100).toFixed(2)}`
-          : "unknown amount";
+        // Structured log — picked up by Sentinel monitor and routed
+        // to the #alerts Slack channel by the bd-stack alert pipeline.
         console.error(
-          `🚨 Payment FAILED: Invoice ${invoice?.id} — ${customerEmail} — ${amountFormatted}`,
+          JSON.stringify({
+            event: "invoice_payment_failed",
+            invoice_id: invoice?.id,
+            recipient: invoice?.primary_recipient?.email_address,
+            severity: "high",
+            timestamp: new Date().toISOString(),
+          }),
         );
-        try {
-          const slackUrl = process.env.SLACK_WEBHOOK_URL;
-          if (slackUrl) {
-            await fetch(slackUrl, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                text: `🚨 *Payment failed!* Customer: \`${customerEmail}\` | Amount: ${amountFormatted} | Invoice ID: \`${invoice?.id}\``,
-              }),
-            });
-          }
-        } catch (slackErr) {
-          console.error(
-            "Slack alert failed (invoice.payment_failed):",
-            slackErr,
-          );
-        }
         break;
       }
 

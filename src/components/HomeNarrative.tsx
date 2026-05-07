@@ -287,7 +287,9 @@ const CURRENT_PROJECTS: {
    SUB-COMPONENTS
    ═══════════════════════════════════════════════════════════════════ */
 
-/* Frosted glass Wireframe previews — adapted to icy palette */
+/* Frosted glass Wireframe previews — adapted to icy palette
+   (kept for reference — superseded by 3D blueprint planes; safe to remove) */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Wireframe({
   layout,
   accent,
@@ -795,6 +797,7 @@ function WorkTrack() {
 
 /* Isometric architectural blueprint SVG centerpiece (legacy mobile fallback;
    kept for reference in case the hero needs a static fallback again). */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function _BlueprintSVG() {
   return (
     <svg

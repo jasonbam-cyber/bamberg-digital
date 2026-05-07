@@ -4,16 +4,53 @@ import crypto from "crypto";
 
 export const dynamic = "force-dynamic";
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Per-IP rate limit (in-memory; resets on cold start). Acts as bot/abuse guard
+// in front of Square API calls — limits accidental spam to 5 attempts/min.
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 5;
+const ipBuckets = new Map<string, { count: number; resetAt: number }>();
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const bucket = ipBuckets.get(ip);
+  if (!bucket || bucket.resetAt < now) {
+    ipBuckets.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return false;
+  }
+  bucket.count += 1;
+  return bucket.count > RATE_MAX;
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { plan, email, businessName } = await req.json();
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    if (rateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a minute." },
+        { status: 429 },
+      );
+    }
+
+    const body = await req.json();
+    const plan = String(body?.plan ?? "");
+    const email = String(body?.email ?? "")
+      .trim()
+      .toLowerCase();
+    const businessName = body?.businessName
+      ? String(body.businessName).trim().slice(0, 200)
+      : undefined;
 
     if (!plan || !PLANS[plan as PlanKey]) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 
-    if (!email) {
-      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    if (!email || !EMAIL_RE.test(email) || /[\r\n]/.test(email)) {
+      return NextResponse.json(
+        { error: "Valid email is required" },
+        { status: 400 },
+      );
     }
 
     const selectedPlan = PLANS[plan as PlanKey];
@@ -21,7 +58,10 @@ export async function POST(req: NextRequest) {
     const locationId = process.env.SQUARE_LOCATION_ID;
 
     if (!locationId) {
-      return NextResponse.json({ error: "Square not configured" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Square not configured" },
+        { status: 500 },
+      );
     }
 
     // Create or find customer
@@ -87,7 +127,10 @@ export async function POST(req: NextRequest) {
     const paymentLink = checkoutResult.paymentLink;
 
     if (!paymentLink?.url) {
-      return NextResponse.json({ error: "Failed to create checkout" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to create checkout" },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json({ url: paymentLink.url });

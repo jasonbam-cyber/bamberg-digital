@@ -3,7 +3,27 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 10;
+const ipBuckets = new Map<string, { count: number; resetAt: number }>();
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const bucket = ipBuckets.get(ip);
+  if (!bucket || bucket.resetAt < now) {
+    ipBuckets.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return false;
+  }
+  bucket.count += 1;
+  return bucket.count > RATE_MAX;
+}
+
 export async function POST(req: NextRequest) {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  if (rateLimited(ip)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const url = new URL(req.url);
   const tokenQ = url.searchParams.get("token");
   const emailQ = url.searchParams.get("email");

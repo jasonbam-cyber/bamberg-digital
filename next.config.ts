@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const CSP = [
   "default-src 'self'",
@@ -14,6 +15,11 @@ const CSP = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  // Pin turbopack root to this project so monorepo lockfile detection
+  // doesn't infer a parent directory.
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   async headers() {
     return [
       {
