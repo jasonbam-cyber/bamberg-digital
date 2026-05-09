@@ -1629,6 +1629,41 @@ export default function HomeNarrative() {
                   Free 30-min consultation
                 </button>
               </MagneticButton>
+              <MagneticButton strength={0.35}>
+                <button
+                  onClick={() => {
+                    track("hero_cta_packages");
+                    router.push("/services");
+                  }}
+                  style={{
+                    fontFamily: HEAD,
+                    fontWeight: 700,
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.06em",
+                    color: C.white,
+                    background: "rgba(181,137,78,0.18)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    border: "1px solid rgba(181,137,78,0.55)",
+                    cursor: "pointer",
+                    padding: "1rem 2rem",
+                    borderRadius: 999,
+                    textTransform: "uppercase",
+                    transition: "border-color 0.3s, background 0.3s",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(181,137,78,0.9)";
+                    e.currentTarget.style.background = "rgba(181,137,78,0.32)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(181,137,78,0.55)";
+                    e.currentTarget.style.background = "rgba(181,137,78,0.18)";
+                  }}
+                >
+                  View packages →
+                </button>
+              </MagneticButton>
             </div>
           </div>
           {/* end hero-text-col */}
