@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Integration Sacramento | Bamberg Digital",
+    description:
+      "Practical AI integration for Sacramento businesses. Automated follow-ups, smart scheduling, chatbots & lead scoring. $497 consultation + implementation.",
+  },
 };
 
 const examples = [
@@ -146,6 +152,13 @@ export default function AiIntegrationPage() {
       <SiteNav active="/ai-integration" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I need to be technical to use AI tools?", "acceptedAnswer": {"@type": "Answer", "text": "No. We handle all setup and configuration. We train your team on how to use what we build, and we write documentation so it's maintainable without us."}}, {"@type": "Question", "name": "Which AI tools do you use?", "acceptedAnswer": {"@type": "Answer", "text": "OpenAI, Claude, and purpose-built models depending on the task. For workflows, we use n8n, Zapier, and Make. We choose based on what fits your stack and budget \u2014 not what's newest."}}, {"@type": "Question", "name": "How fast will I see results?", "acceptedAnswer": {"@type": "Answer", "text": "Most clients see measurable time savings in week one. Lead scoring and email automation typically show ROI within 30 days."}}, {"@type": "Question", "name": "What if the AI makes mistakes?", "acceptedAnswer": {"@type": "Answer", "text": "We build with human review steps where the stakes are high. AI handles volume and speed; your team handles judgment calls. We tune the system until error rates are within your tolerance."}}, {"@type": "Question", "name": "What cities do you serve?", "acceptedAnswer": {"@type": "Answer", "text": "We're based in Sacramento, CA and serve clients in Elk Grove, Folsom, Roseville, Rancho Cordova, and nationwide remotely."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

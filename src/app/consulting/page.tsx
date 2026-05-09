@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI & Automation Consulting | Bamberg Digital",
+    description:
+      "AI and automation consulting for small businesses. Cut manual work, automate follow-up, and scale without hiring. From $197/hr or $1,997 project.",
+  },
 };
 
 const included = [
@@ -132,6 +138,13 @@ export default function ConsultingPage() {
       <SiteNav active="/consulting" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What kinds of businesses benefit most?", "acceptedAnswer": {"@type": "Answer", "text": "Any business spending more than 5 hours per week on repetitive tasks \u2014 scheduling, follow-up, data entry, reporting, quoting, or invoicing. We work with Sacramento businesses and clients across Folsom, Roseville, Rancho Cordova, and nationwide."}}, {"@type": "Question", "name": "Do I need technical knowledge?", "acceptedAnswer": {"@type": "Answer", "text": "No. We handle all the technical setup. You review, approve, and then just use the finished system. We write the documentation so your team can maintain it."}}, {"@type": "Question", "name": "What tools do you use?", "acceptedAnswer": {"@type": "Answer", "text": "n8n, Zapier, Make, OpenAI, Claude, HubSpot, and custom-built solutions depending on your existing tech stack. We work with what you have, not what we prefer."}}, {"@type": "Question", "name": "How long does a project take?", "acceptedAnswer": {"@type": "Answer", "text": "Most automation projects are complete in 2\u20134 weeks. More complex builds with multiple integrations can run 5\u20136 weeks."}}, {"@type": "Question", "name": "What if it breaks after you're done?", "acceptedAnswer": {"@type": "Answer", "text": "The 30-day support window covers any issues after delivery at no extra cost. Ongoing Advisory clients have permanent support coverage."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

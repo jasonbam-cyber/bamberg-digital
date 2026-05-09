@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Web Design Sacramento | Bamberg Digital",
+    description:
+      "Professional website design for Sacramento small businesses. Custom sites from $497. Mobile-first, SEO-ready, and built to convert.",
+  },
 };
 
 const included = [
@@ -134,6 +140,13 @@ export default function WebDesignPage() {
       <SiteNav active="/web-design" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How long does a website take?", "acceptedAnswer": {"@type": "Answer", "text": "Typically 2\u20133 weeks for a 5-page site. Larger or more complex projects run 4\u20136 weeks. We give you a clear timeline before we start."}}, {"@type": "Question", "name": "Do I own the website?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, 100%. You own all code, content, and hosting. We hand everything over when the project is complete."}}, {"@type": "Question", "name": "Can you redesign my existing site?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 redesigns start at $497. We'll modernize your current site or build a completely fresh design depending on your needs."}}, {"@type": "Question", "name": "Do you build e-commerce sites?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Shopify and WooCommerce stores starting at $1,497. We handle product setup, payment integration, and launch."}}, {"@type": "Question", "name": "What cities do you serve?", "acceptedAnswer": {"@type": "Answer", "text": "We're based in Sacramento, CA and serve clients in Elk Grove, Folsom, Roseville, Rancho Cordova, and nationwide remotely."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

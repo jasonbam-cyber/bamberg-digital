@@ -17,6 +17,20 @@ export const metadata: Metadata = {
       "Custom solutions for founders who refuse the template. One client per quarter. $10K–$25K.",
     url: `${SITE_URL}/atelier`,
     type: "website",
+    images: [
+      {
+        url: "https://www.bambergdigital.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "BD Atelier — AI velocity. Human signature.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BD Atelier — AI velocity. Human signature.",
+    description:
+      "Custom solutions for founders who refuse the template. One client per quarter. $10K–$25K.",
   },
 };
 

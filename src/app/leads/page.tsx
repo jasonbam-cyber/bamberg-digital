@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lead Generation Services | Bamberg Digital",
+    description:
+      "Verified B2B lead lists for small businesses. Phone, email, and LinkedIn verified. 50 leads from $197. Weekly delivery available.",
+  },
 };
 
 const included = [
@@ -134,6 +140,13 @@ export default function LeadsPage() {
       <SiteNav active="/leads" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How are leads verified?", "acceptedAnswer": {"@type": "Answer", "text": "Phone and email are checked within 30 days of delivery using live verification tools. We don't deliver contacts that haven't been confirmed active."}}, {"@type": "Question", "name": "What industries do you source leads for?", "acceptedAnswer": {"@type": "Answer", "text": "Any B2B industry. We specialize in real estate, home services, legal, medical, and financial \u2014 but we've built lists for over 40 industry categories."}}, {"@type": "Question", "name": "What format do I receive leads in?", "acceptedAnswer": {"@type": "Answer", "text": "CSV file or direct CRM upload. We support HubSpot, Salesforce, and Zoho. Other CRMs available on request."}}, {"@type": "Question", "name": "What's your bounce rate?", "acceptedAnswer": {"@type": "Answer", "text": "Under 5%. We replace any contacts that bounce above that threshold at no extra charge."}}, {"@type": "Question", "name": "Can you target specific cities or zip codes?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We can target by city (Sacramento, Elk Grove, Folsom, Roseville, Rancho Cordova), county, zip code, metro area, or nationwide. The more specific your ICP, the better the list quality."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

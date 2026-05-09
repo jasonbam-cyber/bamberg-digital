@@ -23,6 +23,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bundle Pricing | Bamberg Digital — Sacramento All-in-One Business Packages",
+    description:
+      "Website + SEO + Layer UI workspace bundled into one annual plan. Sacramento small businesses get more for less — starting at $19/seat/mo.",
+  },
 };
 
 const bundles = [

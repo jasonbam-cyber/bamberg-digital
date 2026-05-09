@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Digital Marketing Agency Sacramento | Bamberg Digital",
+    description:
+      "Full-service digital marketing for Sacramento businesses. Strategy, execution, and AI automation. Consultation from $497. Retainers from $997/mo.",
+  },
 };
 
 const included = [
@@ -134,6 +140,13 @@ export default function DigitalMarketingPage() {
       <SiteNav active="/digital-marketing" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What channels are included in a retainer?", "acceptedAnswer": {"@type": "Answer", "text": "SEO, social media, and email are included in Starter. Growth adds paid ads (PPC) management. Ad spend is separate and goes directly to the platform."}}, {"@type": "Question", "name": "How is Bamberg Digital different from other agencies?", "acceptedAnswer": {"@type": "Answer", "text": "We use AI to automate and optimize \u2014 most agencies are still doing things manually. That means we move faster, spot opportunities sooner, and deliver more value per dollar spent."}}, {"@type": "Question", "name": "Do you work with specific industries?", "acceptedAnswer": {"@type": "Answer", "text": "We specialize in real estate, home services, medical practices, legal firms, restaurants, and e-commerce. Sacramento businesses in Elk Grove, Folsom, Roseville, and Rancho Cordova are our backyard."}}, {"@type": "Question", "name": "What's a realistic budget for paid ads?", "acceptedAnswer": {"@type": "Answer", "text": "We recommend $500\u2013$2,000/mo in ad spend for meaningful results. We optimize every dollar, but ad spend goes directly to Google, Meta, or wherever your customers are."}}, {"@type": "Question", "name": "Is there a contract?", "acceptedAnswer": {"@type": "Answer", "text": "Month-to-month after the first 90 days. We earn your business every month, not lock you in."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

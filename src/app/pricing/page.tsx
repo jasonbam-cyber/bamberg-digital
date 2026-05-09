@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pricing | Bamberg Digital — Sacramento Digital Agency",
+    description:
+      "Transparent pricing for web design, SEO, social media, branding, lead generation, and AI consulting. Intro rates for new clients.",
+  },
 };
 
 const services = [

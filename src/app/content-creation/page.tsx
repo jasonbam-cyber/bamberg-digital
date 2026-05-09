@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Content Creation & Copywriting | Bamberg Digital",
+    description:
+      "Blog posts, website copy, email sequences, and social content for small businesses. Strategy from $297. Ongoing content from $397/mo.",
+  },
 };
 
 const included = [
@@ -131,6 +137,13 @@ export default function ContentCreationPage() {
       <SiteNav active="/content-creation" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do you write for my industry?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 we research your industry, competitors, and target customers before writing a single word. We've written for real estate, home services, medical practices, legal firms, restaurants, and e-commerce."}}, {"@type": "Question", "name": "Do I own the content?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, all content belongs to you. We hand over full rights when each piece is delivered."}}, {"@type": "Question", "name": "Can you match our existing brand voice?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 we study your existing content, website, and any style guide you have before writing. Most clients say our content sounds like they wrote it themselves."}}, {"@type": "Question", "name": "How many revisions are included?", "acceptedAnswer": {"@type": "Answer", "text": "Two rounds of revisions per piece are included at every tier. We rarely need more than one."}}, {"@type": "Question", "name": "Can I see samples?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 email hello@bambergdigital.com and we'll send samples from your industry."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

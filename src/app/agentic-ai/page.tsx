@@ -17,6 +17,20 @@ export const metadata: Metadata = {
       "Agents that actually ship. Audit $5K–$8K. Stack Build $25K–$60K. Managed $4K–$12K/mo. Cap: 4 retained accounts.",
     url: `${SITE_URL}/agentic-ai`,
     type: "website",
+    images: [
+      {
+        url: "https://www.bambergdigital.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Agentic AI Management — Bamberg Digital",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Agentic AI Management — Bamberg Digital",
+    description:
+      "Agents that actually ship. Audit $5K–$8K. Stack Build $25K–$60K. Managed $4K–$12K/mo. Cap: 4 retained accounts.",
   },
 };
 

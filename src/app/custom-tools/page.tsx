@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Custom Business Tools Sacramento | Bamberg Digital",
+    description:
+      "Custom CRMs, dashboards, booking systems & client portals for Sacramento businesses. Starts at $1,997. Built for how you actually work.",
+  },
 };
 
 const examples = [
@@ -148,6 +154,13 @@ export default function CustomToolsPage() {
       <SiteNav active="/custom-tools" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why not just use off-the-shelf software?", "acceptedAnswer": {"@type": "Answer", "text": "Off-the-shelf software is built for the average business. If you're spending hours working around its limitations \u2014 exporting to spreadsheets, managing workarounds, paying for features you don't use \u2014 a custom tool pays for itself fast."}}, {"@type": "Question", "name": "Who owns the code?", "acceptedAnswer": {"@type": "Answer", "text": "You do. 100%. We hand over the full source code on delivery. No licensing fees, no dependency on us to keep it running."}}, {"@type": "Question", "name": "How long does a build take?", "acceptedAnswer": {"@type": "Answer", "text": "Basic tools typically take 3\u20134 weeks. Business system builds run 5\u20138 weeks. Complex enterprise builds are scoped individually."}}, {"@type": "Question", "name": "Can you integrate with my existing software?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We connect to QuickBooks, Shopify, HubSpot, Google Workspace, Zapier, Stripe, and most platforms with a public API."}}, {"@type": "Question", "name": "What if we need changes after launch?", "acceptedAnswer": {"@type": "Answer", "text": "The support window covers bug fixes and minor adjustments. For larger feature additions, we quote them as a separate project at a discounted rate for existing clients."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

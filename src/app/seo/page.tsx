@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "SEO Services Sacramento | Bamberg Digital",
+    description:
+      "Sacramento SEO agency using AI to rank your business on Google. Free SEO audit. Local SEO, technical SEO, and content strategy from $497/mo.",
+  },
 };
 
 const included = [
@@ -134,6 +140,13 @@ export default function SEOPage() {
       <SiteNav active="/seo" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How long does SEO take?", "acceptedAnswer": {"@type": "Answer", "text": "90\u2013180 days to see significant movement. Technical fixes and Google Business improvements often show results in 30\u201360 days. We send monthly reports so you always know where things stand."}}, {"@type": "Question", "name": "Do you guarantee rankings?", "acceptedAnswer": {"@type": "Answer", "text": "No one can guarantee Google rankings \u2014 anyone who does is lying. We guarantee our process, our work quality, and transparent monthly reporting. Our clients consistently see results because we follow proven methods."}}, {"@type": "Question", "name": "What's the difference between Local and Full SEO?", "acceptedAnswer": {"@type": "Answer", "text": "Local SEO targets 'near me' and Sacramento-area searches \u2014 Google Maps, local pack, and city-specific keywords. Full SEO adds content strategy and link building to compete for broader keywords at the state or national level."}}, {"@type": "Question", "name": "Will you audit my site first?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 the $497 one-time SEO Audit is the natural starting point. It tells you exactly where the problems are and what to prioritize. Many clients start there before committing to ongoing work."}}, {"@type": "Question", "name": "Do you serve clients outside Sacramento?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We're based in Sacramento and serve local businesses in Elk Grove, Folsom, Roseville, and Rancho Cordova \u2014 but we work with businesses nationwide remotely."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

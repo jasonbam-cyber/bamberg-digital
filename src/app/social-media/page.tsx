@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Social Media Marketing Sacramento | Bamberg Digital",
+    description:
+      "Social media management for Sacramento businesses. Posts, ads, and growth strategy from $199/mo. Free first-month audit included.",
+  },
 };
 
 const included = [
@@ -134,6 +140,13 @@ export default function SocialMediaPage() {
       <SiteNav active="/social-media" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which platforms do you manage?", "acceptedAnswer": {"@type": "Answer", "text": "Instagram, Facebook, LinkedIn, TikTok, and X. We recommend starting with the 1\u20132 platforms where your customers already spend time."}}, {"@type": "Question", "name": "Do you create the graphics?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 all graphics and captions are included at every tier. You don't need a designer or copywriter."}}, {"@type": "Question", "name": "How long until I see results?", "acceptedAnswer": {"@type": "Answer", "text": "Most clients see measurable engagement growth within 60 days. Follower growth and reach compound over 3\u20136 months as your content library builds."}}, {"@type": "Question", "name": "Can I approve posts before they go live?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We use a content calendar you review weekly. Approve, request edits, or leave it to us \u2014 your call."}}, {"@type": "Question", "name": "Do you run paid ads?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 paid ads management is included in Growth and Pro plans. Ad spend is billed separately and goes directly to the platform."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

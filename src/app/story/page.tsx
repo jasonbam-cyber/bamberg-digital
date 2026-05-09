@@ -13,7 +13,13 @@ export const metadata: Metadata = {
     siteName: "Bamberg Digital",
     type: "website",
   },
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bamberg Digital — Sacramento's AI-Powered Digital Agency",
+    description:
+      "See why Sacramento businesses choose Bamberg Digital. Web design from $497, social media from $199/mo, SEO from $297/mo.",
+  },
 };
 
 const CSS_STRING = `

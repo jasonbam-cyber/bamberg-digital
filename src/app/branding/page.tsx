@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Brand Identity & Design Sacramento | Bamberg Digital",
+    description:
+      "Logo design, brand identity, and full brand guidelines for Sacramento businesses. Starter brand from $697. Full brand package from $1,497.",
+  },
 };
 
 const included = [
@@ -132,6 +138,13 @@ export default function BrandingPage() {
       <SiteNav active="/branding" />
 
       {/* Hero */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How many logo concepts do I get?", "acceptedAnswer": {"@type": "Answer", "text": "Three distinct logo concepts. Once you pick your direction, we refine it through two revision rounds until it's exactly right."}}, {"@type": "Question", "name": "How long does branding take?", "acceptedAnswer": {"@type": "Answer", "text": "Brand Starter typically takes 2\u20134 weeks. Brand Standard is 3\u20135 weeks. Brand Premium (with website) runs 5\u20137 weeks."}}, {"@type": "Question", "name": "Do I own the logo files?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 you receive all source files including AI (Illustrator), SVG, PNG, and PDF. Full ownership, no licensing strings."}}, {"@type": "Question", "name": "Can you rebrand an existing business?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Rebrands follow the same process and start at $697. We'll review what exists and either refresh it or start fresh depending on what you need."}}, {"@type": "Question", "name": "Do you design websites too?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 Brand Premium bundles branding with website design. You can also add a website to any package. See our web design page for standalone pricing."}}]}),
+        }}
+      />
+
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">

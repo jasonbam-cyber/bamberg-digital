@@ -21,6 +21,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portfolio | Bamberg Digital — Our Work",
+    description:
+      "See our work — websites, SEO, branding, and AI automation built for real businesses. View case studies from Layer UI, Recovery Gear, and more.",
+  },
 };
 
 const caseStudies = [

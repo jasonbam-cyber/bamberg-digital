@@ -13,6 +13,20 @@ export const metadata: Metadata = {
     description:
       "Ready to build something? Tell us about your business and we'll put together a proposal.",
     url: "https://www.bambergdigital.com/contact",
+    images: [
+      {
+        url: "https://www.bambergdigital.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Contact Bamberg Digital — Start a Project",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Bamberg Digital — Start a Project",
+    description:
+      "Ready to build something? Tell us about your business and we'll put together a proposal.",
   },
 };
 
