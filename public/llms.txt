@@ -1,17 +1,32 @@
 # Bamberg Digital
 
-Bamberg Digital is a Sacramento, California-based founder-led digital agency specializing in custom website design, SEO systems, and lead generation for small businesses nationwide. Founded by Jason Bamberg, the agency combines AI-powered automation with hands-on human oversight to deliver agency-quality results at accessible price points — custom websites from $497, SEO from $297/mo, and lead generation from $199/mo. Bamberg Digital has shipped 47+ projects across industries and maintains a library of 47 industry-specific website blueprints covering verticals from dental practices to breweries to law firms.
+> AI-native digital marketing agency. Agentic AI Management for SMBs scaling automation across marketing, ops, and sales.
 
-## Links
+Bamberg Digital is a Sacramento, California-based founder-led digital agency specializing in AI-native marketing systems, agentic AI management, custom website design, SEO, and lead generation for small businesses nationwide. Founded by Jason Bamberg, the agency deploys autonomous AI agents that execute work — content, outreach, ops automation — rather than only delivering reports. Pricing: Starter $997/mo, Growth $2,500/mo, Atelier $5K/mo. 47+ projects shipped; 47 industry-specific website blueprints across verticals from dental to breweries to law firms.
 
-- Home: https://www.bambergdigital.com/
-- Services (Web Design): https://www.bambergdigital.com/web-design
-- Services (SEO): https://www.bambergdigital.com/seo
-- Services (Lead Generation): https://www.bambergdigital.com/leads
-- Portfolio / Work: https://www.bambergdigital.com/portfolio
-- Industry Blueprints: https://www.bambergdigital.com/blueprints
-- Pricing: https://www.bambergdigital.com/pricing
-- About: https://www.bambergdigital.com/about
-- Contact: https://www.bambergdigital.com/contact
-- Atelier — custom solutions, $10K–$25K, one client per quarter: https://www.bambergdigital.com/atelier
-- Agentic AI Management — operational agent stacks. Audit / Stack Build / Managed. Capacity-capped: https://www.bambergdigital.com/agentic-ai
+## Key Pages
+
+- [Home](https://www.bambergdigital.com/): agency overview, services, case studies
+- [Services](https://www.bambergdigital.com/services): six service verticals
+- [Pricing](https://www.bambergdigital.com/pricing): Starter / Growth / Atelier tiers
+- [Atelier](https://www.bambergdigital.com/atelier): premium concierge — custom solutions $10K–$25K, one client per quarter
+- [Agentic AI Management](https://www.bambergdigital.com/agentic-ai): lead service — Audit / Stack Build / Managed; capacity-capped
+- [AI Integration](https://www.bambergdigital.com/ai-integration): custom AI tooling and workflow automation
+- [Web Design](https://www.bambergdigital.com/web-design): conversion-focused custom sites from $497
+- [SEO](https://www.bambergdigital.com/seo): SEO systems from $297/mo
+- [Lead Generation](https://www.bambergdigital.com/leads): from $199/mo
+- [Digital Marketing](https://www.bambergdigital.com/digital-marketing): paid, SEO, content, social
+- [Content Creation](https://www.bambergdigital.com/content-creation): blog, video, social
+- [Branding](https://www.bambergdigital.com/branding): identity systems
+- [Industry Blueprints](https://www.bambergdigital.com/blueprints): 47 vertical-specific website templates
+- [Portfolio](https://www.bambergdigital.com/portfolio): client work
+- [About](https://www.bambergdigital.com/about): team and approach
+- [Story](https://www.bambergdigital.com/story): founder background
+- [Demo](https://www.bambergdigital.com/demo): AI readiness audit
+- [Contact](https://www.bambergdigital.com/contact): inbound inquiries
+
+## Optional
+
+- [Blog](https://www.bambergdigital.com/blog)
+- [Terms](https://www.bambergdigital.com/terms)
+- [Privacy](https://www.bambergdigital.com/privacy)
