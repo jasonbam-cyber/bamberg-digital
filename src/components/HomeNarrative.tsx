@@ -1480,7 +1480,7 @@ export default function HomeNarrative() {
                   letterSpacing: "-0.03em",
                 }}
               >
-                Your website
+                Agentic AI
               </SplitReveal>
               <SplitReveal
                 by="char"
@@ -1494,7 +1494,7 @@ export default function HomeNarrative() {
                   color: C.cream,
                 }}
               >
-                is your handshake.
+                Management.
               </SplitReveal>
               <span style={{ display: "block" }}>
                 <SplitReveal
@@ -1509,7 +1509,7 @@ export default function HomeNarrative() {
                     letterSpacing: "-0.03em",
                   }}
                 >
-                  {"Make it "}
+                  {"Built for "}
                 </SplitReveal>
                 <SplitReveal
                   by="char"
@@ -1524,7 +1524,7 @@ export default function HomeNarrative() {
                     color: C.accent,
                   }}
                 >
-                  unforgettable.
+                  what comes next.
                 </SplitReveal>
               </span>
             </h1>
@@ -1544,8 +1544,8 @@ export default function HomeNarrative() {
                 opacity: 0.92,
               }}
             >
-              Custom-built websites that earn attention, rank on Google, and
-              convert visitors into customers. One founder. No templates.
+              ModelOps for SMBs scaling AI. We own your LLMs, workflows, and
+              agent stack — so you own the outcomes.
             </p>
 
             {/* CTAs */}

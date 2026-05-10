@@ -4,14 +4,16 @@ import SiteFooter from "@/components/SiteFooter";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Pricing | Bamberg Digital — Sacramento Digital Agency",
+  title:
+    "Pricing | Bamberg Digital — Agentic AI Management & Digital Marketing",
   description:
-    "Transparent pricing for web design, SEO, social media, branding, lead generation, and AI consulting. Intro rates for new clients.",
+    "Transparent pricing for Agentic AI Management, web design, SEO, social media, and AI consulting. Atelier Pro at $10K/mo — LLM drift monitoring, prompt versioning, outcome-driven pricing.",
   alternates: { canonical: "https://www.bambergdigital.com/pricing" },
   openGraph: {
-    title: "Pricing | Bamberg Digital — Sacramento Digital Agency",
+    title:
+      "Pricing | Bamberg Digital — Agentic AI Management & Digital Marketing",
     description:
-      "Transparent pricing for web design, SEO, social media, branding, lead generation, and AI consulting.",
+      "Transparent pricing for Agentic AI Management, web design, SEO, social media, and AI consulting. Atelier Pro at $10K/mo.",
     url: "https://www.bambergdigital.com/pricing",
     images: [
       {
@@ -25,7 +27,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Pricing | Bamberg Digital — Sacramento Digital Agency",
     description:
-      "Transparent pricing for web design, SEO, social media, branding, lead generation, and AI consulting. Intro rates for new clients.",
+      "Transparent pricing for Agentic AI Management, web design, SEO, social media, and AI consulting. Atelier Pro at $10K/mo — LLM drift monitoring, prompt versioning, outcome-driven pricing.",
   },
 };
 
@@ -145,6 +147,137 @@ export default function PricingPage() {
             All prices in USD. Month-to-month after first 90 days. No setup
             fees.
           </p>
+        </div>
+      </section>
+
+      {/* Managed Agentic AI */}
+      <section className="py-20 px-4 bg-slate-950">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-blue-900/40 border border-blue-700/40 text-blue-300 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+              <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
+              Managed Agentic AI
+            </div>
+            <h2 className="font-[family-name:var(--font-montserrat)] text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-4">
+              ModelOps for SMBs Scaling AI
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              We own your AI stack end-to-end — workflows, LLMs, prompt
+              versioning, drift monitoring, and agent development. You get
+              outcomes.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-6">
+            {/* Atelier */}
+            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800 flex flex-col">
+              <p className="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-3">
+                Atelier
+              </p>
+              <div className="flex items-end gap-2 mb-3">
+                <span className="font-[family-name:var(--font-montserrat)] text-5xl font-extrabold text-white">
+                  $5,000
+                </span>
+                <span className="text-slate-400 mb-1">/mo</span>
+              </div>
+              <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+                Entry-level agentic AI management for businesses scaling
+                automation.
+              </p>
+              <ul className="space-y-2.5 mb-8 flex-1">
+                {[
+                  "AI workflow setup & integration",
+                  "Monthly optimization cycles",
+                  "Prompt versioning & governance",
+                  "Basic LLM monitoring",
+                  "Dedicated AI strategist (10 hrs/mo)",
+                  "Monthly executive review",
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2.5 text-slate-300 text-sm"
+                  >
+                    <svg
+                      className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="/contact"
+                className="block text-center bg-white text-slate-900 font-[family-name:var(--font-montserrat)] font-bold text-sm py-3 px-6 rounded-xl hover:bg-slate-100 transition-colors"
+              >
+                Book strategy call
+              </a>
+            </div>
+
+            {/* Atelier Pro */}
+            <div className="bg-blue-600 rounded-2xl p-8 border border-blue-500 flex flex-col relative overflow-hidden">
+              <div className="absolute top-4 right-4 bg-white/20 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                Annual: $8,500/mo
+              </div>
+              <p className="text-xs font-semibold text-blue-200 uppercase tracking-widest mb-3">
+                Atelier Pro
+              </p>
+              <div className="flex items-end gap-2 mb-3">
+                <span className="font-[family-name:var(--font-montserrat)] text-5xl font-extrabold text-white">
+                  $10,000
+                </span>
+                <span className="text-blue-200 mb-1">/mo</span>
+              </div>
+              <p className="text-blue-100 text-sm mb-6 leading-relaxed">
+                Full ModelOps partnership. Output-based billing available.
+              </p>
+              <ul className="space-y-2.5 mb-8 flex-1">
+                {[
+                  "Everything in Atelier",
+                  "LLM drift monitoring & alerting",
+                  "RAG pipeline maintenance",
+                  "Custom agent development",
+                  "Weekly executive sync",
+                  "Output-based billing options",
+                  "Dedicated AI infrastructure",
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2.5 text-white text-sm"
+                  >
+                    <svg
+                      className="w-4 h-4 text-blue-200 mt-0.5 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="/contact"
+                className="block text-center bg-white text-blue-600 font-[family-name:var(--font-montserrat)] font-bold text-sm py-3 px-6 rounded-xl hover:bg-blue-50 transition-colors"
+              >
+                Book strategy call
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
